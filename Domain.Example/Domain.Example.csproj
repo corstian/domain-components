@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain.Components\Domain.Components.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Aggregates\GroupAggregate\Commands\" />
+    <Folder Include="Aggregates\GroupAggregate\Events\" />
+    <Folder Include="Aggregates\GroupAggregate\Snapshots\" />
+    <Folder Include="ProcessManagers\" />
+    <Folder Include="Sagas\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.2" />
+  </ItemGroup>
+
+</Project>

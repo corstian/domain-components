@@ -2,8 +2,10 @@
 
 namespace Domain.Components.Abstractions
 {
-    public interface ISpecification
+    public interface IAuthorizationSpecification
     {
+        public IAuthorizationContext AuthorizationContext { get; }
+
         Expression<Func<object, bool>> Evaluation { get; }
     }
 

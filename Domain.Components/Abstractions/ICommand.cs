@@ -3,23 +3,22 @@
     public interface ICommand { }
 
     public interface ICommand<THandler> : ICommand
-        where THandler : ICommandHandler<THandler>
+        where THandler : IAggregate<THandler>
     {
-        public Task<IEnumerable<IEvent>> Evaluate(THandler handler);
+        public Task<Result<IEnumerable<Event<THandler>>>> Evaluate(THandler handler);
     }
 
     public interface ICommand<THandler, TEvent> : ICommand
-            where THandler : ICommandHandler<THandler>
-            where TEvent : IEvent
+            where THandler : IAggregate<THandler>
     {
-        public Task<TEvent> Evaluate(THandler handler);
+        public Task<Result<TEvent>> Evaluate(THandler handler);
     }
 
     public interface ICommand<THandler, TEvent1, TEvent2> : ICommand
-        where THandler : ICommandHandler<THandler>
-        where TEvent1 : IEvent
-        where TEvent2 : IEvent
+        where THandler : IAggregate<THandler>
+        where TEvent1 : Event<THandler>
+        where TEvent2 : Event<THandler>
     {
-        public Task<(TEvent1, TEvent2)> Evaluate(THandler handler);
+        public Task<Result<(TEvent1, TEvent2)>> Evaluate(THandler handler);
     }
 }

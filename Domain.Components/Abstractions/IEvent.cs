@@ -3,10 +3,11 @@
     public interface IEvent
     {
         Guid AggregateId { get; }
+        IAuthorizationContext? AuthorizationContext { get; }
     }
 
     public interface IEvent<THandler> : IEvent
-        where THandler : IEventHandler<THandler>
+        where THandler : IAggregate<THandler>
     {
         public void Apply(THandler state);
     }

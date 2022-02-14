@@ -1,4 +1,5 @@
 ﻿using Domain.Components.Abstractions;
+using FluentResults;
 
 namespace Domain.Components
 {
@@ -7,50 +8,60 @@ namespace Domain.Components
     {
         public Guid Id { get; }
 
-        public async Task<Result<IEnumerable<Event<T>>>> Evaluate(ICommand<T> command)
-        {
-            var events = await command.Evaluate((T)this);
-
-            foreach (var @event in events)
-            {
-                @event.AggregateId = Id;
-            }
-
-            return events;
-        }
-
-        public async Task<Result<E>> Evaluate<E>(ICommand<T, E> @command)
-            where E : Event<T>
-        {
-            var @event = await command.Evaluate((T)this);
-
-            @event.AggregateId = Id;
-
-            return @event;
-        }
-
-        public async Task<Result<(E1, E2)>> Evaluate<E1, E2>(ICommand<T, E1, E2> @command)
-                where E1 : Event<T>
-                where E2 : Event<T>
+        public async Task<Result<IEnumerable<IEvent<T>>>> Evaluate(ICommand<T> command)
         {
             var result = await command.Evaluate((T)this);
 
-            result.Value.Item1.AggregateId = Id;
+            if (result.IsFailed) return result;
 
-            
-            events.Item1.AggregateId = Id;
-            events.Item2.AggregateId = Id;
+            var events = result.Value;
 
-            return events;
+            foreach (var @event in events)
+            {
+                if (@event is Event e)
+                    e.AggregateId = Id;
+            }
+
+            return result;
         }
 
-        public void Apply(Event<T> @event)
+        public async Task<Result<E>> Evaluate<E>(ICommand<T, E> @command)
+            where E : IEvent<T>
+        {
+            var result = await command.Evaluate((T)this);
+
+            if (result.IsFailed) return result;
+
+            if (result.Value is Event e)
+                e.AggregateId = Id;
+
+            return result;
+        }
+
+        public async Task<Result<(E1, E2)>> Evaluate<E1, E2>(ICommand<T, E1, E2> @command)
+                where E1 : IEvent<T>
+                where E2 : IEvent<T>
+        {
+            var result = await command.Evaluate((T)this);
+
+            if (result.IsFailed) return result;
+
+            if (result.Value.Item1 is Event e1)
+                e1.AggregateId = Id;
+
+            if (result.Value.Item2 is Event e2)
+                e2.AggregateId = Id;
+            
+            return result;
+        }
+
+        public void Apply(IEvent<T> @event)
             => @event.Apply((T)this);
 
-        public void Apply(params Event<T>[] events) 
+        public void Apply(params IEvent<T>[] events) 
             => events.ToList().ForEach(Apply);
 
-        public TModel Apply<TModel>(Event<T> @event)
+        public TModel Apply<TModel>(IEvent<T> @event)
             where TModel : ISnapshot<T>, new()
         {
             Apply(@event);
@@ -59,7 +70,7 @@ namespace Domain.Components
             model.Populate((T)this);
             return model;
         }
-        public TModel Apply<TModel>(params Event<T>[] events)
+        public TModel Apply<TModel>(params IEvent<T>[] events)
             where TModel : ISnapshot<T>, new()
         {
             Apply(events);

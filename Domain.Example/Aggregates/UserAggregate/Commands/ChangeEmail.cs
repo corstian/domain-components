@@ -1,5 +1,6 @@
 ﻿using Domain.Components.Abstractions;
 using Domain.Example.Aggregates.UserAggregate.Events;
+using FluentResults;
 
 namespace Domain.Example.Aggregates.UserAggregate.Commands
 {
@@ -7,12 +8,16 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
     {
         public string Email { get; init; }
 
-        Task<EmailChanged> ICommand<User, EmailChanged>.Evaluate(User handler)
+        async Task<Result<EmailChanged>> ICommand<User, EmailChanged>.Evaluate(User handler)
         {
-            return Task.FromResult(new EmailChanged
-            {
-                Email = Email
-            });
+            if (!Email.Contains("@"))
+                return Result.Fail("No @");
+
+            return Result.Ok(
+                new EmailChanged
+                {
+                    Email = Email
+                });
         }
     }
 }

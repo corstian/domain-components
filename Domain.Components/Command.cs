@@ -1,4 +1,5 @@
 ﻿using Domain.Components.Abstractions;
+using FluentResults;
 
 namespace Domain.Components
 {
@@ -11,7 +12,7 @@ namespace Domain.Components
             _authSpec = authSpec;
         }
 
-        public abstract Task<Result<IEnumerable<Event<T>>>> Evaluate(T handler);
+        public abstract Task<Result<IEnumerable<IEvent<T>>>> Evaluate(T handler);
     }
 
     public abstract class Command<T, E> : ICommand<T, E>

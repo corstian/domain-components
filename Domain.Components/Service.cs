@@ -1,4 +1,5 @@
 ﻿using Domain.Components.Abstractions;
+using FluentResults;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Domain.Components
@@ -86,13 +87,13 @@ namespace Domain.Components
             => (await Commit<T1, S1>(events.Item1),
                 await Commit<T2, S2>(events.Item2));
 
-        Task<IEnumerable<IEvent>> IService<TService>.Evaluate(ICommand<TService> command)
+        Task<Result<IEnumerable<IEvent>>> IService<TService>.Evaluate(IServiceCommand<TService> command)
             => command.Evaluate((TService)this);
 
-        Task<TEvent> IService<TService>.Evaluate<TEvent>(ICommand<TService, TEvent> command)
+        Task<Result<TEvent>> IService<TService>.Evaluate<TEvent>(IServiceCommand<TService, TEvent> command)
             => command.Evaluate((TService)this);
 
-        Task<(TEvent1, TEvent2)> IService<TService>.Evaluate<TEvent1, TEvent2>(ICommand<TService, TEvent1, TEvent2> command)
+        Task<Result<(TEvent1, TEvent2)>> IService<TService>.Evaluate<TEvent1, TEvent2>(IServiceCommand<TService, TEvent1, TEvent2> command)
             => command.Evaluate((TService)this);
     }
 }

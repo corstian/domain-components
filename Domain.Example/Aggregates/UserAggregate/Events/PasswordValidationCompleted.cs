@@ -6,9 +6,9 @@ namespace Domain.Example.Aggregates.UserAggregate.Events
     {
         internal PasswordValidationCompleted() { }
 
-        Guid IEvent.AggregateId => throw new NotImplementedException();
-
         public bool Succeeded { get; init; }
+
+        public Guid AggregateId { get; init; }
 
         void IEvent<User>.Apply(User state)
         {

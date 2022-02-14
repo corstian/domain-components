@@ -1,5 +1,6 @@
 ﻿using Domain.Components.Abstractions;
 using Domain.Example.Aggregates.UserAggregate.Events;
+using FluentResults;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 
@@ -9,7 +10,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
     {
         public string Password { get; init; }
 
-        async Task<PasswordChanged> ICommand<User, PasswordChanged>.Evaluate(User handler)
+        async Task<Result<PasswordChanged>> ICommand<User, PasswordChanged>.Evaluate(User handler)
         {
             // generate a 128-bit salt using a cryptographically strong random sequence of nonzero values
             byte[] salt = new byte[128 / 8];
@@ -25,11 +26,12 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
                 iterationCount: 100000,
                 numBytesRequested: 256 / 8);
 
-            return new PasswordChanged
-            {
-                PasswordHash = hashed,
-                PasswordSalt = salt
-            };
+            return Result.Ok(
+                new PasswordChanged
+                {
+                    PasswordHash = hashed,
+                    PasswordSalt = salt
+                });
         }
     }
 }

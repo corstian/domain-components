@@ -2,8 +2,7 @@
 {
     public interface IEvent
     {
-        Guid AggregateId { get; }
-        IAuthorizationContext? AuthorizationContext { get; }
+        public Guid AggregateId { get; }
     }
 
     public interface IEvent<THandler> : IEvent

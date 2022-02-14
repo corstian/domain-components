@@ -1,5 +1,6 @@
 ﻿using Domain.Components.Abstractions;
 using Domain.Example.Aggregates.UserAggregate.Events;
+using FluentResults;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Domain.Example.Aggregates.UserAggregate.Commands
@@ -8,7 +9,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
     {
         public string Password { get; init; }
 
-        Task<PasswordValidationCompleted> ICommand<User, PasswordValidationCompleted>.Evaluate(User handler)
+        async Task<Result<PasswordValidationCompleted>> ICommand<User, PasswordValidationCompleted>.Evaluate(User handler)
         {
             var hash = KeyDerivation.Pbkdf2(
                 password: Password,
@@ -19,10 +20,11 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
 
             var result = hash == handler.PasswordHash;
 
-            return Task.FromResult(new PasswordValidationCompleted
-            {
-                Succeeded = result
-            });
+            return Result.Ok(
+                new PasswordValidationCompleted
+                {
+                    Succeeded = result
+                });
         }
     }
 }

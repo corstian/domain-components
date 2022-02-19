@@ -1,6 +1,6 @@
-﻿using Domain.Components.Abstractions;
+﻿using Domain.Components;
+using Domain.Components.Abstractions;
 using Domain.Example.Aggregates.UserAggregate.Events;
-using FluentResults;
 
 namespace Domain.Example.Aggregates.UserAggregate.Commands
 {
@@ -8,11 +8,23 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
     {
         public string Name { get; init; }
 
-        async Task<Result<Renamed>> ICommand<User, Renamed>.Evaluate(User handler)
-            => Result.Ok(
-                new Renamed
-                {
-                    Name = handler.Name
-                });
+        IResult<Renamed> ICommand<User, Renamed>.Evaluate(User handler)
+        {
+            return DomainResult.Ok(new Renamed
+            {
+                Name = Name
+            });
+        }
+
+        //Renamed ICommand<User, Renamed>.Evaluate(User handler)
+        //    => new Renamed
+        //    {
+        //        Name = handler.Name
+        //    };
+
+        //Result ICommand<User, Renamed>.Validate(User handler)
+        //{
+        //    return Result.Ok();
+        //}
     }
 }

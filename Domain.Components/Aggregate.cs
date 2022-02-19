@@ -8,9 +8,10 @@ namespace Domain.Components
     {
         public Guid Id { get; }
 
-        public async Task<Result<IEnumerable<IEvent<T>>>> Evaluate(ICommand<T> command)
+
+        public IResult<IEnumerable<IEvent<T>>> Evaluate(ICommand<T> command)
         {
-            var result = await command.Evaluate((T)this);
+            var result = command.Evaluate((T)this);
 
             if (result.IsFailed) return result;
 
@@ -25,24 +26,26 @@ namespace Domain.Components
             return result;
         }
 
-        public async Task<Result<E>> Evaluate<E>(ICommand<T, E> @command)
+        public IResult<E> Evaluate<E>(ICommand<T, E> @command)
             where E : IEvent<T>
         {
-            var result = await command.Evaluate((T)this);
+            var result = command.Evaluate((T)this);
 
             if (result.IsFailed) return result;
 
-            if (result.Value is Event e)
+            var @event = result.Value;
+
+            if (@event is Event e)
                 e.AggregateId = Id;
 
             return result;
         }
 
-        public async Task<Result<(E1, E2)>> Evaluate<E1, E2>(ICommand<T, E1, E2> @command)
+        public IResult<(E1, E2)> Evaluate<E1, E2>(ICommand<T, E1, E2> @command)
                 where E1 : IEvent<T>
                 where E2 : IEvent<T>
         {
-            var result = await command.Evaluate((T)this);
+            var result = command.Evaluate((T)this);
 
             if (result.IsFailed) return result;
 

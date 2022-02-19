@@ -11,12 +11,12 @@ namespace Domain.Components.Abstractions
         where TAggregate : IAggregate<TAggregate>
     {
         // Command handlers
-        public Task<Result<IEnumerable<IEvent<TAggregate>>>> Evaluate(ICommand<TAggregate> command);
+        public IResult<IEnumerable<IEvent<TAggregate>>> Evaluate(ICommand<TAggregate> command);
 
-        public Task<Result<TEvent>> Evaluate<TEvent>(ICommand<TAggregate, TEvent> command)
+        public IResult<TEvent> Evaluate<TEvent>(ICommand<TAggregate, TEvent> command)
             where TEvent : IEvent<TAggregate>;
 
-        public Task<Result<(TEvent1, TEvent2)>> Evaluate<TEvent1, TEvent2>(ICommand<TAggregate, TEvent1, TEvent2> command)
+        public IResult<(TEvent1, TEvent2)> Evaluate<TEvent1, TEvent2>(ICommand<TAggregate, TEvent1, TEvent2> command)
             where TEvent1 : IEvent<TAggregate>
             where TEvent2 : IEvent<TAggregate>;
 

@@ -1,23 +1,36 @@
-﻿using Domain.Components.Abstractions;
+﻿using Domain.Components;
+using Domain.Components.Abstractions;
 using Domain.Example.Aggregates.UserAggregate.Events;
-using FluentResults;
 
 namespace Domain.Example.Aggregates.UserAggregate.Commands
 {
-    internal class ChangeEmail : ICommand<User, EmailChanged>
+    public class ChangeEmail : ICommand<User, EmailChanged>
     {
         public string Email { get; init; }
 
-        async Task<Result<EmailChanged>> ICommand<User, EmailChanged>.Evaluate(User handler)
+        IResult<EmailChanged> ICommand<User, EmailChanged>.Evaluate(User handler)
         {
             if (!Email.Contains("@"))
-                return Result.Fail("No @");
+                return DomainResult.Fail<EmailChanged>("No @");
 
-            return Result.Ok(
-                new EmailChanged
-                {
-                    Email = Email
-                });
+            return DomainResult.Ok(new EmailChanged
+            {
+                Email = Email
+            });
         }
+
+        //EmailChanged ICommand<User, EmailChanged>.Evaluate(User handler)
+        //    => new EmailChanged
+        //    {
+        //        Email = Email
+        //    };
+
+        //Result ICommand<User, EmailChanged>.Validate(User handler)
+        //{
+        //    if (!Email.Contains("@"))
+        //        return Result.Fail("No @");
+
+        //    return Result.Ok();
+        //}
     }
 }

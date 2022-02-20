@@ -18,7 +18,6 @@ namespace Domain.Example.Tests
             Assert.True(command is ICommand<User, IEvent<User>>);
             Assert.True(command is ICommand<User>);
             Assert.True(command is Command<User, EmailChanged>);
-            
         }
 
         [Fact]
@@ -28,6 +27,7 @@ namespace Domain.Example.Tests
 
             Assert.False(command is Command<User>);
             Assert.False(command is Command<User, IEvent<User>>);
+            Assert.False(command is Command<User, Event<User>>);
         }
     }
 }

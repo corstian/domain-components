@@ -64,6 +64,12 @@ namespace Domain.Components
         public void Apply(params IEvent<T>[] events) 
             => events.ToList().ForEach(Apply);
 
+        public void Apply(IResult<IEvent<T>> result)
+        {
+            if (result.IsSuccess)
+                Apply(result.Value);
+        }
+
         public TModel Apply<TModel>(IEvent<T> @event)
             where TModel : ISnapshot<T>, new()
         {

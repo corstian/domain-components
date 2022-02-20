@@ -17,7 +17,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
                 iterationCount: 100_000,
                 numBytesRequested: 256 / 8);
 
-            var result = hash == handler.PasswordHash;
+            var result = hash.SequenceEqual(handler.PasswordHash);
 
             return DomainResult.Ok(
                 new PasswordValidationCompleted

@@ -1,17 +1,15 @@
-﻿using Domain.Components.Abstractions;
+﻿using Domain.Components;
 
 namespace Domain.Example.Aggregates.UserAggregate.Events
 {
-    public class PasswordChanged : IEvent<User>
+    public class PasswordChanged : Event<User>
     {
-        public PasswordChanged() { }
+        internal PasswordChanged() { }
 
         public byte[] PasswordSalt { get; init; }
         public byte[] PasswordHash { get; init; }
 
-        Guid IEvent.AggregateId => throw new NotImplementedException();
-
-        void IEvent<User>.Apply(User state)
+        public override void Apply(User state)
         {
             state.PasswordHash = PasswordHash;
             state.PasswordSalt = PasswordSalt;

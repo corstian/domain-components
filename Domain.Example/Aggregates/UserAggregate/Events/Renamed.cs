@@ -1,17 +1,14 @@
-﻿using Domain.Components.Abstractions;
+﻿using Domain.Components;
 
 namespace Domain.Example.Aggregates.UserAggregate.Events
 {
-    public class Renamed : IEvent<User>
+    public class Renamed : Event<User>
     {
         internal Renamed() { }
 
-        private Guid _aggregateId;
-        Guid IEvent.AggregateId => _aggregateId;
-
         public string Name { get; init; }
 
-        void IEvent<User>.Apply(User state)
+        public override void Apply(User state)
         {
             state.Name = Name;
         }

@@ -1,16 +1,14 @@
-﻿using Domain.Components.Abstractions;
+﻿using Domain.Components;
 
 namespace Domain.Example.Aggregates.UserAggregate.Events
 {
-    public class EmailChanged : IEvent<User>
+    public class EmailChanged : Event<User>
     {
         internal EmailChanged() { }
 
         public string Email { get; init; }
 
-        public Guid AggregateId { get; init; }
-
-        void IEvent<User>.Apply(User state)
+        public override void Apply(User state)
         {
             state.Email = Email;
         }

@@ -34,7 +34,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
         public override DomainResult<PasswordChanged> Evaluate(User handler)
         {
             if (handler.PasswordSalt != null
-                && handler.PasswordHash == _getHash(handler.PasswordSalt, Password))
+                && handler.PasswordHash.SequenceEqual(_getHash(handler.PasswordSalt, Password)))
             {
                 return DomainResult.Fail<PasswordChanged>("Password cannot be the same as a previous password");
             }

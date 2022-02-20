@@ -91,6 +91,21 @@ namespace Domain.Example.Tests
         }
 
         [Fact]
+        public void PasswordCannotBeSameAsPrevious()
+        {
+            var user = new User();
+            var command = new ChangePassword { Password = "1234" };
+            
+            var pw1 = user.Evaluate(command).Value;
+            user.Apply(pw1);
+
+            var pw2 = user.Evaluate(command);
+
+            Assert.True(pw2.IsFailed);
+            Assert.Equal("Password cannot be the same as a previous password", pw2.Errors[0].Message);
+        }
+
+        [Fact]
         public void InfoCanBeChanged()
         {
             var user = new User();

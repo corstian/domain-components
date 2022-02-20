@@ -9,6 +9,8 @@ namespace Domain.Components.Abstractions
 
         public bool IsFailed { get; }
         public bool IsSuccess { get; }
+
+        public List<IReason> Reasons { get; }
         public List<IError> Errors { get; }
         public List<ISuccess> Successes { get; }
     }

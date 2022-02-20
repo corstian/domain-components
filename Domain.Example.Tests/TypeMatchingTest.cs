@@ -18,6 +18,7 @@ namespace Domain.Example.Tests
 
             Assert.True(command is ICommand<User, EmailChanged>);
             Assert.True(command is ICommand<User, IEvent<User>>);
+            Assert.True(command is ICommand<User>);
         }
     }
 }

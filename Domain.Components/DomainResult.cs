@@ -3,120 +3,86 @@ using FluentResults;
 
 namespace Domain.Components
 {
-    public class DomainResult : Result
+    public partial class DomainResult : ResultBase<DomainResult>
     {
-        /// <summary>
-        /// Creates a success result
-        /// </summary>
-        public new static DomainResult Ok()
-        {
-            return new DomainResult();
-        }
+        public DomainResult()
+        { }
 
-        /// <summary>
-        /// Creates a failed result with the given error
-        /// </summary>
-        public new static DomainResult Fail(IError error)
+        public DomainResult<TNewValue> ToResult<TNewValue>(TNewValue newValue = default)
         {
-            var result = new DomainResult();
-            result.WithError(error);
-            return result;
-        }
-
-        /// <summary>
-        /// Creates a failed result with the given error message. Internally an error object from type `Error` is created. 
-        /// </summary>
-        public new static DomainResult Fail(string errorMessage)
-        {
-            var result = new DomainResult();
-            result.WithError(new Error(errorMessage));
-            return result;
-        }
-
-        /// <summary>
-        /// Creates a success result with the given value
-        /// </summary>
-        public new static DomainResult<TValue> Ok<TValue>(TValue value)
-        {
-            var result = new DomainResult<TValue>();
-            result.WithValue(value);
-            return result;
-        }
-
-        /// <summary>
-        /// Creates a failed result with the given error
-        /// </summary>
-        public new static DomainResult<TValue> Fail<TValue>(IError error)
-        {
-            var result = new DomainResult<TValue>();
-            result.WithError(error);
-            return result;
-        }
-
-        /// <summary>
-        /// Creates a failed result with the given error message. Internally an error object from type Error is created. 
-        /// </summary>
-        public new static DomainResult<TValue> Fail<TValue>(string errorMessage)
-        {
-            var result = new DomainResult<TValue>();
-            result.WithError(new Error(errorMessage));
-            return result;
-        }
-
-        /// <summary>
-        /// Create a success/failed result depending on the parameter isSuccess
-        /// </summary>
-        public new static DomainResult OkIf(bool isSuccess, IError error)
-        {
-            return isSuccess ? Ok() : Fail(error);
-        }
-
-        /// <summary>
-        /// Create a success/failed result depending on the parameter isSuccess
-        /// </summary>
-        public new static DomainResult OkIf(bool isSuccess, string error)
-        {
-            return isSuccess ? Ok() : Fail(error);
-        }
-
-        /// <summary>
-        /// Create a success/failed result depending on the parameter isFailure
-        /// </summary>
-        public new static DomainResult FailIf(bool isFailure, IError error)
-        {
-            return isFailure ? Fail(error) : Ok();
-        }
-
-        /// <summary>
-        /// Create a success/failed result depending on the parameter isFailure
-        /// </summary>
-        public new static DomainResult FailIf(bool isFailure, string error)
-        {
-            return isFailure ? Fail(error) : Ok();
+            return new DomainResult<TNewValue>()
+                .WithValue(IsFailed ? default : newValue)
+                .WithReasons(Reasons);
         }
     }
 
-    public class DomainResult<T> : Result<T>, IResult<T>
+    public class DomainResult<TValue> : ResultBase<DomainResult<TValue>>, IResult<TValue>
     {
-        //public static DomainResult<T> Ok(T value)
-        //{
-        //    var result = new DomainResult<T>();
-        //    result.WithValue(value);
-        //    return result;
-        //}
+        public DomainResult()
+        { }
 
-        //public static DomainResult<T> Fail(IError error)
-        //{
-        //    var result = new DomainResult<T>();
-        //    result.WithError(error);
-        //    return result;
-        //}
+        private TValue _value;
 
-        //public static DomainResult<T> Fail(string errorMessage)
-        //{
-        //    var result = new DomainResult<T>();
-        //    result.WithError(new Error(errorMessage));
-        //    return result;
-        //}
+        /// <summary>
+        /// Get the Value. If result is failed then a default value is returned. Opposite see property Value.
+        /// </summary>
+        public TValue ValueOrDefault => _value;
+
+        /// <summary>
+        /// Get the Value. If result is failed then an Exception is thrown because a failed result has no value. Opposite see property ValueOrDefault.
+        /// </summary>
+        public TValue Value
+        {
+            get
+            {
+                if (IsFailed)
+                    throw new InvalidOperationException("Result is in status failed. Value is not set.");
+
+                return _value;
+            }
+            private set
+            {
+                if (IsFailed)
+                    throw new InvalidOperationException("Result is in status failed. Value is not set.");
+
+                _value = value;
+            }
+        }
+
+        /// <summary>
+        /// Set value
+        /// </summary>
+        public DomainResult<TValue> WithValue(TValue value)
+        {
+            Value = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Convert result with value to result without value
+        /// </summary>
+        public DomainResult ToResult()
+        {
+            return new DomainResult()
+                .WithReasons(Reasons);
+        }
+
+        /// <summary>
+        /// Convert result with value to result with another value. Use valueConverter parameter to specify the value transformation logic.
+        /// </summary>
+        public DomainResult<TNewValue> ToResult<TNewValue>(Func<TValue, TNewValue> valueConverter = null)
+        {
+            if (IsSuccess && valueConverter == null)
+                throw new ArgumentException("If result is success then valueConverter should not be null");
+
+            return new DomainResult<TNewValue>()
+                .WithValue(IsFailed ? default : valueConverter(Value))
+                .WithReasons(Reasons);
+        }
+
+        public static implicit operator DomainResult<TValue>(DomainResult result)
+        {
+            return result.ToResult<TValue>();
+        }
     }
 }

@@ -1,13 +1,11 @@
 ﻿using Domain.Components;
-using Domain.Components.Abstractions;
 using Domain.Example.Aggregates.UserAggregate.Events;
-using FluentResults;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 
 namespace Domain.Example.Aggregates.UserAggregate.Commands
 {
-    public class ChangePassword : ICommand<User, PasswordChanged>
+    public class ChangePassword : Command<User, PasswordChanged>
     {
         public string Password { get; init; }
 
@@ -33,7 +31,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
                 numBytesRequested: 256 / 8);
         }
 
-        IResult<PasswordChanged> ICommand<User, PasswordChanged>.Evaluate(User handler)
+        public override DomainResult<PasswordChanged> Evaluate(User handler)
         {
             if (handler.PasswordSalt != null
                 && handler.PasswordHash == _getHash(handler.PasswordSalt, Password))
@@ -49,27 +47,5 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
                 PasswordSalt = salt
             });
         }
-
-        //PasswordChanged ICommand<User, PasswordChanged>.Evaluate(User handler)
-        //{
-        //    var salt = handler.PasswordHash ?? _getSalt();
-
-        //    return new PasswordChanged
-        //    {
-        //        PasswordHash = _getHash(salt, Password),
-        //        PasswordSalt = salt
-        //    };
-        //}
-
-        //Result ICommand<User, PasswordChanged>.Validate(User handler)
-        //{
-        //    if (handler.PasswordSalt != null
-        //        && handler.PasswordHash == _getHash(handler.PasswordSalt, Password))
-        //    {
-        //        return Result.Fail("Password cannot be the same as a previous password");
-        //    }
-
-        //    return Result.Ok();
-        //}
     }
 }

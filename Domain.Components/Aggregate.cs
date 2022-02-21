@@ -1,12 +1,11 @@
 ﻿using Domain.Components.Abstractions;
-using FluentResults;
 
 namespace Domain.Components
 {
     public abstract class Aggregate<T> : IAggregate<T>
         where T : Aggregate<T>
     {
-        public Guid Id { get; }
+        public Guid Id { get; init; }
 
 
         public IResult<IEnumerable<IEvent<T>>> Evaluate(ICommand<T> command)

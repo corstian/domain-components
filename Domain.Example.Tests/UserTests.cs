@@ -1,5 +1,6 @@
 ﻿using Domain.Example.Aggregates.UserAggregate;
 using Domain.Example.Aggregates.UserAggregate.Commands;
+using Domain.Example.Aggregates.UserAggregate.Snapshots;
 using System;
 using Xunit;
 
@@ -122,6 +123,24 @@ namespace Domain.Example.Tests
 
             Assert.Equal("John Doe", user.Name);
             Assert.Equal("john.doe@example.com", user.Email);
+        }
+
+        [Fact]
+        public void SnapshotShouldBeReturned()
+        {
+            var user = new User();
+            var command = new ChangeInfo
+            {
+                Name = "John Doe",
+                Email = "john.doe@example.com"
+            };
+
+            var (renamed, emailChanged) = user.Evaluate(command).Value;
+            
+            var snapshot = user.Apply<PublicUserInfo>(renamed, emailChanged);
+
+            Assert.Equal("john.doe@example.com", snapshot.Email);
+            Assert.Equal("John Doe", snapshot.Name);
         }
     }
 }

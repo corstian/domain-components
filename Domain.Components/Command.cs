@@ -11,8 +11,6 @@ namespace Domain.Components
             _authSpec = authSpec;
         }
 
-        //public abstract IEnumerable<IEvent<T>> Evaluate(T handler);
-        //public abstract Result Validate(T handler);
         public abstract IResult<IEnumerable<IEvent<T>>> Evaluate(T handler);
     }
 
@@ -33,7 +31,7 @@ namespace Domain.Components
             => Evaluate(handler);
 
         IResult<IEnumerable<IEvent<T>>> ICommand<T>.Evaluate(T handler)
-            => Evaluate(handler).ToResult((e) => new IEvent<T>[] { e }.AsEnumerable());
+            => Evaluate(handler).ToResult((e) => new IEvent<T>[] { e });
     }
 
     public abstract class Command<T, E1, E2> : ICommand<T, E1, E2>
@@ -54,6 +52,6 @@ namespace Domain.Components
             => Evaluate(handler);
 
         IResult<IEnumerable<IEvent<T>>> ICommand<T>.Evaluate(T handler)
-            => Evaluate(handler).ToResult((result) => new IEvent<T>[] { result.Item1, result.Item2 }.AsEnumerable());
+            => Evaluate(handler).ToResult((result) => new IEvent<T>[] { result.Item1, result.Item2 });
     }
 }

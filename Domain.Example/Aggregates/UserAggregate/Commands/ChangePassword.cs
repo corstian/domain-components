@@ -1,11 +1,12 @@
 ﻿using Domain.Components;
+using Domain.Components.Abstractions;
 using Domain.Example.Aggregates.UserAggregate.Events;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 
 namespace Domain.Example.Aggregates.UserAggregate.Commands
 {
-    public class ChangePassword : Command<User, PasswordChanged>
+    public class ChangePassword : ICommand<User, PasswordChanged>
     {
         public string Password { get; init; }
 
@@ -31,7 +32,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
                 numBytesRequested: 256 / 8);
         }
 
-        public override DomainResult<PasswordChanged> Evaluate(User handler)
+        IResult<PasswordChanged> ICommand<User, PasswordChanged>.Evaluate(User handler)
         {
             if (handler.PasswordSalt != null
                 && handler.PasswordHash.SequenceEqual(_getHash(handler.PasswordSalt, Password)))

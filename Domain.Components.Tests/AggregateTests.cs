@@ -33,7 +33,7 @@ namespace Domain.Components.Tests
 
             var command = new InterfaceCommand();
 
-            var result = aggregate.Evaluate(command);
+            var result = aggregate.EvaluateTypedCommand(command);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(Guid.Empty, result.Value.AggregateId);

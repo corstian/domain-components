@@ -1,8 +1,10 @@
-﻿namespace Domain.Components.Tests.Mocks
+﻿using Domain.Components.Abstractions;
+
+namespace Domain.Components.Tests.Mocks
 {
-    public class TestCommand : Command<TestAggregate, TestEvent>
+    public class TestCommand : ICommand<TestAggregate, TestEvent>
     {
-        public override DomainResult<TestEvent> Evaluate(TestAggregate handler)
+        IResult<TestEvent> ICommand<TestAggregate, TestEvent>.Evaluate(TestAggregate handler)
             => DomainResult.Ok(new TestEvent());
     }
 }

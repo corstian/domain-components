@@ -1,14 +1,15 @@
 ﻿using Domain.Components;
+using Domain.Components.Abstractions;
 using Domain.Example.Aggregates.UserAggregate.Events;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Domain.Example.Aggregates.UserAggregate.Commands
 {
-    public class ValidatePassword : Command<User, PasswordValidationCompleted>
+    public class ValidatePassword : ICommand<User, PasswordValidationCompleted>
     {
         public string Password { get; init; }
 
-        public override DomainResult<PasswordValidationCompleted> Evaluate(User handler)
+        IResult<PasswordValidationCompleted> ICommand<User, PasswordValidationCompleted>.Evaluate(User handler)
         {
             var hash = KeyDerivation.Pbkdf2(
                 password: Password,

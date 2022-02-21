@@ -1,6 +1,4 @@
-﻿using FluentResults;
-
-namespace Domain.Components.Abstractions
+﻿namespace Domain.Components.Abstractions
 {
     public interface IAggregate
     {
@@ -12,13 +10,6 @@ namespace Domain.Components.Abstractions
     {
         // Command handlers
         public IResult<IEnumerable<IEvent<TAggregate>>> Evaluate(ICommand<TAggregate> command);
-
-        public IResult<TEvent> Evaluate<TEvent>(ICommand<TAggregate, TEvent> command)
-            where TEvent : IEvent<TAggregate>;
-
-        public IResult<(TEvent1, TEvent2)> Evaluate<TEvent1, TEvent2>(ICommand<TAggregate, TEvent1, TEvent2> command)
-            where TEvent1 : IEvent<TAggregate>
-            where TEvent2 : IEvent<TAggregate>;
 
         // Apply without snapshot return
         public void Apply(IEvent<TAggregate> @event);

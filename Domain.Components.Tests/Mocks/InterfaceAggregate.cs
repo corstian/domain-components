@@ -30,14 +30,6 @@ namespace Domain.Components.Tests.Mocks
         public IResult<IEnumerable<IEvent<InterfaceAggregate>>> Evaluate(ICommand<InterfaceAggregate> command)
             => command.Evaluate(this);
 
-        public IResult<TEvent> Evaluate<TEvent>(ICommand<InterfaceAggregate, TEvent> command) where TEvent : IEvent<InterfaceAggregate>
-            => command.Evaluate(this);
-
-        public IResult<(TEvent1, TEvent2)> Evaluate<TEvent1, TEvent2>(ICommand<InterfaceAggregate, TEvent1, TEvent2> command)
-            where TEvent1 : IEvent<InterfaceAggregate>
-            where TEvent2 : IEvent<InterfaceAggregate>
-            => command.Evaluate(this);
-
         private TSnapshot _createSnapshot<TSnapshot>()
             where TSnapshot : ISnapshot<InterfaceAggregate>
         {

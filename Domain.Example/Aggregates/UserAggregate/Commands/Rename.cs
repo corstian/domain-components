@@ -1,13 +1,14 @@
 ﻿using Domain.Components;
+using Domain.Components.Abstractions;
 using Domain.Example.Aggregates.UserAggregate.Events;
 
 namespace Domain.Example.Aggregates.UserAggregate.Commands
 {
-    public class Rename : Command<User, Renamed>
+    public class Rename : ICommand<User, Renamed>
     {
         public string Name { get; init; }
 
-        public override DomainResult<Renamed> Evaluate(User handler)
+        IResult<Renamed> ICommand<User, Renamed>.Evaluate(User handler)
         {
             return DomainResult.Ok(new Renamed
             {

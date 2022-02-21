@@ -1,17 +1,15 @@
-﻿using FluentResults;
-
-namespace Domain.Components.Abstractions
+﻿namespace Domain.Components.Abstractions
 {
     public interface IService<TService>
         where TService : IService<TService>
     {
         // Evaluation handlers
-        public Task<Result<IEnumerable<IEvent>>> Evaluate(IServiceCommand<TService> command);
+        public Task<IResult<IEnumerable<IEvent>>> Evaluate(IServiceCommand<TService> command);
 
-        public Task<Result<TEvent>> Evaluate<TEvent>(IServiceCommand<TService, TEvent> command)
+        public Task<IResult<TEvent>> Evaluate<TEvent>(IServiceCommand<TService, TEvent> command)
             where TEvent : IEvent;
 
-        public Task<Result<(TEvent1, TEvent2)>> Evaluate<TEvent1, TEvent2>(IServiceCommand<TService, TEvent1, TEvent2> command)
+        public Task<IResult<(TEvent1, TEvent2)>> Evaluate<TEvent1, TEvent2>(IServiceCommand<TService, TEvent1, TEvent2> command)
             where TEvent1 : IEvent
             where TEvent2 : IEvent;
 

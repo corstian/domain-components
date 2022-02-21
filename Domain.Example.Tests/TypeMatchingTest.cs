@@ -16,18 +16,7 @@ namespace Domain.Example.Tests
 
             Assert.True(command is ICommand<User, EmailChanged>);
             Assert.True(command is ICommand<User, IEvent<User>>);
-            Assert.True(command is ICommand<User>);
-            Assert.True(command is Command<User, EmailChanged>);
-        }
-
-        [Fact]
-        public void NonMatchingTypes()
-        {
-            var command = new ChangeEmail();
-
-            Assert.False(command is Command<User>);
-            Assert.False(command is Command<User, IEvent<User>>);
-            Assert.False(command is Command<User, Event<User>>);
+            Assert.True(command is Command);
         }
     }
 }

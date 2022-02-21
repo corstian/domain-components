@@ -1,20 +1,21 @@
 ﻿using Domain.Components;
+using Domain.Components.Abstractions;
 using Domain.Example.Aggregates.UserAggregate.Events;
 
 namespace Domain.Example.Aggregates.UserAggregate.Commands
 {
-    public class ChangeInfo : Command<User, Renamed, EmailChanged>
+    public class ChangeInfo : ICommand<User, Renamed, EmailChanged>
     {
         public string? Name { get; init; }
         public string? Email { get; init; }
 
-        public override DomainResult<(Renamed, EmailChanged)> Evaluate(User handler)
+        IResult<(Renamed, EmailChanged)> ICommand<User, Renamed, EmailChanged>.Evaluate(User handler)
         {
-            if (!Email?.Contains("@") ?? true) return DomainResult.Fail("No @");
+            if (!Email?.Contains("@") ?? true) return DomainResult.Fail<(Renamed, EmailChanged)>("No @");
 
             return DomainResult.Ok((
                 new Renamed { Name = Name },
-                new EmailChanged {  Email = Email }));
+                new EmailChanged { Email = Email }));
         }
     }
 }

@@ -1,14 +1,15 @@
 ﻿using Domain.Components;
+using Domain.Components.Abstractions;
 
 namespace Domain.Example.Aggregates.UserAggregate.Events
 {
-    public class PasswordValidationCompleted : Event<User>
+    public class PasswordValidationCompleted : Event, IEvent<User>
     {
         internal PasswordValidationCompleted() { }
 
         public bool Succeeded { get; init; }
 
-        public override void Apply(User state)
+        void IEvent<User>.Apply(User state)
         {
             state._loginAttempts.Add((DateTime.UtcNow, Succeeded));
         }

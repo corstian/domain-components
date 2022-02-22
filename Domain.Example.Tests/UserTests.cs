@@ -1,4 +1,6 @@
-﻿using Domain.Example.Aggregates.UserAggregate;
+﻿using Domain.Components;
+using Domain.Components.Abstractions;
+using Domain.Example.Aggregates.UserAggregate;
 using Domain.Example.Aggregates.UserAggregate.Commands;
 using Domain.Example.Aggregates.UserAggregate.Snapshots;
 using System;

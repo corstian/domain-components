@@ -52,7 +52,7 @@ namespace Domain.Components
             var repository = Services.GetRequiredService<IRepository<T>>();
             var aggregate = repository.ById(@event.AggregateId);
 
-            return aggregate.Apply<S>(@event);
+            return await aggregate.Apply<S>(@event);
         }
 
         public async Task<(S1, S2)> Commit<T1, T2, S1, S2>((IEvent<T1>, IEvent<T2>) events)

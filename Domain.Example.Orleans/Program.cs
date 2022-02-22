@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Orleans;
 using Orleans.Hosting;
+using Domain.Components;
 
 using var host = new SiloHostBuilder()
     .UseLocalhostClustering()
@@ -25,7 +26,7 @@ var command = new ChangeEmail
     Email = "john.doe@example.com"
 };
 
-var result = await user.Evaluate(command);
+var result = user.EvaluateTypedCommand(command);
 
 
 Console.WriteLine("\n\n{0}\n\n", result);

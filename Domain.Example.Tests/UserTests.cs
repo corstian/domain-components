@@ -1,9 +1,8 @@
-﻿using Domain.Components;
-using Domain.Components.Abstractions;
-using Domain.Example.Aggregates.UserAggregate;
+﻿using Domain.Example.Aggregates.UserAggregate;
 using Domain.Example.Aggregates.UserAggregate.Commands;
 using Domain.Example.Aggregates.UserAggregate.Snapshots;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Domain.Example.Tests
@@ -11,7 +10,7 @@ namespace Domain.Example.Tests
     public class UserTests
     {
         [Fact]
-        public void UserNameShouldBeSet()
+        public async Task UserNameShouldBeSet()
         {
             var user = new User();
             var command = new Rename
@@ -19,15 +18,15 @@ namespace Domain.Example.Tests
                 Name = "John Doe"
             };
 
-            var result = user.Evaluate(command);
+            var result = await user.Evaluate(command);
 
-            user.Apply(result);
+            await user.Apply(result);
 
             Assert.Equal("John Doe", user.Name);
         }
 
         [Fact]
-        public void EmailShouldBeSet()
+        public async Task EmailShouldBeSet()
         {
             var user = new User();
             var command = new ChangeEmail
@@ -35,20 +34,20 @@ namespace Domain.Example.Tests
                 Email = "john.doe@example.com"
             };
 
-            var result = user.Evaluate(command);
+            var result = await user.Evaluate(command);
 
-            user.Apply(result);
+            await user.Apply(result);
 
             Assert.Equal("john.doe@example.com", user.Email);
         }
 
         [Fact]
-        public void EmailMustContainAt()
+        public async Task EmailMustContainAt()
         {
             var user = new User();
             var command = new ChangeEmail();
 
-            var result = user.Evaluate(command);
+            var result = await user.Evaluate(command);
 
             Assert.True(result.IsFailed);
             Assert.False(result.IsSuccess);
@@ -58,58 +57,58 @@ namespace Domain.Example.Tests
         }
 
         [Fact]
-        public void CanValidatePassword()
+        public async Task CanValidatePassword()
         {
             var user = new User();
 
-            var passwordChanged = user
+            var passwordChanged = (await user
                 .Evaluate(new ChangePassword
                 {
                     Password = "1234"
-                }).Value;
+                })).Value;
 
-            user.Apply(passwordChanged);
+            await user.Apply(passwordChanged);
 
-            var passwordCorrectlyValidated = user
+            var passwordCorrectlyValidated = (await user
                 .Evaluate(new ValidatePassword
                 {
                     Password = "1234"
-                }).Value;
+                })).Value;
 
             Assert.True(passwordCorrectlyValidated.Succeeded);
 
-            user.Apply(passwordCorrectlyValidated);
+            await user.Apply(passwordCorrectlyValidated);
 
-            var passwordIncorrectlyValidated = user
+            var passwordIncorrectlyValidated = (await user
                 .Evaluate(new ValidatePassword
                 {
                     Password = "123"
-                }).Value;
+                })).Value;
 
             Assert.False(passwordIncorrectlyValidated.Succeeded);
 
-            user.Apply(passwordIncorrectlyValidated);
+            await user.Apply(passwordIncorrectlyValidated);
 
             Assert.Equal(2, user.LoginAttempts.Count);
         }
 
         [Fact]
-        public void PasswordCannotBeSameAsPrevious()
+        public async Task PasswordCannotBeSameAsPrevious()
         {
             var user = new User();
             var command = new ChangePassword { Password = "1234" };
             
-            var pw1 = user.Evaluate(command).Value;
-            user.Apply(pw1);
+            var pw1 = (await user.Evaluate(command)).Value;
+            await user.Apply(pw1);
 
-            var pw2 = user.Evaluate(command);
+            var pw2 = await user.Evaluate(command);
 
             Assert.True(pw2.IsFailed);
             Assert.Equal("Password cannot be the same as a previous password", pw2.Errors[0].Message);
         }
 
         [Fact]
-        public void InfoCanBeChanged()
+        public async Task InfoCanBeChanged()
         {
             var user = new User();
 
@@ -119,16 +118,16 @@ namespace Domain.Example.Tests
                 Email = "john.doe@example.com"
             };
 
-            var (renamed, emailChanged) = user.Evaluate(command).Value;
+            var (renamed, emailChanged) = (await user.Evaluate(command)).Value;
 
-            user.Apply(renamed, emailChanged);
+            await user.Apply(renamed, emailChanged);
 
             Assert.Equal("John Doe", user.Name);
             Assert.Equal("john.doe@example.com", user.Email);
         }
 
         [Fact]
-        public void SnapshotShouldBeReturned()
+        public async Task SnapshotShouldBeReturned()
         {
             var user = new User();
             var command = new ChangeInfo
@@ -137,9 +136,9 @@ namespace Domain.Example.Tests
                 Email = "john.doe@example.com"
             };
 
-            var (renamed, emailChanged) = user.Evaluate(command).Value;
+            var (renamed, emailChanged) = (await user.Evaluate(command)).Value;
             
-            var snapshot = user.Apply<PublicUserInfo>(renamed, emailChanged);
+            var snapshot = await user.Apply<PublicUserInfo>(renamed, emailChanged);
 
             Assert.Equal("john.doe@example.com", snapshot.Email);
             Assert.Equal("John Doe", snapshot.Name);

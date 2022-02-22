@@ -7,7 +7,7 @@ namespace Domain.Components.Tests
     public class AggregateTests
     {
         [Fact]
-        public void AggregateEventInteractopm()
+        public async void AggregateEventInteractopm()
         {
             var aggregate = new TestAggregate
             {
@@ -16,7 +16,7 @@ namespace Domain.Components.Tests
 
             var command = new TestCommand();
 
-            var result = aggregate.Evaluate(command);
+            var result = await aggregate.Evaluate(command);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(aggregate.Id, result.Value.AggregateId);
@@ -24,7 +24,7 @@ namespace Domain.Components.Tests
         }
 
         [Fact]
-        public void InterfaceBasedAggregateEventInteraction()
+        public async void InterfaceBasedAggregateEventInteraction()
         {
             var aggregate = new InterfaceAggregate
             {
@@ -33,7 +33,7 @@ namespace Domain.Components.Tests
 
             var command = new InterfaceCommand();
 
-            var result = aggregate.EvaluateTypedCommand(command);
+            var result = await aggregate.EvaluateTypedCommand(command);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(Guid.Empty, result.Value.AggregateId);

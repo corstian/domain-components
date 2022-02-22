@@ -8,11 +8,11 @@ namespace Domain.Components
         public Guid Id { get; init; }
 
 
-        public IResult<IEnumerable<IEvent<T>>> Evaluate(ICommand<T> command)
+        public Task<IResult<IEnumerable<IEvent<T>>>> Evaluate(ICommand<T> command)
         {
             var result = command.Evaluate((T)this);
 
-            if (result.IsFailed) return result;
+            if (result.IsFailed) return Task.FromResult(result);
 
             var events = result.Value;
 
@@ -22,31 +22,31 @@ namespace Domain.Components
                     e.AggregateId = Id;
             }
 
-            return result;
+            return Task.FromResult(result);
         }
 
-        public IResult<E> Evaluate<E>(ICommand<T, E> @command)
+        public Task<IResult<E>> Evaluate<E>(ICommand<T, E> @command)
             where E : IEvent<T>
         {
             var result = command.Evaluate((T)this);
 
-            if (result.IsFailed) return result;
+            if (result.IsFailed) return Task.FromResult(result);
 
             var @event = result.Value;
 
             if (@event is Event e)
                 e.AggregateId = Id;
 
-            return result;
+            return Task.FromResult(result);
         }
 
-        public IResult<(E1, E2)> Evaluate<E1, E2>(ICommand<T, E1, E2> @command)
+        public Task<IResult<(E1, E2)>> Evaluate<E1, E2>(ICommand<T, E1, E2> @command)
                 where E1 : IEvent<T>
                 where E2 : IEvent<T>
         {
             var result = command.Evaluate((T)this);
 
-            if (result.IsFailed) return result;
+            if (result.IsFailed) return Task.FromResult(result);
 
             if (result.Value.Item1 is Event e1)
                 e1.AggregateId = Id;
@@ -54,34 +54,41 @@ namespace Domain.Components
             if (result.Value.Item2 is Event e2)
                 e2.AggregateId = Id;
             
-            return result;
+            return Task.FromResult(result);
         }
 
-        public void Apply(IEvent<T> @event)
-            => @event.Apply((T)this);
+        public Task Apply(IEvent<T> @event)
+        {
+            @event.Apply((T)this);
+            return Task.CompletedTask;
+        }
 
-        public void Apply(params IEvent<T>[] events) 
-            => events.ToList().ForEach(Apply);
+        public async Task Apply(params IEvent<T>[] events)
+        {
+            foreach (var @event in events)
+                await Apply(@event);
+        }
 
-        public void Apply(IResult<IEvent<T>> result)
+        public async Task Apply(IResult<IEvent<T>> result)
         {
             if (result.IsSuccess)
-                Apply(result.Value);
+                await Apply(result.Value);
         }
 
-        public TModel Apply<TModel>(IEvent<T> @event)
+        public async Task<TModel> Apply<TModel>(IEvent<T> @event)
             where TModel : ISnapshot<T>, new()
         {
-            Apply(@event);
+            await Apply(@event);
 
             var model = Activator.CreateInstance<TModel>();
             model.Populate((T)this);
             return model;
         }
-        public TModel Apply<TModel>(params IEvent<T>[] events)
+
+        public async Task<TModel> Apply<TModel>(params IEvent<T>[] events)
             where TModel : ISnapshot<T>, new()
         {
-            Apply(events);
+            await Apply(events);
 
             var model = Activator.CreateInstance<TModel>();
             model.Populate((T)this);

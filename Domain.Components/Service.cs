@@ -89,11 +89,5 @@ namespace Domain.Components
 
         Task<IResult<IEnumerable<IEvent>>> IService<TService>.Evaluate(IServiceCommand<TService> command)
             => command.Evaluate((TService)this);
-
-        Task<IResult<TEvent>> IService<TService>.Evaluate<TEvent>(IServiceCommand<TService, TEvent> command)
-            => command.Evaluate((TService)this);
-
-        Task<IResult<(TEvent1, TEvent2)>> IService<TService>.Evaluate<TEvent1, TEvent2>(IServiceCommand<TService, TEvent1, TEvent2> command)
-            => command.Evaluate((TService)this);
     }
 }

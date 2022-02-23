@@ -18,11 +18,11 @@ namespace Domain.Components
             var result = _command.Evaluate(handler);
 
             return new DomainResult<IEnumerable<IEvent<T>>>()
-                .WithReasons(result.Reasons)
-                .WithValue(new IEvent<T>[] 
-                { 
-                    result.ValueOrDefault 
-                });
+                .WithValue(result.IsFailed ? default : new IEvent<T>[]
+                {
+                    result.Value
+                })
+                .WithReasons(result.Reasons);
         }
 
         IResult<E> ICommand<T, E>.Evaluate(T handler)
@@ -46,12 +46,12 @@ namespace Domain.Components
             var result = _command.Evaluate(handler);
 
             return new DomainResult<IEnumerable<IEvent<T>>>()
-                .WithReasons(result.Reasons)
-                .WithValue(new IEvent<T>[]
+                .WithValue(result.IsFailed ? default : new IEvent<T>[]
                 {
-                    result.ValueOrDefault.Item1,
-                    result.ValueOrDefault.Item2
-                });
+                    result.Value.Item1,
+                    result.Value.Item2
+                })
+                .WithReasons(result.Reasons);
         }
 
         IResult<(E1, E2)> ICommand<T, E1, E2>.Evaluate(T handler)

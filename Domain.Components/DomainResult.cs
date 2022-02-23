@@ -36,14 +36,14 @@ namespace Domain.Components
             get
             {
                 if (IsFailed)
-                    throw new InvalidOperationException("Result is in status failed. Value is not set.");
+                    throw new InvalidOperationException("DomainResult is in status failed. Value is not set.");
 
                 return _value;
             }
             private set
             {
                 if (IsFailed)
-                    throw new InvalidOperationException("Result is in status failed. Value is not set.");
+                    throw new InvalidOperationException("DomainResult is in status failed. Value is not set.");
 
                 _value = value;
             }

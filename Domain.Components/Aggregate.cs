@@ -2,12 +2,14 @@
 
 namespace Domain.Components
 {
-    public abstract class Aggregate<T> : IAggregate<T>
-        where T : Aggregate<T>
+    public abstract class Aggregate
     {
         public Guid Id { get; init; }
+    }
 
-
+    public abstract class Aggregate<T> : Aggregate, IAggregate<T>
+        where T : Aggregate<T>
+    {
         public Task<IResult<IEnumerable<IEvent<T>>>> Evaluate(ICommand<T> command)
         {
             var result = command.Evaluate((T)this);

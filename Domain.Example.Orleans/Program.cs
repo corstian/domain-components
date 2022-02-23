@@ -1,12 +1,12 @@
-﻿using Domain.Example.Aggregates.UserAggregate;
+﻿using Domain.Components;
+using Domain.Example.Aggregates.UserAggregate;
 using Domain.Example.Aggregates.UserAggregate.Commands;
 using Domain.Example.Orleans.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Hosting;
-using Domain.Components;
 
 using var host = new SiloHostBuilder()
     .UseLocalhostClustering()
@@ -19,17 +19,19 @@ await host.StartAsync();
 // Get the grain factory
 var grainFactory = host.Services.GetRequiredService<IGrainFactory>();
 
-var user = grainFactory.GetGrain<IAggregateGrain<User>>(Guid.Empty);
+var user = grainFactory.GetGrain<IAggregateGrain<User>>(Guid.NewGuid());
 
 var command = new ChangeEmail
 {
-    Email = "john.doe@example.com"
+    //Email = "john.doe@example.com"
 };
 
-var result = user.EvaluateTypedCommand(command);
+var result = await user.EvaluateTypedCommand(command);
 
-
-Console.WriteLine("\n\n{0}\n\n", result);
+if (result.IsSuccess)
+{
+    await user.Apply(result.Value);
+}
 
 Console.WriteLine("Press Enter to terminate...");
 Console.ReadLine();

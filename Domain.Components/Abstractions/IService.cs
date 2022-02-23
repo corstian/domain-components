@@ -6,18 +6,9 @@
         // Evaluation handlers
         public Task<IResult<IEnumerable<IEvent>>> Evaluate(IServiceCommand<TService> command);
 
-        public Task<IResult<TEvent>> Evaluate<TEvent>(IServiceCommand<TService, TEvent> command)
-            where TEvent : IEvent;
-
-        public Task<IResult<(TEvent1, TEvent2)>> Evaluate<TEvent1, TEvent2>(IServiceCommand<TService, TEvent1, TEvent2> command)
-            where TEvent1 : IEvent
-            where TEvent2 : IEvent;
-
-
         // Commit handlers without snapshot returns
         public Task Commit(params IEvent[] events);
         public Task Commit(IEvent @event);
-        public Task Commit((IEvent, IEvent) events);
 
         // Commit handlers with snapshot returns
         public Task<S> Commit<T, S>(IEvent<T> @event)

@@ -1,7 +1,9 @@
 ﻿using Domain.Components.Abstractions;
 using Domain.Example.Orleans.Interfaces;
 using Microsoft.Extensions.Logging;
+using Orleans;
 using Orleans.EventSourcing;
+using Orleans.Streams;
 
 namespace Domain.Example.Orleans.Grains
 {
@@ -9,16 +11,27 @@ namespace Domain.Example.Orleans.Grains
         where T : class, IAggregate<T>, new()
     {
         private readonly ILogger _logger;
+        private IAsyncStream<IEvent<T>> _stream = null;
 
         public AggregateGrain(ILogger<AggregateGrain<T>> logger)
         {
             _logger = logger;
         }
 
+        public override Task OnActivateAsync()
+        {
+            var streamProvider = GetStreamProvider("stream");
+
+            _stream = streamProvider.GetStream<IEvent<T>>(this.GetPrimaryKey(), typeof(T).Name);
+            
+            return base.OnActivateAsync();
+        }
+
         public async Task Apply(IEvent<T> @event)
         {
             await State.Apply(@event);
             await ConfirmEvents();
+            await _stream.OnNextAsync(@event);
             _logger.LogInformation("Event applied: {event}", @event);
         }
 
@@ -26,6 +39,7 @@ namespace Domain.Example.Orleans.Grains
         {
             await State.Apply(events);
             await ConfirmEvents();
+            await _stream.OnNextBatchAsync(events);
             _logger.LogInformation("Events applied: {events}", events);
         }
 
@@ -33,6 +47,7 @@ namespace Domain.Example.Orleans.Grains
         {
             var snapshot = await State.Apply<TModel>(@event);
             await ConfirmEvents();
+            await _stream.OnNextAsync(@event);
             return snapshot;
         }
 
@@ -40,6 +55,7 @@ namespace Domain.Example.Orleans.Grains
         {
             var snapshot = await State.Apply<TModel>(events);
             await ConfirmEvents();
+            await _stream.OnNextBatchAsync(events);
             return snapshot;
         }
 
@@ -56,3 +72,4 @@ namespace Domain.Example.Orleans.Grains
         }
     }
 }
+

@@ -42,6 +42,18 @@ namespace Domain.Example.Tests
         }
 
         [Fact]
+        public async Task EmailMayNotBeEmpty()
+        {
+            var user = new User();
+            var command = new ChangeEmail();
+
+            var result = await user.Evaluate(command);
+
+            Assert.True(result.IsFailed);
+            Assert.NotEmpty(result.Reasons);
+        }
+
+        [Fact]
         public async Task EmailMustContainAt()
         {
             var user = new User();

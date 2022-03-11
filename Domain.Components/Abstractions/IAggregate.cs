@@ -12,8 +12,8 @@
         public Task<IResult<IEnumerable<IEvent<TAggregate>>>> Evaluate(ICommand<TAggregate> command);
 
         // Apply without snapshot return
-        public Task Apply(IEvent<TAggregate> @event);
-        public Task Apply(params IEvent<TAggregate>[] events);
+        public Task<IEvent<TAggregate>> Apply(IEvent<TAggregate> @event);
+        public Task<IEnumerable<IEvent<TAggregate>>> Apply(params IEvent<TAggregate>[] events);
 
         // Apply with snapshot
         public Task<TModel> Apply<TModel>(IEvent<TAggregate> @event)

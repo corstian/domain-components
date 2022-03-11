@@ -1,4 +1,5 @@
-﻿using Domain.Components.Tests.Mocks;
+﻿using Domain.Components.Extensions;
+using Domain.Components.Tests.Mocks;
 using System;
 using Xunit;
 

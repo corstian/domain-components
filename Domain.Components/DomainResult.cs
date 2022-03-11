@@ -18,8 +18,7 @@ namespace Domain.Components
 
     public class DomainResult<TValue> : ResultBase<DomainResult<TValue>>, IResult<TValue>
     {
-        public DomainResult()
-        { }
+        public DomainResult() { }
 
         private TValue _value;
 

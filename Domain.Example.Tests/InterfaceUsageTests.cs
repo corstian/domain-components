@@ -1,5 +1,5 @@
-﻿using Domain.Components;
-using Domain.Components.Abstractions;
+﻿using Domain.Components.Abstractions;
+using Domain.Components.Extensions;
 using Domain.Example.Aggregates.UserAggregate;
 using Domain.Example.Aggregates.UserAggregate.Commands;
 using System;
@@ -18,10 +18,10 @@ namespace Domain.Example.Tests
                 Id = Guid.NewGuid()
             };
 
-            Task IAggregate<User>.Apply(IEvent<User> @event)
+            Task<IEvent<User>> IAggregate<User>.Apply(IEvent<User> @event)
                 => User.Apply(@event);
 
-            Task IAggregate<User>.Apply(params IEvent<User>[] events)
+            Task<IEnumerable<IEvent<User>>> IAggregate<User>.Apply(params IEvent<User>[] events)
                 => User.Apply(events);
 
             Task<TModel> IAggregate<User>.Apply<TModel>(IEvent<User> @event)

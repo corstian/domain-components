@@ -5,9 +5,9 @@
         public Guid AggregateId { get; }
     }
 
-    public interface IEvent<in THandler> : IEvent
-        where THandler : IAggregate<THandler>
+    public interface IEvent<TAggregate> : IEvent
+        where TAggregate : IAggregate<TAggregate>
     {
-        public void Apply(THandler state);
+        public void Apply(TAggregate state);
     }
 }

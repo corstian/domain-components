@@ -1,6 +1,6 @@
 ﻿using Domain.Components.Abstractions;
 
-namespace Domain.Components
+namespace Domain.Components.Extensions
 {
     public static class AggregateExtensions
     {
@@ -11,8 +11,8 @@ namespace Domain.Components
             var result = await aggregate.Evaluate(new GenericCommandWrapper<T, E>(command));
 
             return new DomainResult<E>()
-                .WithValue(result.IsFailed 
-                    ? default 
+                .WithValue(result.IsFailed
+                    ? default
                     : (E)result.Value.ElementAt(0))
                 .WithReasons(result.Reasons);
         }
@@ -24,8 +24,8 @@ namespace Domain.Components
             var result = await aggregate.Evaluate(new GenericCommandWrapper<T, E>(command));
 
             return new DomainResult<E>()
-                .WithValue(result.IsFailed 
-                    ? default 
+                .WithValue(result.IsFailed
+                    ? default
                     : (E)result.Value.ElementAt(0))
                 .WithReasons(result.Reasons);
         }
@@ -38,8 +38,8 @@ namespace Domain.Components
             var result = await aggregate.Evaluate(new GenericCommandWrapper<T, E1, E2>(command));
 
             return new DomainResult<(E1, E2)>()
-                .WithValue(result.IsFailed 
-                    ? default 
+                .WithValue(result.IsFailed
+                    ? default
                     : ((E1)result.Value.ElementAt(0),
                        (E2)result.Value.ElementAt(1)
                     ))
@@ -54,8 +54,8 @@ namespace Domain.Components
             var result = await aggregate.Evaluate(new GenericCommandWrapper<T, E1, E2>(command));
 
             return new DomainResult<(E1, E2)>()
-                .WithValue(result.IsFailed 
-                    ? default 
+                .WithValue(result.IsFailed
+                    ? default
                     : ((E1)result.Value.ElementAt(0),
                        (E2)result.Value.ElementAt(1)
                     ))

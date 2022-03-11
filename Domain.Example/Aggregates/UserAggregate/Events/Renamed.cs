@@ -13,5 +13,10 @@ namespace Domain.Example.Aggregates.UserAggregate.Events
         {
             state.Name = Name;
         }
+
+        public class JohnDoeFilter : IEventFilter<Renamed>
+        {
+            public bool Reduce(Renamed @event) => @event.Name == "JohnDoe";
+        }
     }
 }

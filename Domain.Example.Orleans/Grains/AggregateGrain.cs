@@ -1,4 +1,5 @@
-﻿using Domain.Components.Abstractions;
+﻿using Domain.Components;
+using Domain.Components.Abstractions;
 using Domain.Example.Orleans.Interfaces;
 using Microsoft.Extensions.Logging;
 using Orleans;
@@ -27,20 +28,25 @@ namespace Domain.Example.Orleans.Grains
             return base.OnActivateAsync();
         }
 
-        public async Task Apply(IEvent<T> @event)
+        public async Task<IEvent<T>> Apply(IEvent<T> @event)
         {
             await State.Apply(@event);
             await ConfirmEvents();
             await _stream.OnNextAsync(@event);
             _logger.LogInformation("Event applied: {event}", @event);
+
+            return @event;
         }
 
-        public async Task Apply(params IEvent<T>[] events)
+        public async Task<IEnumerable<IEvent<T>>> Apply(params IEvent<T>[] events)
         {
-            await State.Apply(events);
+            var results = await State.Apply(events);
+
             await ConfirmEvents();
             await _stream.OnNextBatchAsync(events);
             _logger.LogInformation("Events applied: {events}", events);
+
+            return results;
         }
 
         public async Task<TModel> Apply<TModel>(IEvent<T> @event) where TModel : ISnapshot<T>, new()

@@ -1,4 +1,4 @@
-﻿using Domain.Components;
+﻿using Domain.Components.Extensions;
 using Domain.Example.Aggregates.UserAggregate;
 using Domain.Example.Aggregates.UserAggregate.Commands;
 using System;

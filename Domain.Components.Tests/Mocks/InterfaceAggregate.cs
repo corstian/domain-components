@@ -10,11 +10,24 @@ namespace Domain.Components.Tests.Mocks
     {
         public Guid Id { get; init; }
 
-        public async Task Apply(IEvent<InterfaceAggregate> @event)
-            => @event.Apply(this);
+        public async Task<IEvent<InterfaceAggregate>> Apply(IEvent<InterfaceAggregate> @event)
+        {
+            @event.Apply(this);
+            return @event;
+        }
 
-        public async Task Apply(params IEvent<InterfaceAggregate>[] events)
-            => events.ToList().ForEach(@event => @event.Apply(this));
+        public async Task<IEnumerable<IEvent<InterfaceAggregate>>> Apply(params IEvent<InterfaceAggregate>[] events)
+        {
+            var results = new List<IEvent<InterfaceAggregate>>(events.Length);
+            
+            foreach (var @event in events)
+            {
+                @event.Apply(this);
+                results.Add(@event);
+            }
+
+            return results;
+        }
 
         public async Task<TModel> Apply<TModel>(IEvent<InterfaceAggregate> @event) where TModel : ISnapshot<InterfaceAggregate>, new()
         {

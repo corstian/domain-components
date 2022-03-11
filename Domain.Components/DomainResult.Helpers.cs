@@ -1,8 +1,9 @@
-﻿using FluentResults;
+﻿using Domain.Components.Abstractions;
+using FluentResults;
 
 namespace Domain.Components
 {
-    internal static class DomainResultHelper
+    public static class DomainResultHelper
     {
         public static DomainResult Merge(IEnumerable<DomainResult> results)
         {

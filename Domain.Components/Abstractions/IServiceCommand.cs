@@ -1,23 +1,35 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    public interface IServiceCommand<THandler>
-        where THandler : IService<THandler>
+    public interface IServiceCommand
     {
-        public Task<IResult<IEnumerable<IEvent>>> Evaluate(THandler handler);
+
     }
 
-    public interface IServiceCommand<THandler, TEvent> : IServiceCommand<THandler>
+    public interface IServiceCommand<THandler> : IServiceCommand
+        where THandler : IService<THandler>
+    {
+        public Task<IResult<
+            IEnumerable<ICommitPackage>>> 
+            Evaluate(THandler service);
+    }
+
+    public interface IServiceCommand<THandler, TAggregate> : IServiceCommand
             where THandler : IService<THandler>
-            where TEvent : IEvent
+            where TAggregate : IAggregate<TAggregate>
     {
-        public new Task<IResult<TEvent>> Evaluate(THandler handler);
+        public Task<IResult<
+            ICommitPackage<TAggregate>>> 
+            Evaluate(THandler service);
     }
 
-    public interface IServiceCommand<THandler, TEvent1, TEvent2> : IServiceCommand<THandler>
+    public interface IServiceCommand<THandler, TAggregate1, TAggregate2> : IServiceCommand
         where THandler : IService<THandler>
-        where TEvent1 : IEvent
-        where TEvent2 : IEvent
+        where TAggregate1 : IAggregate<TAggregate1>
+        where TAggregate2 : IAggregate<TAggregate2>
     {
-        public new Task<IResult<(TEvent1, TEvent2)>> Evaluate(THandler handler);
+        public Task<IResult<(
+            ICommitPackage<TAggregate1>, 
+            ICommitPackage<TAggregate2>)>> 
+            Evaluate(THandler service);
     }
 }

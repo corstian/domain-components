@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<LangVersion>Preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,12 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Aggregates\GroupAggregate\Commands\" />
-    <Folder Include="Aggregates\GroupAggregate\Events\" />
     <Folder Include="Aggregates\GroupAggregate\Snapshots\" />
-    <Folder Include="ProcessManagers\" />
     <Folder Include="Sagas\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>

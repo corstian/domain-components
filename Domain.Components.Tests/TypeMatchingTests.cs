@@ -24,5 +24,24 @@ namespace Domain.Components.Tests
             Assert.True(@event is Event<TestAggregate>);
             Assert.True(@event is Event);
         }
+
+        [Fact]
+        public void AggregateShouldDeriveFromInterface()
+        {
+            var aggregate = new TestAggregate();
+
+            Assert.True(aggregate is IAggregate);
+            Assert.True(aggregate is IAggregate<TestAggregate>);
+            Assert.True(aggregate is TestAggregate);
+        }
+
+        [Fact]
+        public void CommitPackageTypeTests()
+        {
+            var commitPackage = new CommitPackage<TestAggregate>();
+
+            Assert.True(commitPackage is ICommitPackage);
+            Assert.True(commitPackage is ICommitPackage<TestAggregate>);
+        }
     }
 }

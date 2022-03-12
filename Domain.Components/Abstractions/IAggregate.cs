@@ -2,23 +2,25 @@
 {
     public interface IAggregate
     {
-        
+        Task<IResult<IEnumerable<IEvent>>> Evaluate(ICommand command);
     }
 
     public interface IAggregate<TAggregate> : IAggregate
         where TAggregate : IAggregate<TAggregate>
     {
+        async Task<IResult<IEnumerable<IEvent>>> IAggregate.Evaluate(ICommand command) => await Evaluate((ICommand<TAggregate>)command);
+
         // Command handlers
-        public Task<IResult<IEnumerable<IEvent<TAggregate>>>> Evaluate(ICommand<TAggregate> command);
+        Task<IResult<IEnumerable<IEvent<TAggregate>>>> Evaluate(ICommand<TAggregate> command);
 
         // Apply without snapshot return
-        public Task<IEvent<TAggregate>> Apply(IEvent<TAggregate> @event);
-        public Task<IEnumerable<IEvent<TAggregate>>> Apply(params IEvent<TAggregate>[] events);
+        Task<IEvent<TAggregate>> Apply(IEvent<TAggregate> @event);
+        Task<IEnumerable<IEvent<TAggregate>>> Apply(params IEvent<TAggregate>[] events);
 
         // Apply with snapshot
-        public Task<TModel> Apply<TModel>(IEvent<TAggregate> @event)
+        Task<TModel> Apply<TModel>(IEvent<TAggregate> @event)
             where TModel : ISnapshot<TAggregate>, new();
-        public Task<TModel> Apply<TModel>(params IEvent<TAggregate>[] events)
+        Task<TModel> Apply<TModel>(params IEvent<TAggregate>[] events)
             where TModel : ISnapshot<TAggregate>, new();
     }
 }

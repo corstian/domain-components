@@ -45,21 +45,6 @@ namespace Domain.Example.Orleans.Grains
             _logger.LogInformation("Events applied: {events}", events);
         }
 
-        public async Task<TModel> Apply<TModel>(IEvent<T> @event) where TModel : ISnapshot<T>, new()
-        {
-            var snapshot = await State.Apply<TModel>(@event);
-            await ConfirmEvents();
-            await _stream.OnNextAsync(@event);
-            return snapshot;
-        }
-
-        public async Task<TModel> Apply<TModel>(params IEvent<T>[] events) where TModel : ISnapshot<T>, new()
-        {
-            var snapshot = await State.Apply<TModel>(events);
-            await ConfirmEvents();
-            await _stream.OnNextBatchAsync(events);
-            return snapshot;
-        }
 
         public async Task<IResult<IEnumerable<IEvent<T>>>> Evaluate(ICommand<T> command)
         {
@@ -71,6 +56,12 @@ namespace Domain.Example.Orleans.Grains
                 _logger.LogWarning("Command evaluation failed\r\nCommand: {command}\r\nReasons: {reasons}", command, result.Reasons);
 
             return result;
+        }
+
+        public async Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot<T>, new()
+        {
+            await ConfirmEvents();
+            return await State.GetSnapshot<TModel>();
         }
     }
 }

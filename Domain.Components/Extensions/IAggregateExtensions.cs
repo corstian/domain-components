@@ -13,19 +13,20 @@ namespace Domain.Components.Extensions
 
         public static async Task<IResult<IEnumerable<IEvent>>> Evaluate(this IAggregate aggregate, ICommand command)
         {
-            return (IResult<IEnumerable<IEvent>>)await aggregate
+            var method = aggregate
                 .GetType()
                 .GetMethods()
                 .First(q => q.Name == "Evaluate"
-                    && !q.ContainsGenericParameters)
-                .InvokeAsync(aggregate, new[] { command });
+                    && !q.ContainsGenericParameters);
+
+            return (IResult<IEnumerable<IEvent>>)await method.InvokeAsync(aggregate, new[] { command });
         }
 
         public static async Task Apply(this IAggregate aggregate, IEvent @event)
         {
-            var aggregateType = aggregate.GetType();
-
-            var method = aggregateType.GetMethods()
+            var method = aggregate
+                .GetType()
+                .GetMethods()
                 .Single(q => q.Name == "Apply"
                     && !q.IsGenericMethod
                     && q.GetParameters()
@@ -44,9 +45,27 @@ namespace Domain.Components.Extensions
             }
         }
 
-        //Task<TModel> Apply<TModel>(IEvent @event)
-        //    where TModel : ISnapshot, new();
-        //Task<TModel> Apply<TModel>(params IEvent[] events)
-        //    where TModel : ISnapshot, new();
+        //public static async Task<TModel> Apply<TModel>(this IAggregate aggregate, IEvent @event)
+        //    where TModel : ISnapshot, new()
+        //{
+        //    var method = aggregate
+        //        .GetType()
+        //        .GetMethods()
+        //        .Single(q => q.Name == "Apply"
+        //            && q.IsGenericMethod
+        //            && q.GetParameters()
+        //                .Any(w => w.ParameterType
+        //                    .GetInterfaces()
+        //                    .Contains(typeof(IEvent))));
+
+        //    return (TModel)await method.InvokeAsync(aggregate, new[] { @event });
+        //}
+
+        //public static async Task<TModel> Apply<TModel>(this IAggregate aggregate, params IEvent[] events)
+        //    where TModel : ISnapshot, new()
+        //{
+        //    foreach (var @event in events)
+        //        aggregate.Apply(@event);
+        //}
     }
 }

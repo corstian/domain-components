@@ -10,38 +10,29 @@ namespace Domain.Components.Tests.Mocks
     {
         public Guid Id { get; init; }
 
-        public async Task Apply(IEvent<InterfaceAggregate> @event)
+        public Task Apply(IEvent<InterfaceAggregate> @event)
         {
             @event.Apply(this);
+
+            return Task.CompletedTask;
         }
 
-        public async Task Apply(params IEvent<InterfaceAggregate>[] events)
+        public Task Apply(params IEvent<InterfaceAggregate>[] events)
         {
             foreach (var @event in events)
                 @event.Apply(this);
-        }
 
-        public async Task<TModel> Apply<TModel>(IEvent<InterfaceAggregate> @event) where TModel : ISnapshot<InterfaceAggregate>, new()
-        {
-            @event.Apply(this);
-            return _createSnapshot<TModel>();
-        }
-
-        public async Task<TModel> Apply<TModel>(params IEvent<InterfaceAggregate>[] events) where TModel : ISnapshot<InterfaceAggregate>, new()
-        {
-            events.ToList().ForEach(@event => @event.Apply(this));
-            return _createSnapshot<TModel>();
+            return Task.CompletedTask;
         }
 
         public async Task<IResult<IEnumerable<IEvent<InterfaceAggregate>>>> Evaluate(ICommand<InterfaceAggregate> command)
             => command.Evaluate(this);
 
-        private TSnapshot _createSnapshot<TSnapshot>()
-            where TSnapshot : ISnapshot<InterfaceAggregate>
+        public Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot<InterfaceAggregate>, new()
         {
-            var model = Activator.CreateInstance<TSnapshot>();
+            var model = Activator.CreateInstance<TModel>();
             model.Populate(this);
-            return model;
+            return Task.FromResult(model);
         }
     }
 }

@@ -15,10 +15,7 @@
         Task Apply(IEvent<TAggregate> @event);
         Task Apply(params IEvent<TAggregate>[] events);
 
-        // Apply with snapshot
-        Task<TModel> Apply<TModel>(IEvent<TAggregate> @event)
-            where TModel : ISnapshot<TAggregate>, new();
-        Task<TModel> Apply<TModel>(params IEvent<TAggregate>[] events)
+        Task<TModel> GetSnapshot<TModel>()
             where TModel : ISnapshot<TAggregate>, new();
     }
 }

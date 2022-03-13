@@ -24,14 +24,11 @@ namespace Domain.Example.Tests
             Task IAggregate<User>.Apply(params IEvent<User>[] events)
                 => User.Apply(events);
 
-            Task<TModel> IAggregate<User>.Apply<TModel>(IEvent<User> @event)
-                => User.Apply<TModel>(@event);
-
-            Task<TModel> IAggregate<User>.Apply<TModel>(params IEvent<User>[] events)
-                => User.Apply<TModel>(events);
-
             Task<IResult<IEnumerable<IEvent<User>>>> IAggregate<User>.Evaluate(ICommand<User> command)
                 => User.Evaluate(command);
+
+            Task<TModel> IAggregate<User>.GetSnapshot<TModel>()
+                => User.GetSnapshot<TModel>();
         }
 
         [Fact]

@@ -72,22 +72,9 @@ namespace Domain.Components
                 await Apply(@event);
         }
 
-        public async Task<TModel> Apply<TModel>(IEvent<T> @event)
+        public async Task<TModel> GetSnapshot<TModel>()
             where TModel : ISnapshot<T>, new()
         {
-            await Apply(@event);
-
-            var model = Activator.CreateInstance<TModel>();
-            model.Populate((T)this);
-            return model;
-        }
-
-        public async Task<TModel> Apply<TModel>(params IEvent<T>[] events)
-            where TModel : ISnapshot<T>, new()
-        {
-            foreach (var @event in events)
-                await Apply(@event);
-
             var model = Activator.CreateInstance<TModel>();
             model.Populate((T)this);
             return model;

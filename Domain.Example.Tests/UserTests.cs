@@ -139,7 +139,7 @@ namespace Domain.Example.Tests
         }
 
         [Fact]
-        public async Task SnapshotShouldBeReturned()
+        public async Task SnapshotShouldReflectState()
         {
             var user = new User();
             var command = new ChangeInfo
@@ -150,7 +150,9 @@ namespace Domain.Example.Tests
 
             var (renamed, emailChanged) = (await user.Evaluate(command)).Value;
             
-            var snapshot = await user.Apply<PublicUserInfo>(renamed, emailChanged);
+            await user.Apply(renamed, emailChanged);
+
+            var snapshot = await user.GetSnapshot<PublicUserInfo>();
 
             Assert.Equal("john.doe@example.com", snapshot.Email);
             Assert.Equal("John Doe", snapshot.Name);

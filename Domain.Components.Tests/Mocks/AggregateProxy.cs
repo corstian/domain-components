@@ -15,13 +15,10 @@ namespace Domain.Components.Tests.Mocks
         Task IAggregate<T>.Apply(params IEvent<T>[] events)
             => aggregate.Apply(events);
 
-        Task<TModel> IAggregate<T>.Apply<TModel>(IEvent<T> @event)
-            => aggregate.Apply<TModel>(@event);
-
-        Task<TModel> IAggregate<T>.Apply<TModel>(params IEvent<T>[] events)
-            => aggregate.Apply<TModel>(events);
-
         Task<IResult<IEnumerable<IEvent<T>>>> IAggregate<T>.Evaluate(ICommand<T> command)
             => aggregate.Evaluate(command);
+
+        Task<TModel> IAggregate<T>.GetSnapshot<TModel>()
+            => aggregate.GetSnapshot<TModel>();
     }
 }

@@ -13,7 +13,8 @@ using var host = new HostBuilder()
         .UseLocalhostClustering()
         .AddMemoryGrainStorageAsDefault()
         .ConfigureLogging(logging => logging.AddConsole())
-        .AddSimpleMessageStreamProvider("stream"))
+        .AddSimpleMessageStreamProvider("stream")
+        .AddMemoryGrainStorage("PubSubStore"))
     .Build();
 
 await host.StartAsync();
@@ -25,15 +26,13 @@ var user = grainFactory.GetGrain<IAggregateGrain<User>>(Guid.NewGuid());
 
 var command = new ChangeEmail
 {
-    //Email = "john.doe@example.com"
+    Email = "john.doe@example.com"
 };
 
 var result = await user.EvaluateTypedCommand(command);
 
 if (result.IsSuccess)
-{
     await user.Apply(result.Value);
-}
 
 Console.WriteLine("Press Enter to terminate...");
 Console.ReadLine();

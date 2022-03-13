@@ -1,4 +1,5 @@
 ﻿using Domain.Components.Abstractions;
+using Domain.Components.Extensions;
 using Domain.Components.Tests.Mocks;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,6 +46,12 @@ namespace Domain.Components.Tests
             Assert.NotNull(result.ValueOrDefault);
             Assert.IsType<TestAggregate>(result.Value.Single().Aggregate);
             Assert.IsType<TestEvent>(result.Value.Single().Events.Single());
+
+            var package = result.Value.Single();
+
+            await package.Apply();
+
+            Assert.Equal(1, aggregate.EventsApplied);
         }
     }
 }

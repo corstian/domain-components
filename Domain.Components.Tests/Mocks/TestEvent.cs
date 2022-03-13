@@ -6,7 +6,7 @@ namespace Domain.Components.Tests.Mocks
     {
         public override void Apply(TestAggregate state)
         {
-            throw new NotImplementedException();
+            state.EventsApplied = state.EventsApplied + 1;
         }
     }
 }

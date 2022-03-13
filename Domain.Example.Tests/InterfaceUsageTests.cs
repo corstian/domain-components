@@ -18,10 +18,10 @@ namespace Domain.Example.Tests
                 Id = Guid.NewGuid()
             };
 
-            Task<IEvent<User>> IAggregate<User>.Apply(IEvent<User> @event)
+            Task IAggregate<User>.Apply(IEvent<User> @event)
                 => User.Apply(@event);
 
-            Task<IEnumerable<IEvent<User>>> IAggregate<User>.Apply(params IEvent<User>[] events)
+            Task IAggregate<User>.Apply(params IEvent<User>[] events)
                 => User.Apply(events);
 
             Task<TModel> IAggregate<User>.Apply<TModel>(IEvent<User> @event)

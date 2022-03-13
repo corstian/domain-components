@@ -9,10 +9,10 @@ namespace Domain.Components.Tests.Mocks
     {
         private T aggregate = new();
 
-        Task<IEvent<T>> IAggregate<T>.Apply(IEvent<T> @event)
+        Task IAggregate<T>.Apply(IEvent<T> @event)
             => aggregate.Apply(@event);
 
-        Task<IEnumerable<IEvent<T>>> IAggregate<T>.Apply(params IEvent<T>[] events)
+        Task IAggregate<T>.Apply(params IEvent<T>[] events)
             => aggregate.Apply(events);
 
         Task<TModel> IAggregate<T>.Apply<TModel>(IEvent<T> @event)

@@ -59,26 +59,17 @@ namespace Domain.Components
             return Task.FromResult(result);
         }
 
-        public Task<IEvent<T>> Apply(IEvent<T> @event)
+        public Task Apply(IEvent<T> @event)
         {
             @event.Apply((T)this);
 
             return Task.FromResult(@event);
         }
 
-        public async Task<IEnumerable<IEvent<T>>> Apply(params IEvent<T>[] events)
+        public async Task Apply(params IEvent<T>[] events)
         {
-            var results = new List<IEvent<T>>(events.Length);
             foreach (var @event in events)
-                results.Add(await Apply(@event));
-
-            return results;
-        }
-
-        public async Task Apply(IResult<IEvent<T>> result)
-        {
-            if (result.IsSuccess)
-                await Apply(result.Value);
+                await Apply(@event);
         }
 
         public async Task<TModel> Apply<TModel>(IEvent<T> @event)

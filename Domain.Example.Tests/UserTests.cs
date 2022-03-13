@@ -20,7 +20,7 @@ namespace Domain.Example.Tests
 
             var result = await user.Evaluate(command);
 
-            await user.Apply(result);
+            await user.Apply(result.Value);
 
             Assert.Equal("John Doe", user.Name);
         }
@@ -36,7 +36,7 @@ namespace Domain.Example.Tests
 
             var result = await user.Evaluate(command);
 
-            await user.Apply(result);
+            await user.Apply(result.Value);
 
             Assert.Equal("john.doe@example.com", user.Email);
         }

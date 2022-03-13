@@ -1,9 +1,13 @@
-﻿namespace Domain.Components.Abstractions
+﻿using Domain.Components.Extensions;
+
+namespace Domain.Components.Abstractions
 {
     public interface ICommitPackage
     {
         public IAggregate Aggregate { get; }
         public IList<IEvent> Events { get; }
+
+        public Task Apply() => Aggregate.Apply(Events.ToArray());
     }
 
     public interface ICommitPackage<TAggregate> : ICommitPackage

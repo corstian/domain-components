@@ -2,13 +2,13 @@
 {
     public interface IAggregate
     {
-        Task<IResult<IEnumerable<IEvent>>> Evaluate(ICommand command);
+        //Task<IResult<IEnumerable<IEvent>>> Evaluate(ICommand command);
     }
 
     public interface IAggregate<TAggregate> : IAggregate
         where TAggregate : IAggregate<TAggregate>
     {
-        async Task<IResult<IEnumerable<IEvent>>> IAggregate.Evaluate(ICommand command) => await Evaluate((ICommand<TAggregate>)command);
+        //async Task<IResult<IEnumerable<IEvent>>> IAggregate.Evaluate(ICommand command) => await Evaluate((ICommand<TAggregate>)command);
 
         // Command handlers
         Task<IResult<IEnumerable<IEvent<TAggregate>>>> Evaluate(ICommand<TAggregate> command);

@@ -24,7 +24,7 @@ namespace Domain.Example.Orleans.Grains
             var streamProvider = GetStreamProvider("stream");
 
             _stream = streamProvider.GetStream<IEvent<T>>(this.GetPrimaryKey(), typeof(T).Name);
-            
+
             return base.OnActivateAsync();
         }
 

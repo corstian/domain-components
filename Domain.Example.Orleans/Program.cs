@@ -8,10 +8,12 @@ using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Hosting;
 
-using var host = new SiloHostBuilder()
-    .UseLocalhostClustering()
-    .AddMemoryGrainStorageAsDefault()
-    .ConfigureLogging(logging => logging.AddConsole())
+using var host = new HostBuilder()
+    .UseOrleans(builder => builder
+        .UseLocalhostClustering()
+        .AddMemoryGrainStorageAsDefault()
+        .ConfigureLogging(logging => logging.AddConsole())
+        .AddSimpleMessageStreamProvider("stream"))
     .Build();
 
 await host.StartAsync();

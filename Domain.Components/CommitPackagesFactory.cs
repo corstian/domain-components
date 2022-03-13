@@ -1,4 +1,5 @@
 ﻿using Domain.Components.Abstractions;
+using Domain.Components.Extensions;
 using FluentResults;
 
 namespace Domain.Components
@@ -34,11 +35,20 @@ namespace Domain.Components
             {
                 List<IResult<IEnumerable<IEvent>>> results = new();
 
+                /*
+                 * Originally I had been working with default interface methods, though that didn't
+                 * work nicely with Orleans. See https://github.com/dotnet/orleans/issues/7630 for a bug report.
+                 * 
+                 * To work around that we're using good old reflection techniques
+                 */
                 foreach (var command in builder.Commands)
-                {
-                    var eres = await builder.Aggregate.Evaluate(command);
-                    results.Add(eres);
-                }
+                    results.Add(
+                        (IResult<IEnumerable<IEvent>>) await builder.Aggregate
+                            .GetType()
+                            .GetMethods()
+                            .First(q => q.Name == "Evaluate"
+                                && !q.ContainsGenericParameters)
+                            .InvokeAsync(builder.Aggregate, new [] { command }));
 
                 if (results.Any(q => q.IsFailed))
                 {

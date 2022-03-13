@@ -19,20 +19,4 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
             });
         }
     }
-
-    //public class ChangeEmail : Command<User, EmailChanged>, ICommand<User, EmailChanged>
-    //{
-    //    public string? Email { get; init; }
-
-    //    public override DomainResult<EmailChanged> Evaluate(User handler)
-    //    {
-    //        if (!Email?.Contains("@") ?? true)
-    //            return DomainResult.Fail<EmailChanged>("No @");
-
-    //        return DomainResult.Ok(new EmailChanged
-    //        {
-    //            Email = Email
-    //        });
-    //    }
-    //}
 }

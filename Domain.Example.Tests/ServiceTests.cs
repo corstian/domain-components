@@ -1,4 +1,5 @@
 ﻿using Domain.Example.Services.GroupManagement;
+using Xunit;
 
 namespace Domain.Example.Tests
 {
@@ -7,9 +8,9 @@ namespace Domain.Example.Tests
         [Fact]
         public void AddUserToGroupTest()
         {
-            var service = new GroupManagementService();
+            //var service = new GroupManagementService();
 
-            var addUserToGoup = new AddUserToGroup();
+            //var addUserToGoup = new AddUserToGroup();
         }
     }
 }

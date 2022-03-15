@@ -1,4 +1,5 @@
 ﻿using Domain.Components.Abstractions;
+using System.Reflection;
 
 namespace Domain.Components.Extensions
 {
@@ -13,11 +14,18 @@ namespace Domain.Components.Extensions
 
         public static async Task<IResult<IEnumerable<IEvent>>> Evaluate(this IAggregate aggregate, ICommand command)
         {
-            var method = aggregate
+            /*
+             * The non-standard technique of getting a method used here is to handle an explicit implementation
+             * of the `IAggregate<T>` interface. (For example on proxy objects)
+             */
+
+            var methods = aggregate
                 .GetType()
-                .GetMethods()
-                .First(q => q.Name == "Evaluate"
-                    && !q.ContainsGenericParameters);
+                .GetMethods(BindingFlags.Public
+                    | BindingFlags.NonPublic
+                    | BindingFlags.Instance);
+
+            var method = methods.First(q => q.Name.EndsWith("Evaluate") && !q.ContainsGenericParameters);
 
             return (IResult<IEnumerable<IEvent>>)await method.InvokeAsync(aggregate, new[] { command });
         }

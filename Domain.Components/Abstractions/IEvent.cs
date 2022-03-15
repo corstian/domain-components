@@ -6,7 +6,7 @@
     }
 
     public interface IEvent<TAggregate> : IEvent
-        where TAggregate : IAggregate<TAggregate>
+        where TAggregate : IAggregate
     {
         public void Apply(TAggregate state);
     }

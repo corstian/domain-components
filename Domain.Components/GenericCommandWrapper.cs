@@ -3,7 +3,7 @@
 namespace Domain.Components
 {
     internal class GenericCommandWrapper<T, E> : ICommand<T>, ICommand<T, E>
-        where T : IAggregate<T>
+        where T : IAggregate
         where E : IEvent<T>
     {
         private readonly ICommand<T, E> _command;
@@ -30,7 +30,7 @@ namespace Domain.Components
     }
 
     internal class GenericCommandWrapper<T, E1, E2> : ICommand<T>, ICommand<T, E1, E2>
-        where T : IAggregate<T>
+        where T : IAggregate
         where E1 : IEvent<T>
         where E2 : IEvent<T>
     {

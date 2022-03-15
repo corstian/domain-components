@@ -11,12 +11,12 @@ namespace Domain.Components.Abstractions
     }
 
     public interface ICommitPackage<TAggregate> : ICommitPackage
-        where TAggregate : IAggregate<TAggregate>
+        where TAggregate : IAggregate
     {
         IAggregate ICommitPackage.Aggregate => Aggregate;
         IList<IEvent> ICommitPackage.Events => Events.Cast<IEvent>().ToList();
 
-        public new TAggregate Aggregate { get; init; }
+        public new IAggregate<TAggregate> Aggregate { get; init; }
         public new IList<IEvent<TAggregate>> Events { get; init; }
 
         public async Task Commit()

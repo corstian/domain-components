@@ -6,7 +6,7 @@
     }
 
     public interface IAggregate<TAggregate> : IAggregate
-        where TAggregate : IAggregate<TAggregate>
+        where TAggregate : IAggregate
     {
         // Command handlers
         Task<IResult<IEnumerable<IEvent<TAggregate>>>> Evaluate(ICommand<TAggregate> command);

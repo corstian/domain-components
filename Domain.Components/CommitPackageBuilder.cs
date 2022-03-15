@@ -3,9 +3,9 @@
 namespace Domain.Components
 {
     public class CommitPackageBuilder<TAggregate> : ICommitPackageBuilder<TAggregate>
-        where TAggregate : IAggregate<TAggregate>
+        where TAggregate : IAggregate
     {
-        public TAggregate Aggregate { get; init; }
+        public IAggregate<TAggregate> Aggregate { get; init; }
 
         public IList<ICommand<TAggregate>> Commands { get; } = new List<ICommand<TAggregate>>();
         

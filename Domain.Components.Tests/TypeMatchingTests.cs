@@ -36,6 +36,15 @@ namespace Domain.Components.Tests
         }
 
         [Fact]
+        public void AggregateProxyShouldMatchInteraces()
+        {
+            var proxy = new AggregateProxy<TestAggregate>();
+
+            Assert.True(proxy is IAggregate);
+            Assert.True(proxy is IAggregate<TestAggregate>);
+        }
+
+        [Fact]
         public void CommitPackageTypeTests()
         {
             var commitPackage = new CommitPackage<TestAggregate>();

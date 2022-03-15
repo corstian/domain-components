@@ -26,8 +26,6 @@ namespace Domain.Components.Tests
                     interfaceAggregate,
                     builder => builder
                         .IncludeCommand(new InterfaceCommand()));
-
-            
         }
 
         [Fact]
@@ -52,6 +50,34 @@ namespace Domain.Components.Tests
             await package.Apply();
 
             Assert.Equal(1, aggregate.EventsApplied);
+        }
+
+        [Fact]
+        public async Task ProxyShouldWorkWithCommitPackage()
+        {
+            var proxy = new AggregateProxy<TestAggregate>();
+
+            var result = await new CommitPackagesFactory()
+                .AddCommitPackage(
+                    proxy,
+                    builder => builder
+                        .IncludeCommand(new TestCommand()))
+                .EvaluateOperation();
+
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.ValueOrDefault);
+            Assert.True(result.Value.Single().Aggregate is IAggregate<TestAggregate>);
+            Assert.IsType<TestEvent>(result.Value.Single().Events.Single());
+        }
+
+        [Fact]
+        public async Task CommitPackageTest()
+        {
+            var proxy = new AggregateProxy<TestAggregate>();
+
+            var res = new CommitPackage<TestAggregate>(
+                proxy,
+                new[] { new TestEvent() });
         }
     }
 }

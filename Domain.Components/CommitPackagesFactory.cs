@@ -9,7 +9,7 @@ namespace Domain.Components
         private List<ICommitPackageBuilder> _builders = new();
 
         public CommitPackagesFactory AddCommitPackage<TAggregate>(
-            TAggregate aggregate,
+            IAggregate<TAggregate> aggregate,
             Action<CommitPackageBuilder<TAggregate>> builder)
             where TAggregate : IAggregate<TAggregate>
         {
@@ -44,7 +44,9 @@ namespace Domain.Components
                     continue;
                 }
 
-                var genericType = typeof(CommitPackage<>).MakeGenericType(builder.Aggregate.GetType());
+                var generic = builder.GetType().GetGenericArguments()[0];
+
+                var genericType = typeof(CommitPackage<>).MakeGenericType(generic);
                 var package = Activator.CreateInstance(genericType) as ICommitPackage;
 
                 genericType

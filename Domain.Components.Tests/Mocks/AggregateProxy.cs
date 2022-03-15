@@ -7,6 +7,13 @@ namespace Domain.Components.Tests.Mocks
     internal class AggregateProxy<T> : IAggregate<T>
         where T : IAggregate<T>, new()
     {
+        public AggregateProxy() { }
+
+        public AggregateProxy(T aggregate)
+        {
+            this.aggregate = aggregate;
+        }
+
         private T aggregate = new();
 
         Task IAggregate<T>.Apply(IEvent<T> @event)

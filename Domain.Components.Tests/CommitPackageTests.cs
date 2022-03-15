@@ -52,10 +52,15 @@ namespace Domain.Components.Tests
             Assert.Equal(1, aggregate.EventsApplied);
         }
 
+        /*
+         * It seems like the proxy approach is rather slow due to its dependence on reflection and a number of linq queries.
+         * When bored figure out if there's an approach through which we can optimize the performance of this behaviour.
+         */
         [Fact]
         public async Task ProxyShouldWorkWithCommitPackage()
         {
-            var proxy = new AggregateProxy<TestAggregate>();
+            var aggregate = new TestAggregate();
+            var proxy = new AggregateProxy<TestAggregate>(aggregate);
 
             var result = await new CommitPackagesFactory()
                 .AddCommitPackage(
@@ -68,6 +73,19 @@ namespace Domain.Components.Tests
             Assert.NotNull(result.ValueOrDefault);
             Assert.True(result.Value.Single().Aggregate is IAggregate<TestAggregate>);
             Assert.IsType<TestEvent>(result.Value.Single().Events.Single());
+
+            /*
+             * Please note that when using an interface rather than the actual aggregate,
+             * one is unable to access the internal state of the aggregate without the use of
+             * a snapshot. Though one most likely does not need to access this internal state,
+             * it's something to take into consideration when designing unit tests.
+             */
+
+            var package = result.Value.Single();
+
+            await package.Apply();
+
+            Assert.Equal(1, aggregate.EventsApplied);
         }
 
         [Fact]

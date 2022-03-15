@@ -14,6 +14,8 @@ namespace Domain.Example.Orleans.Grains
         private readonly ILogger _logger;
         private IAsyncStream<IEvent<T>> _stream = null;
 
+        public Guid Id { get; init; }
+
         public AggregateGrain(ILogger<AggregateGrain<T>> logger)
         {
             _logger = logger;

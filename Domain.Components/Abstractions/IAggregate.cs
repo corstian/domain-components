@@ -2,7 +2,7 @@
 {
     public interface IAggregate
     {
-        
+
     }
 
     public interface IAggregate<TAggregate> : IAggregate

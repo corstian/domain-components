@@ -12,13 +12,6 @@ namespace Domain.Example.Services.GroupManagement
         public Guid GroupId { get; init; }
         public Guid UserId { get; init; }
 
-        /*
-         * ToDo: (Plans for the future)
-         * - An IServiceCommand implementation should not be responsible for the results of the commit packages
-         *   and should instead just return a list of commit packages.
-         * - The service responsible for the evaluation of this service command should take the commit packages
-         *   and evaluate their correctness.
-         */
         async Task<IResult<IEnumerable<ICommitPackage>>> IServiceCommand<GroupManagementService>.Evaluate(GroupManagementService handler)
         {
             var group = handler.GroupRepository.ById(GroupId);
@@ -37,7 +30,7 @@ namespace Domain.Example.Services.GroupManagement
                         GroupId = GroupId,
                         Name = group.Name
                     }))
-                .EvaluateOperation();
+                .Evaluate();
         }
     }
 }

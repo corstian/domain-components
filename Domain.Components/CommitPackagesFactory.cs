@@ -6,7 +6,9 @@ namespace Domain.Components
 {
     public class CommitPackagesFactory
     {
-        private List<ICommitPackageBuilder> _builders = new();
+        private int _index = 0;
+        private Dictionary<int, ICommitPackageBuilder> _builders = new();
+        private Dictionary<int, (IService service, IServiceCommand command)> _serviceCommands = new();
 
         public CommitPackagesFactory AddCommitPackage<TAggregate>(
             IAggregate<TAggregate> aggregate,
@@ -20,55 +22,47 @@ namespace Domain.Components
 
             builder.Invoke(packageBuilder);
 
-            _builders.Add(packageBuilder);
+            _builders.Add(_index++, packageBuilder);
 
             return this;
         }
 
-        public async Task<IResult<IEnumerable<ICommitPackage>>> EvaluateOperation()
+        public CommitPackagesFactory AddServiceCommand<TService>(
+            IService<TService> service,
+            IServiceCommand<TService> command)
+            where TService : IService<TService>
         {
-            bool isFailed = false;
-            List<IReason> reasons = new();
+            _serviceCommands.Add(_index++, (service, command));
+
+            return this;
+        }
+
+        public async Task<IResult<IEnumerable<ICommitPackage>>> Evaluate()
+        {
             List<ICommitPackage> packages = new();
+            List<IReason> reasons = new();
 
-            foreach (var builder in _builders)
+            for (var i = 0; i < _index; i++)
             {
-                List<IResult<IEnumerable<IEvent>>> results = new();
-
-                foreach (var command in builder.Commands)
-                    results.Add(await builder.Aggregate.Evaluate(command));
-
-                if (results.Any(q => q.IsFailed))
+                if (_builders.TryGetValue(i, out var builder))
                 {
-                    reasons.AddRange(results.SelectMany(q => q.Reasons));
-                    continue;
+                    (ICommitPackage package, IReason[] reason) = await ProcessBuilder(builder);
+
+                    packages.Add(package);
+                    reasons.AddRange(reason);
+                } 
+                else if (_serviceCommands.TryGetValue(i, out var serviceCommand))
+                {
+                    (IService service, IServiceCommand command) = serviceCommand;
+
+                    var result = await service
+                        .GetType()
+                        .GetMethod("Evaluate")
+                        .InvokeAsync(service, command) as IResult<IEnumerable<ICommitPackage>>;
+
+                    reasons.AddRange(result.Reasons);
+                    packages.AddRange(result.ValueOrDefault);
                 }
-
-                var generic = builder.GetType().GetGenericArguments()[0];
-
-                var genericType = typeof(CommitPackage<>).MakeGenericType(generic);
-                var package = Activator.CreateInstance(genericType) as ICommitPackage;
-
-                genericType
-                    .GetProperty("Aggregate")
-                    .SetValue(package, builder.Aggregate);
-
-                var eventList = genericType
-                    .GetProperty("Events")
-                    .GetValue(package);
-
-                var addEventToList = eventList
-                    .GetType()
-                    .GetMethod("Add");
-
-                /*
-                 * Direct assignment of the events to an enumerable does not work. As a workaroudn
-                 * we're looping through the events and applying each individual item to the list instead.
-                 */
-                foreach (var @event in results.SelectMany(q => q.Value))
-                    addEventToList.Invoke(eventList, new [] { @event });
-
-                packages.Add(package);
             }
 
             if (reasons.OfType<IError>().Any())
@@ -78,6 +72,43 @@ namespace Domain.Components
             return new DomainResult<IEnumerable<ICommitPackage>>()
                 .WithValue(packages)
                 .WithReasons(reasons);
+        }
+
+        private async Task<(ICommitPackage? package, IReason[] reasons)> ProcessBuilder(ICommitPackageBuilder builder)
+        {
+            List<IResult<IEnumerable<IEvent>>> results = new();
+
+            foreach (var command in builder.Commands)
+                results.Add(await builder.Aggregate.Evaluate(command));
+
+            if (results.Any(q => q.IsFailed))
+                return (null, results.SelectMany(q => q.Reasons).ToArray());
+
+            var generic = builder.GetType().GetGenericArguments()[0];
+
+            var genericType = typeof(CommitPackage<>).MakeGenericType(generic);
+            var package = Activator.CreateInstance(genericType) as ICommitPackage;
+
+            genericType
+                .GetProperty("Aggregate")
+                .SetValue(package, builder.Aggregate);
+
+            var eventList = genericType
+                .GetProperty("Events")
+                .GetValue(package);
+
+            var addEventToList = eventList
+                .GetType()
+                .GetMethod("Add");
+
+            /*
+             * Direct assignment of the events to an enumerable does not work. As a workaroudn
+             * we're looping through the events and applying each individual item to the list instead.
+             */
+            foreach (var @event in results.SelectMany(q => q.Value))
+                addEventToList.Invoke(eventList, new[] { @event });
+
+            return (package, new IReason[0]);
         }
     }
 }

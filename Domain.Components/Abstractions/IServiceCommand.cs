@@ -8,18 +8,14 @@
     public interface IServiceCommand<THandler> : IServiceCommand
         where THandler : IService<THandler>
     {
-        public Task<IResult<
-            IEnumerable<ICommitPackage>>> 
-            Evaluate(THandler service);
+        public Task<IResult<IEnumerable<ICommitPackage>>> Evaluate(THandler service);
     }
 
     public interface IServiceCommand<THandler, TAggregate> : IServiceCommand
             where THandler : IService<THandler>
             where TAggregate : IAggregate<TAggregate>
     {
-        public Task<IResult<
-            ICommitPackage<TAggregate>>> 
-            Evaluate(THandler service);
+        public Task<IResult<ICommitPackage<TAggregate>>> Evaluate(THandler service);
     }
 
     public interface IServiceCommand<THandler, TAggregate1, TAggregate2> : IServiceCommand

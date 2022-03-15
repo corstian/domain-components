@@ -3,7 +3,7 @@ using Domain.Components.Abstractions;
 using Domain.Example.Aggregates.GroupAggregate;
 using Domain.Example.Aggregates.UserAggregate;
 
-namespace Domain.Example.Services.GroupManagement
+namespace Domain.Example.Services
 {
     public class GroupManagementService : Service<GroupManagementService>
     {

@@ -38,7 +38,7 @@ namespace Domain.Components.Tests
                     aggregate, 
                     builder => builder
                         .IncludeCommand(new TestCommand()))
-                .EvaluateOperation();
+                .Evaluate();
 
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.ValueOrDefault);
@@ -67,7 +67,7 @@ namespace Domain.Components.Tests
                     proxy,
                     builder => builder
                         .IncludeCommand(new TestCommand()))
-                .EvaluateOperation();
+                .Evaluate();
 
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.ValueOrDefault);

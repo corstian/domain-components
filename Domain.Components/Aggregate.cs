@@ -2,7 +2,7 @@
 
 namespace Domain.Components
 {
-    public abstract class Aggregate
+    public abstract class Aggregate : IAggregate
     {
         public Guid Id { get; init; }
     }

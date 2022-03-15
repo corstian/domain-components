@@ -7,7 +7,7 @@
     }
 
     public interface ICommitPackageBuilder<TAggregate> : ICommitPackageBuilder
-        where TAggregate : IAggregate
+        where TAggregate : IAggregate<TAggregate>
     {
         IAggregate ICommitPackageBuilder.Aggregate => Aggregate;
         IList<ICommand> ICommitPackageBuilder.Commands => Commands.Cast<ICommand>().ToList();

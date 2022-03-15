@@ -11,7 +11,7 @@ namespace Domain.Components.Abstractions
     }
 
     public interface ICommitPackage<TAggregate> : ICommitPackage
-        where TAggregate : IAggregate
+        where TAggregate : IAggregate<TAggregate>
     {
         IAggregate ICommitPackage.Aggregate => Aggregate;
         IList<IEvent> ICommitPackage.Events => Events.Cast<IEvent>().ToList();

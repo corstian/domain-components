@@ -3,7 +3,7 @@
 namespace Domain.Components
 {
     public class CommitPackageBuilder<TAggregate> : ICommitPackageBuilder<TAggregate>
-        where TAggregate : IAggregate
+        where TAggregate : IAggregate<TAggregate>
     {
         public IAggregate<TAggregate> Aggregate { get; init; }
 

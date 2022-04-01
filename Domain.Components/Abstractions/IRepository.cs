@@ -3,6 +3,6 @@
     public interface IRepository<T>
         where T : IAggregate
     {
-        T ById(Guid id);
+        Task<T> ById(Guid id);
     }
 }

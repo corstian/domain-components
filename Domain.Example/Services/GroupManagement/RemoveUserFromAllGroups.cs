@@ -9,7 +9,7 @@ namespace Domain.Example.Services.GroupManagement
 
         public async Task<IResult<IEnumerable<ICommitPackage>>> Evaluate(GroupManagementService service)
         {
-            var user = service.UserRepository.ById(UserId);
+            var user = await service.UserRepository.ById(UserId);
 
             var factory = new CommitPackagesFactory();
 

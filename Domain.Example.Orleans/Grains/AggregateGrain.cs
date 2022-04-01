@@ -1,5 +1,4 @@
-﻿using Domain.Components;
-using Domain.Components.Abstractions;
+﻿using Domain.Components.Abstractions;
 using Domain.Example.Orleans.Interfaces;
 using Microsoft.Extensions.Logging;
 using Orleans;
@@ -67,4 +66,3 @@ namespace Domain.Example.Orleans.Grains
         }
     }
 }
-

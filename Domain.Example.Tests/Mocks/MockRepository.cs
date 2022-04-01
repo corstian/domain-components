@@ -2,6 +2,7 @@
 using Domain.Components.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Domain.Example.Tests.Mocks
 {
@@ -12,14 +13,14 @@ namespace Domain.Example.Tests.Mocks
 
         private Dictionary<Guid, T> _dictionary = new();
 
-        public T ById(Guid id) {
+        public Task<T> ById(Guid id) {
             if (!_dictionary.ContainsKey(id))
                 _dictionary.Add(id, new T
                 {
                     Id = id
                 });
 
-            return _dictionary.GetValueOrDefault(id)!;
+            return Task.FromResult(_dictionary.GetValueOrDefault(id)!);
         }
     }
 }

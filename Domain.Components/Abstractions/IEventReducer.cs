@@ -1,9 +1,15 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    public interface IEventReducer<in TEvent, TResult>
+    public interface IEventReducer<in TEvent> : IEventReducer<TEvent, Guid>
         where TEvent : IEvent
-        where TResult : struct
     {
-        TResult Reduce(TEvent @event);
+
+    }
+
+    public interface IEventReducer<in TEvent, TActivationType>
+        where TEvent : IEvent
+        where TActivationType : struct
+    {
+        TActivationType Reduce(TEvent @event);
     }
 }

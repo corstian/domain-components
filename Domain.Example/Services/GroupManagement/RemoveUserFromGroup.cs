@@ -10,10 +10,10 @@ namespace Domain.Example.Services.GroupManagement
         public Guid GroupId { get; init; }
         public Guid UserId { get; init; }
 
-        Task<IResult<IEnumerable<ICommitPackage>>> IServiceCommand<GroupManagementService>.Evaluate(GroupManagementService service)
+        async Task<IResult<IEnumerable<ICommitPackage>>> IServiceCommand<GroupManagementService>.Evaluate(GroupManagementService service)
         {
-            var group = service.GroupRepository.ById(GroupId);
-            var user = service.UserRepository.ById(UserId);
+            var group = await service.GroupRepository.ById(GroupId);
+            var user = await service.UserRepository.ById(UserId);
 
             AddressAggregate(group, builder => builder
                 .IncludeCommand(new RemoveUser
@@ -27,7 +27,7 @@ namespace Domain.Example.Services.GroupManagement
                     GroupId = GroupId
                 }));
 
-            return Evaluate();
+            return await Evaluate();
         }
     }
 }

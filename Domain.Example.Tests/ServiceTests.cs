@@ -39,12 +39,12 @@ namespace Domain.Example.Tests
 
             Assert.Equal(2, addedResult.Value.Count());
 
-            var user = userRepo.ById(userId);
+            var user = await userRepo.ById(userId);
 
             Assert.NotEmpty(user.Groups);
             Assert.Equal(groupId, user.Groups[0]);
 
-            var group = groupRepo.ById(groupId);
+            var group = await groupRepo.ById(groupId);
 
             Assert.NotEmpty(group.Members);
             Assert.Equal(userId, group.Members[0]);
@@ -90,7 +90,7 @@ namespace Domain.Example.Tests
                         await package.Apply();
             }
 
-            var user = userRepo.ById(userId);
+            var user = await userRepo.ById(userId);
 
             Assert.True(user.Groups.Count() == 10);
             Assert.True(user.Groups.Distinct().Count() == 10);

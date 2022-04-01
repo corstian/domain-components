@@ -18,14 +18,5 @@ namespace Domain.Example.Tests
             Assert.True(command is ICommand<User, IEvent<User>>);
             Assert.True(command is Command);
         }
-
-        [Fact]
-        public void FilterAsSubscribable()
-        {
-            var filter = new Renamed.JohnDoeFilter();
-
-            Assert.True(filter is IEventFilter<Renamed>);
-            Assert.True(filter is IEventFilter);
-        }
     }
 }

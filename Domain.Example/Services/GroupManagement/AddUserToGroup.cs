@@ -14,8 +14,8 @@ namespace Domain.Example.Services.GroupManagement
 
         async Task<IResult<IEnumerable<ICommitPackage>>> IServiceCommand<GroupManagementService>.Evaluate(GroupManagementService handler)
         {
-            var group = handler.GroupRepository.ById(GroupId);
-            var user = handler.UserRepository.ById(UserId);
+            var group = await handler.GroupRepository.ById(GroupId);
+            var user = await handler.UserRepository.ById(UserId);
 
             return await new CommitPackagesFactory()
                 .AddCommitPackage<Group>(group, groupBuilder => groupBuilder

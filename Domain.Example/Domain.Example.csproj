@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.2" />
+    <PackageReference Include="NodaMoney" Version="1.0.5" />
   </ItemGroup>
 
 </Project>

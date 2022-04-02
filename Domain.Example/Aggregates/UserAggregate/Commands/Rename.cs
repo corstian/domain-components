@@ -6,7 +6,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
 {
     public class Rename : ICommand<User, Renamed>
     {
-        public string Name { get; init; }
+        public string Name { get; init; } = "";
 
         IResult<Renamed> ICommand<User, Renamed>.Evaluate(User handler)
         {

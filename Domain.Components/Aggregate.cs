@@ -72,12 +72,12 @@ namespace Domain.Components
                 await Apply(@event);
         }
 
-        public async Task<TModel> GetSnapshot<TModel>()
+        public Task<TModel> GetSnapshot<TModel>()
             where TModel : ISnapshot<T>, new()
         {
             var model = Activator.CreateInstance<TModel>();
             model.Populate((T)this);
-            return model;
+            return Task.FromResult(model);
         }
     }
 }

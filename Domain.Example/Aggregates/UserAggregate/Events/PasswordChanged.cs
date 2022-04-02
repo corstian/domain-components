@@ -7,8 +7,8 @@ namespace Domain.Example.Aggregates.UserAggregate.Events
     {
         internal PasswordChanged() { }
 
-        public byte[] PasswordSalt { get; init; }
-        public byte[] PasswordHash { get; init; }
+        public byte[] PasswordSalt { get; init; } = Array.Empty<byte>();
+        public byte[] PasswordHash { get; init; } = Array.Empty<byte>();
 
         void IEvent<User>.Apply(User state)
         {

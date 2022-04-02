@@ -1,6 +1,8 @@
 ﻿namespace Domain.Components.Abstractions
 {
+    [Obsolete("IService should be merged with IServiceCommand")]
     public interface IService { }
+    [Obsolete("IService should be merged with IServiceCommand")]
     public interface IService<TService> : IService
         where TService : IService<TService>
     {

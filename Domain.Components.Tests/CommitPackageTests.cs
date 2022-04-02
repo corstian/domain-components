@@ -89,7 +89,7 @@ namespace Domain.Components.Tests
         }
 
         [Fact]
-        public async Task CommitPackageTest()
+        public void CommitPackageTest()
         {
             var proxy = new AggregateProxy<TestAggregate>();
 

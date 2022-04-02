@@ -7,7 +7,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
     public class AddGroup : ICommand<User, GroupAdded>
     {
         public Guid GroupId { get; init; }
-        public string Name { get; init; }
+        public string Name { get; init; } = "";
 
         IResult<GroupAdded> ICommand<User, GroupAdded>.Evaluate(User handler)
         {

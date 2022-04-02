@@ -92,7 +92,7 @@ namespace Domain.Example.Tests
 
             var user = await userRepo.ById(userId);
 
-            Assert.True(user.Groups.Count() == 10);
+            Assert.True(user.Groups.Count == 10);
             Assert.True(user.Groups.Distinct().Count() == 10);
 
             var clearingPackages = await service.Evaluate(new RemoveUserFromAllGroups

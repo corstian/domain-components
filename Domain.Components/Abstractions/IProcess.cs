@@ -6,7 +6,7 @@
         IRepository<T> GetRepository<T>()
             where T : IAggregate;
 
-        IService<T> GetService<T>()
-            where T : IService<T>;
+        T GetService<T>()
+            where T : IServiceCommand;
     }
 }

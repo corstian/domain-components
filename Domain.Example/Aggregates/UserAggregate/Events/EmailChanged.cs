@@ -7,7 +7,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Events
     {
         internal EmailChanged() { }
 
-        public string Email { get; init; }
+        public string Email { get; init; } = "";
 
         void IEvent<User>.Apply(User state)
         {

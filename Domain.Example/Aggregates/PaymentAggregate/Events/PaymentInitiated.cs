@@ -9,7 +9,7 @@ namespace Domain.Example.Aggregates.PaymentAggregate.Events
         internal PaymentInitiated() { }
 
         public Money Amount { get; init; }
-        public byte[] Secret { get; init; }
+        public byte[] Secret { get; init; } = Array.Empty<byte>();
         public Guid OrderId { get; init; }
 
         void IEvent<Payment>.Apply(Payment state)

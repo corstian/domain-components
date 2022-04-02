@@ -25,8 +25,8 @@ namespace Domain.Components.Tests.Mocks
             return Task.CompletedTask;
         }
 
-        public async Task<IResult<IEnumerable<IEvent<InterfaceAggregate>>>> Evaluate(ICommand<InterfaceAggregate> command)
-            => command.Evaluate(this);
+        public Task<IResult<IEnumerable<IEvent<InterfaceAggregate>>>> Evaluate(ICommand<InterfaceAggregate> command)
+            => Task.FromResult(command.Evaluate(this));
 
         public Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot<InterfaceAggregate>, new()
         {

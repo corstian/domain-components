@@ -6,7 +6,7 @@ using Domain.Example.Aggregates.PaymentAggregate.Events;
 
 namespace Domain.Example.ProcessManagers
 {
-    public class OrderPaymentProcess : LongRunningProcess<OrderPaymentProcess>,
+    public class OrderPaymentProcess : Process<OrderPaymentProcess>,
         IHandle<PaymentInitiated, AggregateIdEventReducer>,
         IHandle<PaymentConfirmed, AggregateIdEventReducer>
     {

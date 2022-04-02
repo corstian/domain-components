@@ -3,12 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Domain.Components
 {
-    public class LongRunningProcess<T> : ILongRunningProcess<T>
-        where T : ILongRunningProcess<T>
+    public class Process<T> : IProcess<T>
+        where T : IProcess<T>
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public LongRunningProcess(IServiceProvider serviceProvider)
+        public Process(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }

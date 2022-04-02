@@ -5,7 +5,7 @@ using Domain.Example.Aggregates.UserAggregate.Events;
 
 namespace Domain.Example.ProcessManagers
 {
-    public class UserRegistrationProcess : LongRunningProcess<UserRegistrationProcess>,
+    public class UserRegistrationProcess : Process<UserRegistrationProcess>,
         IHandle<Renamed, AggregateIdEventReducer>,
         IHandle<EmailChanged, AggregateIdEventReducer>
     {

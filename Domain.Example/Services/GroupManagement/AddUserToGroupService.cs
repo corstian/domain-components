@@ -7,27 +7,35 @@ using Domain.Example.Aggregates.UserAggregate.Commands;
 
 namespace Domain.Example.Services.GroupManagement
 {
-    public class AddUserToGroup : IServiceCommand<GroupManagementService>
+    public class AddUserToGroupService : IServiceCommand<(Guid groupId, Guid userId)>
     {
-        public Guid GroupId { get; init; }
-        public Guid UserId { get; init; }
+        private readonly IRepository<Group> _groupRepo;
+        private readonly IRepository<User> _userRepo;
 
-        async Task<IResult<IEnumerable<ICommitPackage>>> IServiceCommand<GroupManagementService>.Evaluate(GroupManagementService handler)
+        public AddUserToGroupService(
+            IRepository<Group> groupRepo,
+            IRepository<User> userRepo)
         {
-            var group = await handler.GroupRepository.ById(GroupId);
-            var user = await handler.UserRepository.ById(UserId);
+            _groupRepo = groupRepo;
+            _userRepo = userRepo;
+        } 
+
+        public async Task<IResult<IEnumerable<ICommitPackage>>> Evaluate((Guid groupId, Guid userId) args)
+        {
+            var group = await _groupRepo.ById(args.groupId);
+            var user = await _userRepo.ById(args.userId);
 
             return await new CommitPackagesFactory()
                 .AddCommitPackage<Group>(group, groupBuilder => groupBuilder
                     .IncludeCommand(new AddUser
                     {
-                        UserId = UserId,
+                        UserId = args.userId,
                         Name = user.Name
                     }))
                 .AddCommitPackage<User>(user, userBuilder => userBuilder
                     .IncludeCommand(new AddGroup
                     {
-                        GroupId = GroupId,
+                        GroupId = args.groupId,
                         Name = group.Name
                     }))
                 .Evaluate();

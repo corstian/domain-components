@@ -1,6 +1,5 @@
 ﻿using Domain.Example.Aggregates.GroupAggregate;
 using Domain.Example.Aggregates.UserAggregate;
-using Domain.Example.Services;
 using Domain.Example.Services.GroupManagement;
 using Domain.Example.Tests.Mocks;
 using System;
@@ -21,16 +20,8 @@ namespace Domain.Example.Tests
             var userId = Guid.NewGuid();
             var groupId = Guid.NewGuid();
 
-            var service = new GroupManagementService(
-                groupRepo,
-                userRepo);
-
-            var addedResult = await service
-                .Evaluate(new AddUserToGroup
-                {
-                    UserId = userId,
-                    GroupId = groupId
-                });
+            var addedResult = await new AddUserToGroupService(groupRepo, userRepo)
+                .Evaluate((groupId, userId));
 
             Assert.True(addedResult.IsSuccess);
 
@@ -51,12 +42,8 @@ namespace Domain.Example.Tests
 
             // And clear our results up
 
-            var removalResult = await service
-                .Evaluate(new RemoveUserFromGroup
-                {
-                    UserId = userId,
-                    GroupId = groupId
-                });
+            var removalResult = await new RemoveUserFromGroupService(groupRepo, userRepo)
+                .Evaluate((groupId, userId));
 
             Assert.True(removalResult.IsSuccess);
 
@@ -73,17 +60,12 @@ namespace Domain.Example.Tests
             var userRepo = new MockRepository<User>();
             var groupRepo = new MockRepository<Group>();
 
-            var service = new GroupManagementService(groupRepo, userRepo);
-
             var userId = Guid.NewGuid();
 
             for (var i = 0; i < 10; i++)
             {
-                var result = await service.Evaluate(new AddUserToGroup
-                {
-                    UserId = userId,
-                    GroupId = Guid.NewGuid()
-                });
+                var result = await new AddUserToGroupService(groupRepo, userRepo)
+                    .Evaluate((Guid.NewGuid(), userId));
 
                 if (result.IsSuccess)
                     foreach (var package in result.Value)
@@ -95,10 +77,8 @@ namespace Domain.Example.Tests
             Assert.True(user.Groups.Count == 10);
             Assert.True(user.Groups.Distinct().Count() == 10);
 
-            var clearingPackages = await service.Evaluate(new RemoveUserFromAllGroups
-            {
-                UserId = userId
-            });
+            var clearingPackages = await new RemoveUserFromAllGroupsService(userRepo, new RemoveUserFromGroupService(groupRepo, userRepo))
+                .Evaluate(userId);
 
             if (clearingPackages.IsSuccess)
                 foreach (var package in clearingPackages.Value)

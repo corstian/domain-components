@@ -8,7 +8,9 @@ namespace Domain.Components
     {
         private int _index = 0;
         private Dictionary<int, ICommitPackageBuilder> _builders = new();
-        private Dictionary<int, (IService service, IServiceCommand command)> _serviceCommands = new();
+        private Dictionary<int, Task<IResult<IEnumerable<ICommitPackage>>>> _serviceCommands = new();
+
+        //private Dictionary<int, (IService service, IServiceCommand command)> _serviceCommands = new();
 
         public CommitPackagesFactory AddCommitPackage<TAggregate>(
             IAggregate<TAggregate> aggregate,
@@ -27,13 +29,11 @@ namespace Domain.Components
             return this;
         }
 
-        public CommitPackagesFactory AddServiceCommand<TService>(
-            IService<TService> service,
-            IServiceCommand<TService> command)
-            where TService : IService<TService>
+        public CommitPackagesFactory AddService(
+            Task<IResult<IEnumerable<ICommitPackage>>> promise)
         {
-            _serviceCommands.Add(_index++, (service, command));
-
+            _serviceCommands.Add(_index++, promise);
+            
             return this;
         }
 
@@ -53,12 +53,7 @@ namespace Domain.Components
                 } 
                 else if (_serviceCommands.TryGetValue(i, out var serviceCommand))
                 {
-                    (IService service, IServiceCommand command) = serviceCommand;
-
-                    var result = await service
-                        .GetType()
-                        .GetMethod("Evaluate")
-                        .InvokeAsync(service, command) as IResult<IEnumerable<ICommitPackage>>;
+                    var result = await serviceCommand;
 
                     reasons.AddRange(result.Reasons);
                     packages.AddRange(result.ValueOrDefault);

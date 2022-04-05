@@ -44,17 +44,13 @@ namespace Domain.Components.Tests
             Assert.True(proxy is IAggregate<TestAggregate>);
         }
 
-        // Disabled warnings for the sake of this test.
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         [Fact]
         public void CommitPackageTypeTests()
         {
-            
-            var commitPackage = new CommitPackage<TestAggregate>(null, null);
+            var commitPackage = new CommitPackage<TestAggregate>();
 
             Assert.True(commitPackage is ICommitPackage);
             Assert.True(commitPackage is ICommitPackage<TestAggregate>);
         }
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
     }
 }

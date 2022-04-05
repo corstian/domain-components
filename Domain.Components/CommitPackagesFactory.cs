@@ -10,8 +10,6 @@ namespace Domain.Components
         private Dictionary<int, ICommitPackageBuilder> _builders = new();
         private Dictionary<int, Task<IResult<IEnumerable<ICommitPackage>>>> _serviceCommands = new();
 
-        //private Dictionary<int, (IService service, IServiceCommand command)> _serviceCommands = new();
-
         public CommitPackagesFactory AddCommitPackage<TAggregate>(
             IAggregate<TAggregate> aggregate,
             Action<CommitPackageBuilder<TAggregate>> builder)

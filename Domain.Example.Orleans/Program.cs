@@ -11,9 +11,16 @@ using Orleans.Hosting;
 using var host = new HostBuilder()
     .UseOrleans(builder => builder
         .UseLocalhostClustering()
-        .AddMemoryGrainStorageAsDefault()
         .ConfigureLogging(logging => logging.AddConsole())
         .AddSimpleMessageStreamProvider("stream")
+        //.AddMemoryGrainStorageAsDefault()
+        .AddAzureBlobGrainStorageAsDefault(options =>
+        {
+            options.UseJson = true;
+            options.IndentJson = true;
+            options.ConfigureBlobServiceClient("DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;");
+        })
+        .AddLogStorageBasedLogConsistencyProvider()
         .AddMemoryGrainStorage("PubSubStore"))
     .Build();
 
@@ -24,15 +31,16 @@ var grainFactory = host.Services.GetRequiredService<IGrainFactory>();
 
 var user = grainFactory.GetGrain<IAggregateGrain<User>>(Guid.NewGuid());
 
-var command = new ChangeEmail
+var command = new ChangeInfo
 {
+    Name = Guid.NewGuid().ToString(),
     Email = "john.doe@example.com"
 };
 
 var result = await user.EvaluateTypedCommand(command);
 
 if (result.IsSuccess)
-    await user.Apply(result.Value);
+    await user.Apply(result.Value.Item1, result.Value.Item2);
 
 Console.WriteLine("Press Enter to terminate...");
 Console.ReadLine();

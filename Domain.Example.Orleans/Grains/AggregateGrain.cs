@@ -3,10 +3,12 @@ using Domain.Example.Orleans.Interfaces;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.EventSourcing;
+using Orleans.Providers;
 using Orleans.Streams;
 
 namespace Domain.Example.Orleans.Grains
 {
+    [LogConsistencyProvider(ProviderName = "LogStorage")]
     public class AggregateGrain<T> : JournaledGrain<T, IEvent<T>>, IAggregateGrain<T>
         where T : class, IAggregate<T>, new()
     {
@@ -20,18 +22,21 @@ namespace Domain.Example.Orleans.Grains
             _logger = logger;
         }
 
-        public override Task OnActivateAsync()
+        public override async Task OnActivateAsync()
         {
             var streamProvider = GetStreamProvider("stream");
 
             _stream = streamProvider.GetStream<IEvent<T>>(this.GetPrimaryKey(), typeof(T).Name);
 
-            return base.OnActivateAsync();
+            await RefreshNow();
+
+            await base.OnActivateAsync();
         }
 
         public async Task Apply(IEvent<T> @event)
         {
-            await State.Apply(@event);
+            RaiseEvent(@event);
+
             await ConfirmEvents();
             await _stream.OnNextAsync(@event);
             _logger.LogInformation("Event applied: {event}", @event);
@@ -39,10 +44,15 @@ namespace Domain.Example.Orleans.Grains
 
         public async Task Apply(params IEvent<T>[] events)
         {
-            await State.Apply(events);
+            RaiseEvents(events);
 
             await ConfirmEvents();
-            await _stream.OnNextBatchAsync(events);
+            // Not supported...
+            //await _stream.OnNextBatchAsync(events);
+            
+            foreach (var @event in events)
+                await _stream.OnNextAsync(@event);
+            
             _logger.LogInformation("Events applied: {events}", events);
         }
 

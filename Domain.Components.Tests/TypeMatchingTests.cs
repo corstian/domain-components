@@ -21,7 +21,6 @@ namespace Domain.Components.Tests
 
             Assert.True(@event is IEvent<TestAggregate>);
             Assert.True(@event is IEvent);
-            Assert.True(@event is Event<TestAggregate>);
             Assert.True(@event is Event);
         }
 

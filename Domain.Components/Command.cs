@@ -1,6 +1,8 @@
-﻿namespace Domain.Components
+﻿using Domain.Components.Abstractions;
+
+namespace Domain.Components
 {
-    public abstract class Command
+    public abstract class Command : ICommand
     {
         internal readonly AuthSpec<object>? AuthSpec;
 

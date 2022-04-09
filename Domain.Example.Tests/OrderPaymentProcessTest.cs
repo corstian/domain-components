@@ -1,4 +1,5 @@
 ﻿using Domain.Components.Abstractions;
+using Domain.Components.Extensions;
 using Domain.Example.Aggregates.OrderAggregate;
 using Domain.Example.Aggregates.PaymentAggregate;
 using Domain.Example.Aggregates.PaymentAggregate.Commands;
@@ -27,18 +28,26 @@ namespace Domain.Example.Tests
         [Fact]
         public async Task TestPaymentProcess()
         {
-            var bus = new MockEventBus();
+            /*
+             * ToDo: Create a helper which initializes these dependencies       ||
+             *                                                                  \/                                                             
+             */
 
-            var orderRepo = new MockRepository<Order>();
-            var paymentRepo = new MockRepository<Payment>();
-
-            IServiceCollection collection = new ServiceCollection();
-            collection.AddSingleton<IRepository<Order>>(orderRepo);
-            collection.AddSingleton<IRepository<Payment>>(paymentRepo);
-            var serviceProvider = collection.BuildServiceProvider();
+            var bus = new MockEventBus();                                       //
+                                                                                //
+            var orderRepo = new MockRepository<Order>();                        //
+            var paymentRepo = new MockRepository<Payment>();                    //
+                                                                                //
+            IServiceCollection collection = new ServiceCollection();            //
+            collection.AddSingleton<IRepository<Order>>(orderRepo);             //
+            collection.AddSingleton<IRepository<Payment>>(paymentRepo);         //
+            var serviceProvider = collection.BuildServiceProvider();            //
+                                                                                //
 
             var process = new OrderPaymentProcess(serviceProvider);
 
+
+            // The subscribe statement below should be handled through reflection upon instantiation. (See comment above)
             bus.EventStream.Subscribe(async @event =>
             {
                 if (@event is PaymentInitiated _1) await process.Process(_1);
@@ -49,18 +58,18 @@ namespace Domain.Example.Tests
             var order = await orderRepo.ById(Guid.NewGuid());
             var payment = await paymentRepo.ById(Guid.NewGuid());
 
-            var paymentInitiated = await payment.Evaluate(new InitiatePayment
+            var paymentInitiated = await payment.EvaluateAndApply(new InitiatePayment
             {
                 Amount = 10,
                 OrderId = order.Id
             });
-            await payment.Apply(paymentInitiated.Value);
+
+            // ToDo: The publish should be handled automatically by a piece of infrastructure
             bus.Publish(paymentInitiated.Value);
 
             System.Threading.Thread.Sleep(1000);
 
-            var paymentConfirmed = await payment.Evaluate(new ConfirmPayment());
-            await payment.Apply(paymentConfirmed.Value);
+            var paymentConfirmed = await payment.EvaluateAndApply(new ConfirmPayment());
             bus.Publish(paymentConfirmed.Value);
 
             Assert.Equal(order.Id, process.OrderId);

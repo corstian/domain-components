@@ -12,7 +12,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
         IResult<(Renamed, EmailChanged)> ICommand<User, Renamed, EmailChanged>.Evaluate(User handler)
         {
             if (!Email.Contains('@')) return DomainResult.Fail<(Renamed, EmailChanged)>("No @");
-
+            
             return DomainResult.Ok((
                 new Renamed { Name = Name },
                 new EmailChanged { Email = Email }));

@@ -29,7 +29,7 @@ await host.StartAsync();
 // Get the grain factory
 var grainFactory = host.Services.GetRequiredService<IGrainFactory>();
 
-var user = grainFactory.GetGrain<IAggregateGrain<User>>(Guid.NewGuid());
+var user = grainFactory.GetGrain<IAggregateGrain<User>>(Guid.Parse("ecb4d601-2ecc-48e7-bf3e-8d7a29e733c6"));
 
 var command = new ChangeInfo
 {

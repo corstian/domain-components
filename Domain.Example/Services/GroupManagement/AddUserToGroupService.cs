@@ -7,7 +7,7 @@ using Domain.Example.Aggregates.UserAggregate.Commands;
 
 namespace Domain.Example.Services.GroupManagement
 {
-    public class AddUserToGroupService : IServiceCommand<(Guid groupId, Guid userId)>
+    public class AddUserToGroupService : IService<(Guid groupId, Guid userId)>
     {
         private readonly IRepository<Group> _groupRepo;
         private readonly IRepository<User> _userRepo;
@@ -18,7 +18,7 @@ namespace Domain.Example.Services.GroupManagement
         {
             _groupRepo = groupRepo;
             _userRepo = userRepo;
-        } 
+        }
 
         public async Task<IResult<IEnumerable<ICommitPackage>>> Evaluate((Guid groupId, Guid userId) args)
         {

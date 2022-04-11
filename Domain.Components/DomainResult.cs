@@ -5,8 +5,7 @@ namespace Domain.Components
 {
     public partial class DomainResult : ResultBase<DomainResult>
     {
-        public DomainResult()
-        { }
+        public DomainResult() { }
 
         public DomainResult<TNewValue> ToResult<TNewValue>(TNewValue newValue = default)
         {

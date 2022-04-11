@@ -7,6 +7,6 @@
             where T : IAggregate;
 
         T GetService<T>()
-            where T : IServiceCommand;
+            where T : IService;
     }
 }

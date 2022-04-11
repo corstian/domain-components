@@ -7,7 +7,7 @@ using Domain.Example.Aggregates.UserAggregate.Commands;
 
 namespace Domain.Example.Services.GroupManagement
 {
-    public class RemoveUserFromGroupService : IServiceCommand<(Guid groupId, Guid userId)>
+    public class RemoveUserFromGroupService : IService<(Guid groupId, Guid userId)>
     {
         private readonly IRepository<Group> _groupRepo;
         private readonly IRepository<User> _userRepo;

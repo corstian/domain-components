@@ -16,6 +16,8 @@ using var host = new HostBuilder()
         //.AddMemoryGrainStorageAsDefault()
         .AddAzureBlobGrainStorageAsDefault(options =>
         {
+            options.UseFullAssemblyNames = false;
+            options.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto;
             options.UseJson = true;
             options.IndentJson = true;
             options.ConfigureBlobServiceClient("DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;");
@@ -29,11 +31,13 @@ await host.StartAsync();
 // Get the grain factory
 var grainFactory = host.Services.GetRequiredService<IGrainFactory>();
 
-var user = grainFactory.GetGrain<IAggregateGrain<User>>(Guid.NewGuid());
+var guid = Guid.Parse("86308691-e97b-45f7-b1b3-8f9765bf3605");
+
+var user = grainFactory.GetGrain<IAggregateGrain<User>>(guid);
 
 var command = new ChangeInfo
 {
-    Name = Guid.NewGuid().ToString(),
+    Name = guid.ToString(),
     Email = "john.doe@example.com"
 };
 

@@ -13,6 +13,8 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
         {
             if (!Email.Contains('@')) return DomainResult.Fail<(Renamed, EmailChanged)>("No @");
 
+            if (handler.Email == Email && handler.Name == Name) return DomainResult.Fail<(Renamed, EmailChanged)>("Nothing changed");
+
             return DomainResult.Ok((
                 new Renamed { Name = Name },
                 new EmailChanged { Email = Email }));

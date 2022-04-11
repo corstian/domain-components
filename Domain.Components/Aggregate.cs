@@ -21,7 +21,10 @@ namespace Domain.Components
             foreach (var @event in events)
             {
                 if (@event is Event e)
+                {
                     e.AggregateId = Id;
+                    e.Timestamp = DateTime.UtcNow;
+                }
             }
 
             return Task.FromResult(result);
@@ -37,7 +40,10 @@ namespace Domain.Components
             var @event = result.Value;
 
             if (@event is Event e)
+            {
                 e.AggregateId = Id;
+                e.Timestamp = DateTime.UtcNow;
+            }
 
             return Task.FromResult(result);
         }
@@ -51,10 +57,16 @@ namespace Domain.Components
             if (result.IsFailed) return Task.FromResult(result);
 
             if (result.Value.Item1 is Event e1)
+            {
                 e1.AggregateId = Id;
+                e1.Timestamp = DateTime.UtcNow;
+            }
 
             if (result.Value.Item2 is Event e2)
+            {
                 e2.AggregateId = Id;
+                e2.Timestamp = DateTime.UtcNow;
+            }
             
             return Task.FromResult(result);
         }

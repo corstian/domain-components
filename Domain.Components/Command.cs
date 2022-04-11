@@ -4,9 +4,17 @@ namespace Domain.Components
 {
     public abstract class Command : ICommand
     {
-        internal readonly AuthSpec<object>? AuthSpec;
 
-        public Command(AuthSpec<object>? authSpec = null)
+    }
+
+    public abstract class Command<T>
+        where T : IAggregate<T>
+    {
+        internal readonly AuthSpec<T, IAuthorizationContext>? AuthSpec;
+
+        public Command() { }
+
+        public Command(AuthSpec<T, IAuthorizationContext>? authSpec)
         {
             AuthSpec = authSpec;
         }

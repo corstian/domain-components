@@ -1,6 +1,8 @@
-﻿using Domain.Components.Extensions;
+﻿using Domain.Components.Abstractions;
+using Domain.Components.Extensions;
 using Domain.Components.Tests.Mocks;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -60,7 +62,31 @@ namespace Domain.Components.Tests
                 Name = "John Doe"
             });
 
-            await aggregate.EvaluateAndApply(new AuthorizedTestCommand(specification));
+            var result = await aggregate.EvaluateAndApply(new AuthorizedTestCommand(specification));
+
+            var e = result.Value.First() as Event;
+
+            Assert.NotNull(e);
+            Assert.True(e.AuthorizationContext is UserMock);
+            Assert.True(((UserMock)e.AuthorizationContext).Name == "John Doe");
+        }
+
+        [Fact]
+        public async Task Event_FromAggregate_FailsAuthorization()
+        {
+            var aggregate = new TestAggregate
+            {
+                Id = Guid.NewGuid()
+            };
+
+            var specification = new AuthSpecMock(new UserMock
+            {
+                Name = "Jane Doe"
+            });
+
+            var result = await aggregate.EvaluateAndApply(new AuthorizedTestCommand(specification));
+
+            Assert.True(result.IsFailed);
         }
     }
 }

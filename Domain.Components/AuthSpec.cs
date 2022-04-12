@@ -11,22 +11,27 @@ namespace Domain.Components
 
         private readonly Lazy<Func<TAggregate, IAuthorizationContext, bool>> _compiledExpression;
 
-        private readonly IAuthorizationContext _authorizationContext;
+        public IAuthorizationContext AuthorizationContext { get; private set; }
 
-        public override Expression<Func<TAggregate, bool>> Expression => (t) => _compiledExpression.Value.Invoke(t, _authorizationContext);
+        public override Expression<Func<TAggregate, bool>> Expression => (t) => _compiledExpression.Value.Invoke(t, AuthorizationContext);
 
         public AuthSpec(
             IAuthorizationContext context,
             Expression<Func<TAggregate, IAuthorizationContext, bool>> expression)
         {
             _expression = expression;
-            _authorizationContext = context;
+            AuthorizationContext = context;
             _compiledExpression = new Lazy<Func<TAggregate, IAuthorizationContext, bool>>(() => _expression.Compile());
         }
 
         public override bool IsSatisfiedBy(TAggregate candidate)
         {
-            return _compiledExpression.Value.Invoke(candidate, _authorizationContext);
+            return _compiledExpression.Value.Invoke(candidate, AuthorizationContext);
+        }
+
+        public override string ToString()
+        {
+            return "";
         }
     }
 
@@ -54,6 +59,11 @@ namespace Domain.Components
         public override bool IsSatisfiedBy(TAggregate candidate)
         {
             return _compiledExpression.Value.Invoke(candidate, _authorizationContext);
+        }
+
+        public override string ToString()
+        {
+            return "";
         }
     }
 }

@@ -1,14 +1,15 @@
 ﻿using Domain.Components.Abstractions;
+using System.Collections.Generic;
 
 namespace Domain.Components.Tests.Mocks
 {
-    public class AuthorizedTestCommand : Command<TestAggregate>, ICommand<TestAggregate, TestEvent>
+    public class AuthorizedTestCommand : AuthorizedCommand<TestAggregate>
     {
-        public AuthorizedTestCommand(AuthSpec<TestAggregate, IAuthorizationContext>? authSpec) : base(authSpec)
+        public AuthorizedTestCommand(AuthSpec<TestAggregate>? authSpec) : base(authSpec)
         {
         }
 
-        IResult<TestEvent> ICommand<TestAggregate, TestEvent>.Evaluate(TestAggregate handler)
-            => DomainResult.Ok(new TestEvent());
+        public override IResult<IEnumerable<IEvent<TestAggregate>>> Evaluate(TestAggregate handler)
+            => DomainResult.Ok<IEnumerable<IEvent<TestAggregate>>>(new[] { new TestEvent() });
     }
 }

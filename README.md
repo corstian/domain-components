@@ -1,6 +1,8 @@
 # Components for a solid domain
 ***Providing an opinionated interaction pattern against the domain***
 
+> ℹ️ This repository contains practical and working examples of the things shown during the DDD Europe session ["How complex software impacts your cognitive abilities"](https://www.corstianboerman.com/blog/2022-06-24/how-complex-software-impacts-your-cognitive-abilities). The contents of this repository are very much experimental.
+
 The `Domain.Components` consists of a number of classes and interfaces defining behavioural patterns for domain components. The goal of this library is to simplify domain development by constraining the domain's interaction patterns in a number of ways.
 
 These constraints pay for themselves as the following properties and behaviours can be provided virtually free-of-charge:

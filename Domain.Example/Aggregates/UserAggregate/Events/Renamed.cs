@@ -7,7 +7,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Events
     {
         internal Renamed() { }
 
-        public string Name { get; init; } = "";
+        public string Name { get; init; }
 
         void IEvent<User>.Apply(User state)
         {

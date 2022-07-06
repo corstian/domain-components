@@ -42,14 +42,5 @@ namespace Domain.Components.Tests
             Assert.True(proxy is IAggregate);
             Assert.True(proxy is IAggregate<TestAggregate>);
         }
-
-        [Fact]
-        public void CommitPackageTypeTests()
-        {
-            var commitPackage = new CommitPackage<TestAggregate>();
-
-            Assert.True(commitPackage is ICommitPackage);
-            Assert.True(commitPackage is ICommitPackage<TestAggregate>);
-        }
     }
 }

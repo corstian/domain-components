@@ -16,7 +16,5 @@ namespace Domain.Components
         public IRepository<T1> GetRepository<T1>() where T1 : IAggregate
             => _serviceProvider.GetRequiredService<IRepository<T1>>();
 
-        public T1 GetService<T1>() where T1 : IService
-            => _serviceProvider.GetRequiredService<T1>();
     }
 }

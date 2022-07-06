@@ -2,7 +2,7 @@
 
 namespace Domain.Components.Experiment
 {
-    public interface ICommandPackage { 
+    public interface ICommandPackage  : IComposable { 
         public IAggregate Target { get; }
         public IEnumerable<ICommand> Commands { get; }
     }

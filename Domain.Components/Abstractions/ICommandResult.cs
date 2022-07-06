@@ -5,14 +5,14 @@
     public interface ICommandResult<THandler> : ICommandResult
         where THandler : IAggregate
     {
-        public IResult<IEnumerable<IEvent<THandler>>> Result { get; init; }
+        public IResult<IEnumerable<IEvent<THandler>>> Result { get; }
     }
 
-    public interface ICommandResult<THandler, TEvent> : ICommandResult
+    public interface ICommandResult<THandler, out TEvent> : ICommandResult
         where THandler : IAggregate
         where TEvent : IEvent<THandler>
     {
-        public IResult<TEvent> Result { get; init; }
+        public IResult<TEvent> Result { get; }
     }
 
     public interface ICommandResult<THandler, TEvent1, TEvent2> : ICommandResult
@@ -20,7 +20,7 @@
         where TEvent1 : IEvent<THandler>
         where TEvent2 : IEvent<THandler>
     {
-        public IResult<(TEvent1, TEvent2)> Result { get; init; }
+        public IResult<(TEvent1, TEvent2)> Result { get; }
     }
 
     // Concrete classes
@@ -34,7 +34,7 @@
             Result = result;
         }
 
-        public IResult<IEnumerable<IEvent<THandler>>> Result { get; init; }
+        public IResult<IEnumerable<IEvent<THandler>>> Result { get; }
     }
 
     public class CommandResult<THandler, TEvent> : ICommandResult<THandler, TEvent>
@@ -47,7 +47,7 @@
             Result = result;
         }
 
-        public IResult<TEvent> Result { get; init; }
+        public IResult<TEvent> Result { get; }
     }
 
     public class CommandResult<THandler, TEvent1, TEvent2> : ICommandResult<THandler, TEvent1, TEvent2>
@@ -61,6 +61,6 @@
             Result = result;
         }
 
-        public IResult<(TEvent1, TEvent2)> Result { get; init; }
+        public IResult<(TEvent1, TEvent2)> Result { get; }
     }
 }

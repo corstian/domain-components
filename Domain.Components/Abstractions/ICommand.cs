@@ -12,7 +12,7 @@
         public ICommandResult<THandler> EvaluateToResult(THandler handler) => new CommandResult<THandler>(Evaluate(handler));
     }
 
-    public interface ICommand<THandler, TEvent> : ICommand, ICommand<THandler>
+    public interface ICommand<THandler, out TEvent> : ICommand, ICommand<THandler>
             where THandler : IAggregate
             where TEvent : IEvent<THandler>
     {

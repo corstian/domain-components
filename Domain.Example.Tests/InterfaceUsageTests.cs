@@ -36,7 +36,7 @@ namespace Domain.Example.Tests
         {
             var aggregate = new UserProxy();
 
-            var command = new Rename();
+            var command = new Rename { Name = "John" };
 
             var result = await aggregate.EvaluateTypedCommand(command);
 

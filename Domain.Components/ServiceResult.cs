@@ -7,10 +7,10 @@ namespace Domain.Components
     /// 
     /// </summary>
     /// <typeparam name="TCommandPackage"></typeparam>
-    public class ServiceResult<TCommandPackage> : IServiceResult<TCommandPackage>
-        where TCommandPackage : ICommandPackage
+    public class ServiceResult<TComposable> : IServiceResult<TComposable>
+        where TComposable : IComposable
     {
-        public TCommandPackage CommandPackage { get; init; }
+        public TComposable Composable { get; init; }
     }
 
     /// <summary>
@@ -18,12 +18,12 @@ namespace Domain.Components
     /// </summary>
     /// <typeparam name="TCommandPackage1"></typeparam>
     /// <typeparam name="TCommandPackage2"></typeparam>
-    public class ServiceResult<TCommandPackage1, TCommandPackage2> : IServiceResult<TCommandPackage1, TCommandPackage2>
-        where TCommandPackage1 : ICommandPackage
-        where TCommandPackage2 : ICommandPackage
+    public class ServiceResult<TComposable1, TComposable2> : IServiceResult<TComposable1, TComposable2>
+        where TComposable1 : IComposable
+        where TComposable2 : IComposable
     {
-        public TCommandPackage1 CommandPackage1 { get; init; }
-        public TCommandPackage2 CommandPackage2 { get; init; }
+        public TComposable1 Composable1 { get; init; }
+        public TComposable2 Composable2 { get; init; }
     }
 
     /// <summary>
@@ -32,14 +32,14 @@ namespace Domain.Components
     /// <typeparam name="TCommandPackage1"></typeparam>
     /// <typeparam name="TCommandPackage2"></typeparam>
     /// <typeparam name="TCommandPackage3"></typeparam>
-    public class ServiceResult<TCommandPackage1, TCommandPackage2, TCommandPackage3> : IServiceResult<TCommandPackage1, TCommandPackage2, TCommandPackage3>
-        where TCommandPackage1 : ICommandPackage
-        where TCommandPackage2 : ICommandPackage
-        where TCommandPackage3 : ICommandPackage
+    public class ServiceResult<TComposable1, TComposable2, TComposable3> : IServiceResult<TComposable1, TComposable2, TComposable3>
+        where TComposable1 : ICommandPackage
+        where TComposable2 : ICommandPackage
+        where TComposable3 : ICommandPackage
     {
-        public TCommandPackage1 CommandPackage1 { get; init; }
-        public TCommandPackage2 CommandPackage2 { get; init; }
-        public TCommandPackage3 CommandPackage3 { get; init; }
+        public TComposable1 Composable1 { get; init; }
+        public TComposable2 Composable2 { get; init; }
+        public TComposable3 Composable3 { get; init; }
     }
 
     /// <summary>
@@ -49,15 +49,15 @@ namespace Domain.Components
     /// <typeparam name="TCommandPackage2"></typeparam>
     /// <typeparam name="TCommandPackage3"></typeparam>
     /// <typeparam name="TCommandPackage4"></typeparam>
-    public class ServiceResult<TCommandPackage1, TCommandPackage2, TCommandPackage3, TCommandPackage4> : IServiceResult<TCommandPackage1, TCommandPackage2, TCommandPackage3, TCommandPackage4>
-        where TCommandPackage1 : ICommandPackage
-        where TCommandPackage2 : ICommandPackage
-        where TCommandPackage3 : ICommandPackage
-        where TCommandPackage4 : ICommandPackage
+    public class ServiceResult<TComposable1, TComposable2, TComposable3, TComposable4> : IServiceResult<TComposable1, TComposable2, TComposable3, TComposable4>
+        where TComposable1 : ICommandPackage
+        where TComposable2 : ICommandPackage
+        where TComposable3 : ICommandPackage
+        where TComposable4 : ICommandPackage
     {
-        public TCommandPackage1 CommandPackage1 { get; init; }
-        public TCommandPackage2 CommandPackage2 { get; init; }
-        public TCommandPackage3 CommandPackage3 { get; init; }
-        public TCommandPackage4 CommandPackage4 { get; init; }
+        public TComposable1 Composable1 { get; init; }
+        public TComposable2 Composable2 { get; init; }
+        public TComposable3 Composable3 { get; init; }
+        public TComposable4 Composable4 { get; init; }
     }
 }

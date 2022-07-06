@@ -17,7 +17,7 @@ namespace Domain.Components.Extensions
 
             => new ServiceResult<TCommandPackage>
             {
-                CommandPackage = builder.Invoke(new CommandPackage())
+                Composable = builder.Invoke(new CommandPackage())
             };
 
         /// <summary>
@@ -36,8 +36,8 @@ namespace Domain.Components.Extensions
             where TCommandPackage2 : ICommandPackage
             => new ServiceResult<TCommandPackage1, TCommandPackage2>
             {
-                CommandPackage1 = serviceResult.CommandPackage,
-                CommandPackage2 = builder.Invoke(new CommandPackage())
+                Composable1 = serviceResult.Composable,
+                Composable2 = builder.Invoke(new CommandPackage())
             };
 
         /// <summary>
@@ -58,9 +58,9 @@ namespace Domain.Components.Extensions
             where TCommandPackage3 : ICommandPackage
             => new ServiceResult<TCommandPackage1, TCommandPackage2, TCommandPackage3>
             {
-                CommandPackage1 = serviceResult.CommandPackage1,
-                CommandPackage2 = serviceResult.CommandPackage2,
-                CommandPackage3 = builder.Invoke(new CommandPackage())
+                Composable1 = serviceResult.Composable1,
+                Composable2 = serviceResult.Composable2,
+                Composable3 = builder.Invoke(new CommandPackage())
             };
 
         /// <summary>
@@ -83,10 +83,10 @@ namespace Domain.Components.Extensions
             where TCommandPackage4 : ICommandPackage
             => new ServiceResult<TCommandPackage1, TCommandPackage2, TCommandPackage3, TCommandPackage4>
             {
-                CommandPackage1 = serviceResult.CommandPackage1,
-                CommandPackage2 = serviceResult.CommandPackage2,
-                CommandPackage3 = serviceResult.CommandPackage3,
-                CommandPackage4 = builder.Invoke(new CommandPackage())
+                Composable1 = serviceResult.Composable1,
+                Composable2 = serviceResult.Composable2,
+                Composable3 = serviceResult.Composable3,
+                Composable4 = builder.Invoke(new CommandPackage())
             };
 
         

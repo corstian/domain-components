@@ -30,8 +30,8 @@ namespace Domain.Components
             return Task.FromResult(result);
         }
 
-        public Task<IResult<E>> Evaluate<E>(ICommand<T, E> @command)
-            where E : IEvent<T>
+        public Task<IResult<R>> Evaluate<R>(ICommand<T, R> @command)
+            where R : ICommandResult<T>
         {
             var result = command.Evaluate((T)this);
 
@@ -48,29 +48,6 @@ namespace Domain.Components
             return Task.FromResult(result);
         }
 
-        public Task<IResult<(E1, E2)>> Evaluate<E1, E2>(ICommand<T, E1, E2> @command)
-                where E1 : IEvent<T>
-                where E2 : IEvent<T>
-        {
-            var result = command.Evaluate((T)this);
-
-            if (result.IsFailed) return Task.FromResult(result);
-
-            if (result.Value.Item1 is Event e1)
-            {
-                e1.AggregateId = Id;
-                e1.Timestamp = DateTime.UtcNow;
-            }
-
-            if (result.Value.Item2 is Event e2)
-            {
-                e2.AggregateId = Id;
-                e2.Timestamp = DateTime.UtcNow;
-            }
-            
-            return Task.FromResult(result);
-        }
-
         public Task Apply(IEvent<T> @event)
         {
             @event.Apply((T)this);
@@ -83,6 +60,9 @@ namespace Domain.Components
             foreach (var @event in events)
                 await Apply(@event);
         }
+
+        public Task Apply(ICommandResult<T> commandResult)
+            => Apply(commandResult.Result.ToArray());
 
         public Task<TModel> GetSnapshot<TModel>()
             where TModel : ISnapshot<T>, new()

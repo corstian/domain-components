@@ -18,6 +18,13 @@ namespace Domain.Example.Tests
                 Id = Guid.NewGuid()
             };
 
+            public Task Apply(ICommandResult<User> commandResult)
+                => User.Apply(commandResult);
+
+            public Task<IResult<TResult>> Evaluate<TResult>(ICommand<User, TResult> command)
+                where TResult : ICommandResult<User>
+                => User.Evaluate(command);
+
             Task IAggregate<User>.Apply(IEvent<User> @event)
                 => User.Apply(@event);
 
@@ -57,10 +64,12 @@ namespace Domain.Example.Tests
             var result = await aggregate.EvaluateTypedCommand(command);
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(aggregate.User.Id, result.Value.Item1.AggregateId);
-            Assert.Equal("John Doe", result.Value.Item1.Name);
-            Assert.Equal(aggregate.User.Id, result.Value.Item2.AggregateId);
-            Assert.Equal("john.doe@example.com", result.Value.Item2.Email);
+
+            Assert.Equal(aggregate.User.Id, result.Value.Renamed.AggregateId);
+            Assert.Equal("John Doe", result.Value.Renamed.Name);
+
+            Assert.Equal(aggregate.User.Id, result.Value.EmailChanged.AggregateId);
+            Assert.Equal("john.doe@example.com", result.Value.EmailChanged.Email);
         }
     }
 }

@@ -28,5 +28,12 @@ namespace Domain.Components.Tests.Mocks
 
         Task<TModel> IAggregate<T>.GetSnapshot<TModel>()
             => aggregate.GetSnapshot<TModel>();
+
+        public Task<IResult<TResult>> Evaluate<TResult>(ICommand<T, TResult> command)
+            where TResult : ICommandResult<T>
+            => aggregate.Evaluate(command);
+
+        public Task Apply(ICommandResult<T> commandResult)
+            => aggregate.Apply(commandResult);
     }
 }

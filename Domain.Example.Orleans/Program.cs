@@ -44,7 +44,7 @@ var command = new ChangeInfo
 var result = await user.EvaluateTypedCommand(command);
 
 if (result.IsSuccess)
-    await user.Apply(result.Value.Item1, result.Value.Item2);
+    await user.Apply(result.Value);
 
 Console.WriteLine("Press Enter to terminate...");
 Console.ReadLine();

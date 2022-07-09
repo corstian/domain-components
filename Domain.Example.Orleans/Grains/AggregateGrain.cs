@@ -74,5 +74,16 @@ namespace Domain.Example.Orleans.Grains
             await ConfirmEvents();
             return await State.GetSnapshot<TModel>();
         }
+
+        public Task<IResult<TResult>> Evaluate<TResult>(ICommand<T, TResult> command) 
+            where TResult : ICommandResult<T>
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Apply(ICommandResult<T> commandResult)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -10,10 +10,13 @@
     {
         // Command handlers
         Task<IResult<IEnumerable<IEvent<TAggregate>>>> Evaluate(ICommand<TAggregate> command);
+        Task<IResult<TResult>> Evaluate<TResult>(ICommand<TAggregate, TResult> command)
+            where TResult : ICommandResult<TAggregate>;
 
         // Event Application
         Task Apply(IEvent<TAggregate> @event);
         Task Apply(params IEvent<TAggregate>[] events);
+        Task Apply(ICommandResult<TAggregate> commandResult);
 
         // Snapshotting
         Task<TModel> GetSnapshot<TModel>()

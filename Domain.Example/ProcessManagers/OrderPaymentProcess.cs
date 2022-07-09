@@ -36,7 +36,7 @@ namespace Domain.Example.ProcessManagers
             var order = await GetRepository<Order>().ById(OrderId);
 
             var result = await order.Evaluate(new SettleOrder());
-            await order.Apply(result.Value);
+            await order.Apply((IEvent<Order>)result.Value);
         }
     }
 }

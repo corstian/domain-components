@@ -2,7 +2,7 @@
 
 namespace Domain.Components.Tests.Mocks
 {
-    public class TestCommand : Command, ICommand<TestAggregate, TestEvent>
+    public class TestCommand : ICommand<TestAggregate, TestEvent>
     {
         IResult<TestEvent> ICommand<TestAggregate, TestEvent>.Evaluate(TestAggregate handler)
             => DomainResult.Ok(new TestEvent());

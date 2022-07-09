@@ -2,13 +2,13 @@
 
 namespace Domain.Components
 {
-    internal class GenericCommandWrapper<T, E> : ICommand<T>, ICommand<T, E>
+    internal class GenericCommandWrapper<T, R> : ICommand<T>, ICommand<T, R>
         where T : IAggregate
-        where E : IEvent<T>
+        where R : ICommandResult<T>
     {
-        private readonly ICommand<T, E> _command;
+        private readonly ICommand<T, R> _command;
 
-        public GenericCommandWrapper(ICommand<T, E> command)
+        public GenericCommandWrapper(ICommand<T, R> command)
         {
             _command = command;
         }
@@ -18,43 +18,13 @@ namespace Domain.Components
             var result = _command.Evaluate(handler);
 
             return new DomainResult<IEnumerable<IEvent<T>>>()
-                .WithValue(result.IsFailed ? default : new IEvent<T>[]
-                {
-                    result.Value
-                })
+                .WithValue(result.IsFailed 
+                    ? default 
+                    : result.Value.Result)
                 .WithReasons(result.Reasons);
         }
 
-        IResult<E> ICommand<T, E>.Evaluate(T handler)
-            => _command.Evaluate(handler);
-    }
-
-    internal class GenericCommandWrapper<T, E1, E2> : ICommand<T>, ICommand<T, E1, E2>
-        where T : IAggregate
-        where E1 : IEvent<T>
-        where E2 : IEvent<T>
-    {
-        private readonly ICommand<T, E1, E2> _command;
-
-        public GenericCommandWrapper(ICommand<T, E1, E2> command)
-        {
-            _command = command;
-        }
-
-        IResult<IEnumerable<IEvent<T>>> ICommand<T>.Evaluate(T handler)
-        {
-            var result = _command.Evaluate(handler);
-
-            return new DomainResult<IEnumerable<IEvent<T>>>()
-                .WithValue(result.IsFailed ? default : new IEvent<T>[]
-                {
-                    result.Value.Item1,
-                    result.Value.Item2
-                })
-                .WithReasons(result.Reasons);
-        }
-
-        IResult<(E1, E2)> ICommand<T, E1, E2>.Evaluate(T handler)
+        IResult<R> ICommand<T, R>.Evaluate(T handler)
             => _command.Evaluate(handler);
     }
 }

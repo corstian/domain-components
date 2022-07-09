@@ -2,7 +2,7 @@
 
 namespace Domain.Components.Tests.Mocks
 {
-    public class TestEvent : Event, IEvent<TestAggregate>
+    public class TestEvent : Event<TestAggregate>, IEvent<TestAggregate>
     {
         void IEvent<TestAggregate>.Apply(TestAggregate state)
         {

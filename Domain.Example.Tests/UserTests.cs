@@ -1,4 +1,5 @@
-﻿using Domain.Example.Aggregates.UserAggregate;
+﻿using Domain.Components.Abstractions;
+using Domain.Example.Aggregates.UserAggregate;
 using Domain.Example.Aggregates.UserAggregate.Commands;
 using Domain.Example.Aggregates.UserAggregate.Snapshots;
 using System;
@@ -20,7 +21,7 @@ namespace Domain.Example.Tests
 
             var result = await user.Evaluate(command);
 
-            await user.Apply(result.Value);
+            await user.Apply((IEvent<User>)result.Value);
 
             Assert.Equal("John Doe", user.Name);
         }
@@ -36,7 +37,7 @@ namespace Domain.Example.Tests
 
             var result = await user.Evaluate(command);
 
-            await user.Apply(result.Value);
+            await user.Apply((IEvent<User>)result.Value);
 
             Assert.Equal("john.doe@example.com", user.Email);
         }
@@ -79,7 +80,7 @@ namespace Domain.Example.Tests
                     Password = "1234"
                 })).Value;
 
-            await user.Apply(passwordChanged);
+            await user.Apply((IEvent<User>)passwordChanged);
 
             var passwordCorrectlyValidated = (await user
                 .Evaluate(new ValidatePassword
@@ -89,7 +90,7 @@ namespace Domain.Example.Tests
 
             Assert.True(passwordCorrectlyValidated.Succeeded);
 
-            await user.Apply(passwordCorrectlyValidated);
+            await user.Apply((IEvent<User>)passwordCorrectlyValidated);
 
             var passwordIncorrectlyValidated = (await user
                 .Evaluate(new ValidatePassword
@@ -99,7 +100,7 @@ namespace Domain.Example.Tests
 
             Assert.False(passwordIncorrectlyValidated.Succeeded);
 
-            await user.Apply(passwordIncorrectlyValidated);
+            await user.Apply((IEvent<User>)passwordIncorrectlyValidated);
 
             Assert.Equal(2, user.LoginAttempts.Count);
         }
@@ -111,7 +112,7 @@ namespace Domain.Example.Tests
             var command = new ChangePassword { Password = "1234" };
             
             var pw1 = (await user.Evaluate(command)).Value;
-            await user.Apply(pw1);
+            await user.Apply((IEvent<User>)pw1);
 
             var pw2 = await user.Evaluate(command);
 
@@ -130,9 +131,9 @@ namespace Domain.Example.Tests
                 Email = "john.doe@example.com"
             };
 
-            var (renamed, emailChanged) = (await user.Evaluate(command)).Value;
+            var result = await user.Evaluate(command);
 
-            await user.Apply(renamed, emailChanged);
+            await user.Apply(result.Value);
 
             Assert.Equal("John Doe", user.Name);
             Assert.Equal("john.doe@example.com", user.Email);
@@ -148,9 +149,9 @@ namespace Domain.Example.Tests
                 Email = "john.doe@example.com"
             };
 
-            var (renamed, emailChanged) = (await user.Evaluate(command)).Value;
+            var result = await user.Evaluate(command);
             
-            await user.Apply(renamed, emailChanged);
+            await user.Apply(result.Value);
 
             var snapshot = await user.GetSnapshot<PublicUserInfo>();
 

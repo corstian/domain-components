@@ -1,26 +1,16 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    public interface ICommandResult { }
+    //public interface ICommandResult
+    //{
+    //    public IEnumerable<IEvent> Result { get; }
+    //}
 
-    public interface ICommandResult<THandler> : ICommandResult
+    public interface ICommandResult<THandler>// : ICommandResult
         where THandler : IAggregate
     {
-        public IResult<IEnumerable<IEvent<THandler>>> Result { get; }
-    }
+        public IEnumerable<IEvent<THandler>> Result { get; }
 
-    public interface ICommandResult<THandler, out TEvent> : ICommandResult
-        where THandler : IAggregate
-        where TEvent : IEvent<THandler>
-    {
-        public IResult<TEvent> Result { get; }
-    }
-
-    public interface ICommandResult<THandler, TEvent1, TEvent2> : ICommandResult
-        where THandler : IAggregate
-        where TEvent1 : IEvent<THandler>
-        where TEvent2 : IEvent<THandler>
-    {
-        public IResult<(TEvent1, TEvent2)> Result { get; }
+        //IEnumerable<IEvent> ICommandResult.Result => this.Result;
     }
 
     // Concrete classes
@@ -29,38 +19,14 @@
         where THandler : IAggregate
     {
         public CommandResult() { }
-        public CommandResult(IResult<IEnumerable<IEvent<THandler>>> result)
+        public CommandResult(IEnumerable<IEvent<THandler>> result)
         {
             Result = result;
         }
 
-        public IResult<IEnumerable<IEvent<THandler>>> Result { get; }
-    }
+        public IEnumerable<IEvent<THandler>> Result { get; init; }
 
-    public class CommandResult<THandler, TEvent> : ICommandResult<THandler, TEvent>
-        where THandler : IAggregate
-        where TEvent : IEvent<THandler>
-    {
-        public CommandResult() { }
-        public CommandResult(IResult<TEvent> result)
-        {
-            Result = result;
-        }
-
-        public IResult<TEvent> Result { get; }
-    }
-
-    public class CommandResult<THandler, TEvent1, TEvent2> : ICommandResult<THandler, TEvent1, TEvent2>
-        where THandler : IAggregate
-        where TEvent1 : IEvent<THandler>
-        where TEvent2 : IEvent<THandler>
-    {
-        public CommandResult() { }
-        public CommandResult(IResult<(TEvent1, TEvent2)> result)
-        {
-            Result = result;
-        }
-
-        public IResult<(TEvent1, TEvent2)> Result { get; }
+        public static explicit operator List<IEvent<THandler>>(CommandResult<THandler> value)
+            => value.Result.ToList();
     }
 }

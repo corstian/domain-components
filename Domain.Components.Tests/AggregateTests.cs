@@ -1,4 +1,4 @@
-﻿using Domain.Components.Extensions;
+﻿using Domain.Components.Abstractions;
 using Domain.Components.Tests.Mocks;
 using System;
 using Xunit;
@@ -8,7 +8,7 @@ namespace Domain.Components.Tests
     public class AggregateTests
     {
         [Fact]
-        public async void AggregateEventInteractopm()
+        public async void AggregateEventInteractiom()
         {
             var aggregate = new TestAggregate
             {
@@ -17,7 +17,7 @@ namespace Domain.Components.Tests
 
             var command = new TestCommand();
 
-            var result = await aggregate.Evaluate(command);
+            var result = await aggregate.Evaluate<TestEvent>(command);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(aggregate.Id, result.Value.AggregateId);
@@ -34,10 +34,10 @@ namespace Domain.Components.Tests
 
             var command = new InterfaceCommand();
 
-            var result = await aggregate.EvaluateTypedCommand(command);
+            var result = await aggregate.Evaluate(command);
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(Guid.Empty, result.Value.AggregateId);
+            Assert.Equal(Guid.Empty, result.Value.Event.AggregateId);
         }
     }
 }

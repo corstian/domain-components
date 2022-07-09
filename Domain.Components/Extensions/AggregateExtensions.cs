@@ -15,91 +15,41 @@ namespace Domain.Components.Extensions
             return result;
         }
 
-        public static async Task<IResult<E>> EvaluateAndApply<T, E>(this IAggregate<T> aggregate, ICommand<T, E> command)
+        public static async Task<IResult<R>> EvaluateAndApply<T, R>(this IAggregate<T> aggregate, ICommand<T, R> command)
             where T : IAggregate<T>
-            where E : IEvent<T>
+            where R : ICommandResult<T>
         {
-            var result = await aggregate.EvaluateAndApply<T>(new GenericCommandWrapper<T, E>(command));
+            var result = await aggregate.Evaluate(command);
 
-            return new DomainResult<E>()
+            if (result.IsSuccess)
+                await aggregate.Apply(result.Value);
+
+            return result;
+        }
+
+        public static async Task<IResult<R>> EvaluateTypedCommand<T, R>(this IAggregate<T> aggregate, ICommand<T, R> command)
+            where T : IAggregate<T>
+            where R : ICommandResult<T>
+        {
+            var result = await aggregate.Evaluate(command);
+
+            return new DomainResult<R>()
                 .WithValue(result.IsFailed
                     ? default
-                    : (E)result.Value.ElementAt(0))
+                    : result.Value)
                 .WithReasons(result.Reasons);
         }
 
-        public static async Task<IResult<(E1, E2)>> EvaluateAndApply<T, E1, E2>(this IAggregate<T> aggregate, ICommand<T, E1, E2> command)
+        public static async Task<IResult<R>> EvaluateTypedCommand<T, R>(this T aggregate, ICommand<T, R> command)
             where T : IAggregate<T>
-            where E1 : IEvent<T>
-            where E2 : IEvent<T>
+            where R : ICommandResult<T>
         {
-            var result = await aggregate.EvaluateAndApply<T>(new GenericCommandWrapper<T, E1, E2>(command));
+            var result = await aggregate.Evaluate(command);
 
-            return new DomainResult<(E1, E2)>()
+            return new DomainResult<R>()
                 .WithValue(result.IsFailed
                     ? default
-                    : (
-                        (E1)result.Value.ElementAt(0),
-                        (E2)result.Value.ElementAt(1)
-                    ))
-                .WithReasons(result.Reasons);
-        }
-
-        public static async Task<IResult<E>> EvaluateTypedCommand<T, E>(this IAggregate<T> aggregate, ICommand<T, E> command)
-            where T : IAggregate<T>
-            where E : IEvent<T>
-        {
-            var result = await aggregate.Evaluate(new GenericCommandWrapper<T, E>(command));
-
-            return new DomainResult<E>()
-                .WithValue(result.IsFailed
-                    ? default
-                    : (E)result.Value.ElementAt(0))
-                .WithReasons(result.Reasons);
-        }
-
-        public static async Task<IResult<E>> EvaluateTypedCommand<T, E>(this T aggregate, ICommand<T, E> command)
-            where T : IAggregate<T>
-            where E : IEvent<T>
-        {
-            var result = await aggregate.Evaluate(new GenericCommandWrapper<T, E>(command));
-
-            return new DomainResult<E>()
-                .WithValue(result.IsFailed
-                    ? default
-                    : (E)result.Value.ElementAt(0))
-                .WithReasons(result.Reasons);
-        }
-
-        public static async Task<IResult<(E1, E2)>> EvaluateTypedCommand<T, E1, E2>(this IAggregate<T> aggregate, ICommand<T, E1, E2> command)
-            where T : IAggregate<T>
-            where E1 : IEvent<T>
-            where E2 : IEvent<T>
-        {
-            var result = await aggregate.Evaluate(new GenericCommandWrapper<T, E1, E2>(command));
-
-            return new DomainResult<(E1, E2)>()
-                .WithValue(result.IsFailed
-                    ? default
-                    : ((E1)result.Value.ElementAt(0),
-                       (E2)result.Value.ElementAt(1)
-                    ))
-                .WithReasons(result.Reasons);
-        }
-
-        public static async Task<IResult<(E1, E2)>> EvaluateTypedCommand<T, E1, E2>(this T aggregate, ICommand<T, E1, E2> command)
-            where T : IAggregate<T>
-            where E1 : IEvent<T>
-            where E2 : IEvent<T>
-        {
-            var result = await aggregate.Evaluate(new GenericCommandWrapper<T, E1, E2>(command));
-
-            return new DomainResult<(E1, E2)>()
-                .WithValue(result.IsFailed
-                    ? default
-                    : ((E1)result.Value.ElementAt(0),
-                       (E2)result.Value.ElementAt(1)
-                    ))
+                    : result.Value)
                 .WithReasons(result.Reasons);
         }
     }

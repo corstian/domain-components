@@ -3,7 +3,7 @@ using Domain.Components.Abstractions;
 
 namespace Domain.Example.Aggregates.UserAggregate.Events
 {
-    public class PasswordChanged : Event, IEvent<User>
+    public class PasswordChanged : Event<User>, IEvent<User>
     {
         internal PasswordChanged() { }
 

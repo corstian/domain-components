@@ -46,7 +46,7 @@ namespace Domain.Components.Tests
 
             var result = await aggregate.EvaluateAndApply(new InterfaceCommand());
 
-            Assert.True(result.Value.AggregateId == default);
+            Assert.True(result.Value.Event.AggregateId == default);
         }
 
         [Fact]

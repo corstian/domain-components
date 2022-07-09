@@ -3,7 +3,7 @@ using Domain.Components.Abstractions;
 
 namespace Domain.Example.Aggregates.UserAggregate.Events
 {
-    public class Renamed : Event, IEvent<User>
+    public class Renamed : Event<User>, IEvent<User>
     {
         internal Renamed() { }
 

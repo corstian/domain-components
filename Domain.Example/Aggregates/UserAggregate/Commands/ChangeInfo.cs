@@ -4,20 +4,31 @@ using Domain.Example.Aggregates.UserAggregate.Events;
 
 namespace Domain.Example.Aggregates.UserAggregate.Commands
 {
-    public class ChangeInfo : ICommand<User, Renamed, EmailChanged>
+    public class ChangeInfo : ICommand<User, ChangeInfo.Result>
     {
         public string Name { get; init; } = "";
         public string Email { get; init; } = "";
 
-        IResult<(Renamed, EmailChanged)> ICommand<User, Renamed, EmailChanged>.Evaluate(User handler)
+        public IResult<Result> Evaluate(User handler)
         {
-            if (!Email.Contains('@')) return DomainResult.Fail<(Renamed, EmailChanged)>("No @");
+            if (!Email.Contains('@')) return DomainResult.Fail<Result>("No @");
 
-            if (handler.Email == Email && handler.Name == Name) return DomainResult.Fail<(Renamed, EmailChanged)>("Nothing changed");
+            if (handler.Email == Email && handler.Name == Name) return DomainResult.Fail<Result>("Nothing changed");
 
-            return DomainResult.Ok((
-                new Renamed { Name = Name },
-                new EmailChanged { Email = Email }));
+            return DomainResult.Ok(
+                new Result
+                {
+                    Renamed = new Renamed { Name = Name },
+                    EmailChanged = new EmailChanged { Email = Email }
+                });
+        }
+
+        public class Result : ICommandResult<User>
+        {
+            public Renamed Renamed { get; init; }
+            public EmailChanged EmailChanged { get; init; }
+
+            IEnumerable<IEvent<User>> ICommandResult<User>.Result => new IEvent<User>[] { Renamed, EmailChanged };
         }
     }
 }

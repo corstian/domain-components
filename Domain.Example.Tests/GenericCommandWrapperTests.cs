@@ -45,8 +45,8 @@ namespace Domain.Example.Tests
             var result = await user.EvaluateTypedCommand(command);
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(user.Id, result.Value.Item1.AggregateId);
-            Assert.Equal(user.Id, result.Value.Item2.AggregateId);
+            Assert.Equal(user.Id, result.Value.Renamed.AggregateId);
+            Assert.Equal(user.Id, result.Value.EmailChanged.AggregateId);
         }
     }
 }

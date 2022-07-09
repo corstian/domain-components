@@ -1,6 +1,4 @@
-﻿using Domain.Components.Abstractions;
-
-namespace Domain.Components.Experiment
+﻿namespace Domain.Components.Abstractions
 {
     public interface IService<TComposable>
         where TComposable : IComposable

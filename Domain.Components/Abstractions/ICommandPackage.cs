@@ -1,8 +1,7 @@
-﻿using Domain.Components.Abstractions;
-
-namespace Domain.Components.Experiment
+﻿namespace Domain.Components.Abstractions
 {
-    public interface ICommandPackage  : IComposable { 
+    public interface ICommandPackage : IComposable
+    {
         public IAggregate Target { get; }
         public IEnumerable<ICommand> Commands { get; }
     }

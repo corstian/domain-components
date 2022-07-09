@@ -1,5 +1,4 @@
 ﻿using Domain.Components.Abstractions;
-using Domain.Components.Experiment;
 
 namespace Domain.Components
 {

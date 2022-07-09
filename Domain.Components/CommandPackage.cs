@@ -1,6 +1,6 @@
 ﻿using Domain.Components.Abstractions;
 
-namespace Domain.Components.Experiment
+namespace Domain.Components
 {
     public class CommandPackage : ICommandPackage
     {

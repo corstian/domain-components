@@ -37,12 +37,15 @@ namespace Domain.Components
 
             if (result.IsFailed) return Task.FromResult(result);
 
-            var @event = result.Value;
+            ICommandResult<T> commandResult = result.Value;
 
-            if (@event is Event e)
+            foreach (var @event in commandResult.Result)
             {
-                e.AggregateId = Id;
-                e.Timestamp = DateTime.UtcNow;
+                if (@event is Event e)
+                {
+                    e.AggregateId = Id;
+                    e.Timestamp = DateTime.UtcNow;
+                }
             }
 
             return Task.FromResult(result);

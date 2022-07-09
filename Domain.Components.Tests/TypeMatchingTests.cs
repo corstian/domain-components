@@ -11,7 +11,7 @@ namespace Domain.Components.Tests
         {
             var command = new TestCommand();
 
-            Assert.True(command is ICommand<TestAggregate, ICommandResult<TestAggregate>>);
+            Assert.True(command is ICommand<TestAggregate, TestEvent>);
         }
 
         [Fact]

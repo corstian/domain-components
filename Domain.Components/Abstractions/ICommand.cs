@@ -13,7 +13,7 @@
 
     public interface ICommand<THandler, TResult> : ICommand
         where THandler : IAggregate
-        where TResult : ICommandResult<THandler>
+        where TResult : IMarkCommandOutput<THandler>
     {
         public IResult<TResult> Evaluate(THandler handler);
     }

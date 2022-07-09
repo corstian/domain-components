@@ -20,7 +20,7 @@ namespace Domain.Example.Orleans.Grains
             => await State.Evaluate(command);
 
         public async Task<IResult<TResult>> Evaluate<TResult>(ICommand<T, TResult> command) 
-            where TResult : ICommandResult<T>
+            where TResult : IMarkCommandOutput<T>
             => await State.Evaluate(command);
 
         public async Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot<T>, new()

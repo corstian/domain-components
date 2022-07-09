@@ -11,7 +11,7 @@
         // Command handlers
         Task<IResult<IEnumerable<IEvent<TAggregate>>>> Evaluate(ICommand<TAggregate> command);
         Task<IResult<TResult>> Evaluate<TResult>(ICommand<TAggregate, TResult> command)
-            where TResult : ICommandResult<TAggregate>;
+            where TResult : IMarkCommandOutput<TAggregate>;
 
         // Event Application
         Task Apply(IEvent<TAggregate> @event);

@@ -4,7 +4,7 @@ using NodaMoney;
 
 namespace Domain.Example.Aggregates.PaymentAggregate.Events
 {
-    public class PaymentInitiated : Event<Payment>, IEvent<Payment>
+    public class PaymentInitiated : Event, IEvent<Payment>
     {
         internal PaymentInitiated() { }
 

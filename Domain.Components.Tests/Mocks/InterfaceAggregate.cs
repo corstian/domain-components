@@ -32,7 +32,7 @@ namespace Domain.Components.Tests.Mocks
             => Task.FromResult(command.Evaluate(this));
 
         public Task<IResult<TResult>> Evaluate<TResult>(ICommand<InterfaceAggregate, TResult> command) 
-            where TResult : ICommandResult<InterfaceAggregate>
+            where TResult : IMarkCommandOutput<InterfaceAggregate>
             => Task.FromResult(command.Evaluate(this));
 
         public Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot<InterfaceAggregate>, new()

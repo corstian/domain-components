@@ -31,21 +31,30 @@ namespace Domain.Components
         }
 
         public Task<IResult<R>> Evaluate<R>(ICommand<T, R> @command)
-            where R : ICommandResult<T>
+            where R : IMarkCommandOutput<T>
         {
             var result = command.Evaluate((T)this);
 
             if (result.IsFailed) return Task.FromResult(result);
 
-            ICommandResult<T> commandResult = result.Value;
-
-            foreach (var @event in commandResult.Result)
+            switch (result.Value)
             {
-                if (@event is Event e)
-                {
+                case ICommandResult<T> commandResult:
+                    foreach (var @event in commandResult.Result)
+                    {
+                        if (@event is Event e)
+                        {
+                            e.AggregateId = Id;
+                            e.Timestamp = DateTime.UtcNow;
+                        }
+                    }
+                    break;
+                case Event e:
                     e.AggregateId = Id;
                     e.Timestamp = DateTime.UtcNow;
-                }
+                    break;
+                default:
+                    break;
             }
 
             return Task.FromResult(result);

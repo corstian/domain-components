@@ -76,7 +76,7 @@ namespace Domain.Example.Orleans.Grains
         }
 
         public Task<IResult<TResult>> Evaluate<TResult>(ICommand<T, TResult> command) 
-            where TResult : ICommandResult<T>
+            where TResult : IMarkCommandOutput<T>
         {
             throw new NotImplementedException();
         }

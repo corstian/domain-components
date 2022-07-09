@@ -1,19 +1,10 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    //public interface ICommandResult
-    //{
-    //    public IEnumerable<IEvent> Result { get; }
-    //}
-
-    public interface ICommandResult<THandler>// : ICommandResult
+    public interface ICommandResult<THandler> : IMarkCommandOutput<THandler>
         where THandler : IAggregate
     {
         public IEnumerable<IEvent<THandler>> Result { get; }
-
-        //IEnumerable<IEvent> ICommandResult.Result => this.Result;
     }
-
-    // Concrete classes
 
     public class CommandResult<THandler> : ICommandResult<THandler>
         where THandler : IAggregate

@@ -30,7 +30,7 @@ namespace Domain.Components.Tests.Mocks
             => aggregate.GetSnapshot<TModel>();
 
         public Task<IResult<TResult>> Evaluate<TResult>(ICommand<T, TResult> command)
-            where TResult : ICommandResult<T>
+            where TResult : IMarkCommandOutput<T>
             => aggregate.Evaluate(command);
 
         public Task Apply(ICommandResult<T> commandResult)

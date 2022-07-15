@@ -1,32 +1,19 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    public interface IService<TComposable>
-        where TComposable : IComposable
+    public interface IService
     {
-        public Task<IResult<TComposable>> Evaluate();
+
+    }
+    
+    public interface IService<TOutput> : IService
+        where TOutput : IServiceResult
+    {
+        public Task<IResult<TOutput>> Invoke();
     }
 
-    public interface IService<TComposable1, TComposable2>
-        where TComposable1 : IComposable
-        where TComposable2 : IComposable
+    public interface IService<TInput, TOutput> : IService
+        where TOutput : IServiceResult
     {
-        public Task<IResult<(TComposable1, TComposable2)>> Evaluate();
-    }
-
-    public interface IService<TComposable1, TComposable2, TComposable3>
-        where TComposable1 : IComposable
-        where TComposable2 : IComposable
-        where TComposable3 : IComposable
-    {
-        public Task<IResult<(TComposable1, TComposable2, TComposable3)>> Evaluate();
-    }
-
-    public interface IService<TComposable1, TComposable2, TComposable3, TComposable4>
-        where TComposable1 : IComposable
-        where TComposable2 : IComposable
-        where TComposable3 : IComposable
-        where TComposable4 : IComposable
-    {
-        public Task<IResult<(TComposable1, TComposable2, TComposable3, TComposable4)>> Evaluate();
+        public Task<IResult<TOutput>> Invoke(TInput arg);
     }
 }

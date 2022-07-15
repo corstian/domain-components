@@ -11,9 +11,10 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
 
         public IResult<Result> Evaluate(User handler)
         {
-            if (!Email.Contains('@')) return DomainResult.Fail<Result>("No @");
-
-            if (handler.Email == Email && handler.Name == Name) return DomainResult.Fail<Result>("Nothing changed");
+            if (!Email.Contains('@')) 
+                return DomainResult.Fail<Result>("No @");
+            if (handler.Email == Email && handler.Name == Name) 
+                return DomainResult.Fail<Result>("Nothing changed");
 
             return DomainResult.Ok(
                 new Result

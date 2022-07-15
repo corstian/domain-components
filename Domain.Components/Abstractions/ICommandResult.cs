@@ -1,9 +1,16 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    public interface ICommandResult<THandler> : IMarkCommandOutput<THandler>
+    public interface ICommandResult : IMarkCommandOutput
+    {
+        public IEnumerable<IEvent> Result { get; }
+    }
+
+    public interface ICommandResult<THandler> : ICommandResult, IMarkCommandOutput<THandler>
         where THandler : IAggregate
     {
-        public IEnumerable<IEvent<THandler>> Result { get; }
+        public new IEnumerable<IEvent<THandler>> Result { get; }
+
+        IEnumerable<IEvent> ICommandResult.Result => Result;
     }
 
     public class CommandResult<THandler> : ICommandResult<THandler>
@@ -16,8 +23,5 @@
         }
 
         public IEnumerable<IEvent<THandler>> Result { get; init; }
-
-        public static explicit operator List<IEvent<THandler>>(CommandResult<THandler> value)
-            => value.Result.ToList();
     }
 }

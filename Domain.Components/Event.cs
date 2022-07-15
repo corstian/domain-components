@@ -7,8 +7,6 @@ namespace Domain.Components
         public Guid AggregateId { get; internal set; }
         public DateTime Timestamp { get; internal set; }
         public IAuthorizationContext? AuthorizationContext { get; internal set; }
-
-        public IEnumerable<IEvent> Result => new [] { this };
     }
 
     public abstract class Event<T> : Event, ICommandResult<T>

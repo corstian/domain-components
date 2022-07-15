@@ -14,7 +14,6 @@
   <ItemGroup>
     <Folder Include="Aggregates\GroupAggregate\Snapshots\" />
     <Folder Include="Sagas\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>

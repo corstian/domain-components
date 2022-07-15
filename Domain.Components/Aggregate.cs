@@ -49,12 +49,11 @@ namespace Domain.Components
                         }
                     }
                     break;
-                case Event e:
-                    e.AggregateId = Id;
-                    e.Timestamp = DateTime.UtcNow;
+                case Event @event:
+                    @event.AggregateId = Id;
+                    @event.Timestamp = DateTime.UtcNow;
                     break;
-                default:
-                    break;
+                default: break;
             }
 
             return Task.FromResult(result);

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    public interface IEvent
+    public interface IEvent : IMarkCommandOutput
     {
         public Guid AggregateId { get; }
     }

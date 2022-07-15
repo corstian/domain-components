@@ -28,12 +28,10 @@ namespace Domain.Components.Extensions
                     case ICommandResult<T> commandResult:
                         await aggregate.Apply(commandResult);
                         break;
-                    case IEvent<T> @event:
+                    case Event @event:
                         await aggregate.Apply(@event);
                         break;
-                    default: break;
                 }
-
             }
 
             return result;

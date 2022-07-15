@@ -3,7 +3,7 @@ using Domain.Components.Abstractions;
 
 namespace Domain.Example.Aggregates.GroupAggregate.Events
 {
-    internal class UserAdded : Event, IEvent<Group>
+    public class UserAdded : Event, IEvent<Group>
     {
         public Guid UserId { get; init; }
         public string Name { get; init; } = "";

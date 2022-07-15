@@ -21,7 +21,7 @@ namespace Domain.Example.Tests
 
             var result = await user.Evaluate(command);
 
-            await user.Apply((IEvent<User>)result.Value);
+            await user.Apply(result.Value);
 
             Assert.Equal("John Doe", user.Name);
         }
@@ -37,7 +37,7 @@ namespace Domain.Example.Tests
 
             var result = await user.Evaluate(command);
 
-            await user.Apply((IEvent<User>)result.Value);
+            await user.Apply(result.Value);
 
             Assert.Equal("john.doe@example.com", user.Email);
         }
@@ -112,7 +112,7 @@ namespace Domain.Example.Tests
             var command = new ChangePassword { Password = "1234" };
             
             var pw1 = (await user.Evaluate(command)).Value;
-            await user.Apply((IEvent<User>)pw1);
+            await user.Apply(pw1);
 
             var pw2 = await user.Evaluate(command);
 

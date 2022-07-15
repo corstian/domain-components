@@ -29,7 +29,6 @@
   <ItemGroup>
     <Folder Include="Aggregates\" />
     <Folder Include="Processes\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

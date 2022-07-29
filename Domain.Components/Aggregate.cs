@@ -7,12 +7,12 @@ namespace Domain.Components
         public Guid Id { get; init; }
     }
 
-    public abstract class Aggregate<T> : Aggregate, IAggregate<T>
-        where T : Aggregate<T>
+    public abstract class Aggregate<TAggregate> : Aggregate, IAggregate<TAggregate>
+        where TAggregate : Aggregate<TAggregate>
     {
-        public Task<IResult<IEnumerable<IEvent<T>>>> Evaluate(ICommand<T> command)
+        public Task<IResult<IEnumerable<IEvent<TAggregate>>>> Evaluate(ICommand<TAggregate> command)
         {
-            var result = command.Evaluate((T)this);
+            var result = command.Evaluate((TAggregate)this);
 
             if (result.IsFailed) return Task.FromResult(result);
 
@@ -30,56 +30,48 @@ namespace Domain.Components
             return Task.FromResult(result);
         }
 
-        public Task<IResult<R>> Evaluate<R>(ICommand<T, R> @command)
-            where R : IMarkCommandOutput<T>
+        public Task<IResult<TResult>> Evaluate<TResult>(ICommand<TAggregate, TResult> @command)
+            where TResult : ICommandResult<TAggregate>
         {
-            var result = command.Evaluate((T)this);
+            var result = command.Evaluate((TAggregate)this);
 
             if (result.IsFailed) return Task.FromResult(result);
 
-            switch (result.Value)
+            ICommandResult<TAggregate> commandResult= result.Value;
+
+            foreach (var @event in commandResult.Value)
             {
-                case ICommandResult<T> commandResult:
-                    foreach (var @event in commandResult.Result)
-                    {
-                        if (@event is Event e)
-                        {
-                            e.AggregateId = Id;
-                            e.Timestamp = DateTime.UtcNow;
-                        }
-                    }
-                    break;
-                case Event @event:
-                    @event.AggregateId = Id;
-                    @event.Timestamp = DateTime.UtcNow;
-                    break;
-                default: break;
+                if (@event is Event e)
+                {
+                    e.AggregateId = Id;
+                    e.Timestamp = DateTime.UtcNow;
+                }
             }
 
             return Task.FromResult(result);
         }
 
-        public Task Apply(IEvent<T> @event)
+        public Task Apply(IEvent<TAggregate> @event)
         {
-            @event.Apply((T)this);
+            @event.Apply((TAggregate)this);
 
             return Task.FromResult(@event);
         }
 
-        public async Task Apply(params IEvent<T>[] events)
+        public async Task Apply(params IEvent<TAggregate>[] events)
         {
             foreach (var @event in events)
                 await Apply(@event);
         }
 
-        public Task Apply(ICommandResult<T> commandResult)
-            => Apply(commandResult.Result.ToArray());
+        public Task Apply(ICommandResult<TAggregate> commandResult)
+            => Apply(commandResult.Value.ToArray());
 
         public Task<TModel> GetSnapshot<TModel>()
-            where TModel : ISnapshot<T>, new()
+            where TModel : ISnapshot<TAggregate>, new()
         {
             var model = Activator.CreateInstance<TModel>();
-            model.Populate((T)this);
+            model.Populate((TAggregate)this);
             return Task.FromResult(model);
         }
     }

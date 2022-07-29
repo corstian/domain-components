@@ -26,13 +26,13 @@ namespace Domain.Components.Tests.Mocks
         }
 
         public Task Apply(ICommandResult<InterfaceAggregate> commandResult)
-            => Apply(commandResult.Result.ToArray());
+            => Apply(commandResult.Value.ToArray());
 
         public Task<IResult<IEnumerable<IEvent<InterfaceAggregate>>>> Evaluate(ICommand<InterfaceAggregate> command)
             => Task.FromResult(command.Evaluate(this));
 
         public Task<IResult<TResult>> Evaluate<TResult>(ICommand<InterfaceAggregate, TResult> command) 
-            where TResult : IMarkCommandOutput<InterfaceAggregate>
+            where TResult : ICommandResult<InterfaceAggregate>
             => Task.FromResult(command.Evaluate(this));
 
         public Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot<InterfaceAggregate>, new()

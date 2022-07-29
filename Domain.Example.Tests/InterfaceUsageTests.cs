@@ -22,7 +22,7 @@ namespace Domain.Example.Tests
                 => User.Apply(commandResult);
 
             public Task<IResult<TResult>> Evaluate<TResult>(ICommand<User, TResult> command)
-                where TResult : IMarkCommandOutput<User>
+                where TResult : ICommandResult<User>
                 => User.Evaluate(command);
 
             Task IAggregate<User>.Apply(IEvent<User> @event)

@@ -9,9 +9,9 @@ namespace Domain.Components
         public IAuthorizationContext? AuthorizationContext { get; internal set; }
     }
 
-    public abstract class Event<T> : Event, ICommandResult<T>
+    public abstract class Event<T> : Event
         where T : IAggregate
     {
-        IEnumerable<IEvent<T>> ICommandResult<T>.Result => new IEvent<T>[] { (IEvent<T>)this };
+        
     }
 }

@@ -1,27 +1,27 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    public interface ICommandResult : IMarkCommandOutput
+    public interface ICommandResult
     {
-        public IEnumerable<IEvent> Result { get; }
+        public IEnumerable<IEvent> Value { get; }
     }
 
-    public interface ICommandResult<THandler> : ICommandResult, IMarkCommandOutput<THandler>
+    public interface ICommandResult<THandler> : ICommandResult
         where THandler : IAggregate
     {
-        public new IEnumerable<IEvent<THandler>> Result { get; }
+        public new IEnumerable<IEvent<THandler>> Value { get; }
 
-        IEnumerable<IEvent> ICommandResult.Result => Result;
+        IEnumerable<IEvent> ICommandResult.Value => Value;
     }
 
     public class CommandResult<THandler> : ICommandResult<THandler>
         where THandler : IAggregate
     {
         public CommandResult() { }
-        public CommandResult(IEnumerable<IEvent<THandler>> result)
+        public CommandResult(IEnumerable<IEvent<THandler>> value)
         {
-            Result = result;
+            Value = value;
         }
 
-        public IEnumerable<IEvent<THandler>> Result { get; init; }
+        public IEnumerable<IEvent<THandler>> Value { get; init; }
     }
 }

@@ -5,15 +5,9 @@
 
     }
     
-    public interface IService<TOutput> : IService
-        where TOutput : IServiceResult
+    public interface IService<TResult> : IService
+        where TResult : IServiceResult<TResult>
     {
-        public Task<IResult<TOutput>> Invoke();
-    }
-
-    public interface IService<TInput, TOutput> : IService
-        where TOutput : IServiceResult
-    {
-        public Task<IResult<TOutput>> Invoke(TInput arg);
+        public Task<IResult<IServicePromise<TResult>>> Stage(IServiceProvider serviceProvider);
     }
 }

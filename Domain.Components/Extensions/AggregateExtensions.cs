@@ -4,11 +4,11 @@ namespace Domain.Components.Extensions
 {
     public static class AggregateExtensions
     {
-        public static IStagedCommand<TAggregate, TResult> LazilyEvaluate<TAggregate, TResult>(this TAggregate aggregate, ICommand<TAggregate, TResult> operation)
+        public static IOperation<TAggregate, TResult> LazilyEvaluate<TAggregate, TResult>(this TAggregate aggregate, ICommand<TAggregate, TResult> operation)
             where TAggregate : IAggregate<TAggregate>
             where TResult : ICommandResult<TAggregate>, new()
         {
-            return new StagedCommand<TAggregate, TResult>(aggregate, (ag) => operation.Evaluate(ag).Value)
+            return new Operation<TAggregate, TResult>(aggregate, (ag) => operation.Evaluate(ag).Value)
             {
                 Aggregate = aggregate
             };

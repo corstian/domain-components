@@ -15,15 +15,18 @@ namespace Domain.Components
         {
             var promise = await Stage(service);
 
-            if (promise.IsSuccess)
+            if (promise.IsFailed)
                 return new DomainResult<TResult>()
-                    .WithReasons(promise.Reasons)
-                    .WithValue(await promise.Value.Evaluate());
-            else return new DomainResult<TResult>()
                     .WithReasons(promise.Reasons);
+
+            var value = promise.Value;
+
+            return new DomainResult<TResult>()
+                    .WithReasons(promise.Reasons)
+                    .WithValue(await value.Materialize());
         }
 
-        public async Task<IResult<IServicePromise<TResult>>> Stage<TResult>(IService<TResult> service) where TResult : IServiceResult<TResult>
+        public async Task<IResult<IPromise<TResult>>> Stage<TResult>(IService<TResult> service) where TResult : IServiceResult<TResult>
             => await service.Stage(_serviceProvider);
     }
 }

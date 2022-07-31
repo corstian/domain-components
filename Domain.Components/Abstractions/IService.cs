@@ -8,6 +8,6 @@
     public interface IService<TResult> : IService
         where TResult : IServiceResult<TResult>
     {
-        public Task<IResult<IServicePromise<TResult>>> Stage(IServiceProvider serviceProvider);
+        public Task<IResult<IPromise<TResult>>> Stage(IServiceProvider serviceProvider);
     }
 }

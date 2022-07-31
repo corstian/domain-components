@@ -5,7 +5,7 @@
         public IEnumerable<IServiceResult> Operations { get; }
     }
 
-    public interface IServiceResult<T> : IServiceResult, IServicePromise<T>
+    public interface IServiceResult<T> : IServiceResult, IPromise<T>
         where T : IServiceResult<T>
     {
         /*
@@ -13,7 +13,7 @@
          * safely return this object as being T. The sole thing we have to do is to 
          * ensure that the results that have been returned are actually properly evaluated.
          */
-        async Task<T> IServicePromise<T>.Evaluate()
+        Task<T> IPromise<T>.Materialize()
         {
             /*
              * ToDo: Evaluate all operations
@@ -28,7 +28,7 @@
              * 
              * It might be beneficial if the service results are flattened first, after which they are grouped by aggregate and applied in bulk.
              */
-            return (T)this;
+            return Task.FromResult((T)this);
         }
     }
 }

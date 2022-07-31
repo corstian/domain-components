@@ -16,7 +16,7 @@ namespace Domain.Example.Services
         public Guid UserId { get; init; }
         public Guid GroupId { get; init; }
 
-        public async Task<IResult<IServicePromise<Result>>> Stage(IServiceProvider serviceProvider)
+        public async Task<IResult<IPromise<Result>>> Stage(IServiceProvider serviceProvider)
         {
             var userRepo = serviceProvider.GetService<IRepository<User>>();
             var groupRepo = serviceProvider.GetService<IRepository<Group>>();
@@ -24,27 +24,28 @@ namespace Domain.Example.Services
             var user = await userRepo.ById(UserId);
             var group = await groupRepo.ById(GroupId);
 
+            var result = new Result
+            {
+                AddUserEvent = group.LazilyEvaluate(new AddUser
+                {
+                    UserId = user.Id,
+                    Name = user.Name
+                }),
+                AddGroupEvent = user.LazilyEvaluate(new AddGroup
+                {
+                    GroupId = group.Id,
+                    Name = group.Name
+                })
+            };
 
             return new DomainResult<Result>()
-                .WithValue(new Result
-                {
-                    AddUserEvent = group.LazilyEvaluate(new AddUser
-                    {
-                        UserId = user.Id,
-                        Name = user.Name
-                    }),
-                    AddGroupEvent = user.LazilyEvaluate(new AddGroup
-                    {
-                        GroupId = group.Id,
-                        Name = group.Name
-                    })
-                });
+                .WithValue(result);
         }
 
         public class Result : IServiceResult<Result>
         {
-            public IStagedCommand<User, GroupAdded> AddGroupEvent { get; init; }
-            public IStagedCommand<Group, UserAdded> AddUserEvent { get; init; }
+            public IOperation<User, GroupAdded> AddGroupEvent { get; init; }
+            public IOperation<Group, UserAdded> AddUserEvent { get; init; }
 
             IEnumerable<IServiceResult> IServiceResult.Operations => new IServiceResult[] { AddGroupEvent, AddUserEvent };
         }

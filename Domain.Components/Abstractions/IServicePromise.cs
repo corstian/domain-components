@@ -1,8 +1,8 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    public interface IServicePromise<T>
+    public interface IPromise<T>
         where T : IServiceResult
     {
-        public Task<T> Evaluate();
+        internal Task<T> Materialize();
     }
 }

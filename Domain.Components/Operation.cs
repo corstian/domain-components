@@ -2,10 +2,10 @@
 
 namespace Domain.Components
 {
-    public class StagedCommand<TAggregate> : IStagedCommand<TAggregate>
+    public class Operation<TAggregate> : IOperation<TAggregate>
         where TAggregate : IAggregate<TAggregate>
     {
-        public StagedCommand(TAggregate aggregate, ICommandResult<TAggregate> command)
+        public Operation(TAggregate aggregate, ICommandResult<TAggregate> command)
         {
             Aggregate = aggregate;
             CommandResult = command;
@@ -15,13 +15,13 @@ namespace Domain.Components
         public ICommandResult<TAggregate> CommandResult { get; }
     }
 
-    public class StagedCommand<TAggregate, TCommand> : IStagedCommand<TAggregate, TCommand>
+    public class Operation<TAggregate, TCommand> : IOperation<TAggregate, TCommand>
         where TAggregate : IAggregate<TAggregate>
         where TCommand : ICommandResult<TAggregate>
     {
         private Func<TAggregate, TCommand> _commandEvaluation;
 
-        public StagedCommand(TAggregate aggregate, Func<TAggregate, TCommand> command)
+        public Operation(TAggregate aggregate, Func<TAggregate, TCommand> command)
         {
             Aggregate = aggregate;
             _commandEvaluation = command;

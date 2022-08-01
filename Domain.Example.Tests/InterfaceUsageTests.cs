@@ -25,14 +25,14 @@ namespace Domain.Example.Tests
                 where TResult : ICommandResult<User>
                 => User.Evaluate(command);
 
+            public Task<string> GetIdentity()
+                => Task.FromResult(User.Id.ToString());
+
             Task IAggregate<User>.Apply(IEvent<User> @event)
                 => User.Apply(@event);
 
             Task IAggregate<User>.Apply(params IEvent<User>[] events)
                 => User.Apply(events);
-
-            Task<IResult<IEnumerable<IEvent<User>>>> IAggregate<User>.Evaluate(ICommand<User> command)
-                => User.Evaluate(command);
 
             Task<TModel> IAggregate<User>.GetSnapshot<TModel>()
                 => User.GetSnapshot<TModel>();

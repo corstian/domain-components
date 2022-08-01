@@ -1,30 +1,39 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    public interface IOperation : IServiceResult
+    internal interface IOperation : IServiceResult
     {
-        public IAggregate Aggregate { get; }
-        public ICommandResult CommandResult { get; }
+        // Public to provide results
+        IAggregate Aggregate { get; }
+        ICommandResult Result { get; }
 
         IEnumerable<IServiceResult> IServiceResult.Operations => new[] { this };
+
+        ICommand Command { get; }
+
+        internal Task Evaluate();
     }
 
-    public interface IOperation<TAggregate> : IOperation
-        where TAggregate : IAggregate
+    internal interface IOperation<TAggregate> : IOperation
+        where TAggregate : class, IAggregate
     {
         public new TAggregate Aggregate { get; }
         IAggregate IOperation.Aggregate => Aggregate;
 
-        public new ICommandResult<TAggregate> CommandResult { get; }
-        ICommandResult IOperation.CommandResult => CommandResult;
+        public new ICommandResult<TAggregate> Result { get; }
+        ICommandResult IOperation.Result => Result;
+
+        internal new ICommand<TAggregate> Command { get; }
+        ICommand IOperation.Command => this.Command;
     }
 
-    public interface IOperation<TAggregate, TResult> : IOperation<TAggregate>
-        where TAggregate : IAggregate
+    internal interface IOperation<TAggregate, TResult> : IOperation<TAggregate>
+        where TAggregate : class, IAggregate
         where TResult : ICommandResult<TAggregate>
     {
-        public new TResult CommandResult { get; }
-        ICommandResult<TAggregate> IOperation<TAggregate>.CommandResult => this.CommandResult;
+        public new TResult Result { get; }
+        ICommandResult<TAggregate> IOperation<TAggregate>.Result => this.Result;
 
-        Task Evaluate();
+        internal new ICommand<TAggregate, TResult> Command { get; }
+        ICommand<TAggregate> IOperation<TAggregate>.Command => this.Command;
     }
 }

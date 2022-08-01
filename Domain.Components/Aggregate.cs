@@ -2,7 +2,7 @@
 
 namespace Domain.Components
 {
-    public abstract class Aggregate : IAggregate
+    public abstract class Aggregate
     {
         public Guid Id { get; init; }
     }
@@ -10,26 +10,6 @@ namespace Domain.Components
     public abstract class Aggregate<TAggregate> : Aggregate, IAggregate<TAggregate>
         where TAggregate : Aggregate<TAggregate>
     {
-        public Task<IResult<IEnumerable<IEvent<TAggregate>>>> Evaluate(ICommand<TAggregate> command)
-        {
-            var result = command.Evaluate((TAggregate)this);
-
-            if (result.IsFailed) return Task.FromResult(result);
-
-            var events = result.Value;
-
-            foreach (var @event in events)
-            {
-                if (@event is Event e)
-                {
-                    e.AggregateId = Id;
-                    e.Timestamp = DateTime.UtcNow;
-                }
-            }
-
-            return Task.FromResult(result);
-        }
-
         public Task<IResult<TResult>> Evaluate<TResult>(ICommand<TAggregate, TResult> @command)
             where TResult : ICommandResult<TAggregate>
         {
@@ -39,7 +19,7 @@ namespace Domain.Components
 
             ICommandResult<TAggregate> commandResult= result.Value;
 
-            foreach (var @event in commandResult.Value)
+            foreach (var @event in commandResult.Events)
             {
                 if (@event is Event e)
                 {
@@ -65,7 +45,7 @@ namespace Domain.Components
         }
 
         public Task Apply(ICommandResult<TAggregate> commandResult)
-            => Apply(commandResult.Value.ToArray());
+            => Apply(commandResult.Events.ToArray());
 
         public Task<TModel> GetSnapshot<TModel>()
             where TModel : ISnapshot<TAggregate>, new()
@@ -74,5 +54,8 @@ namespace Domain.Components
             model.Populate((TAggregate)this);
             return Task.FromResult(model);
         }
+
+        public Task<string> GetIdentity()
+            => Task.FromResult(Id.ToString());
     }
 }

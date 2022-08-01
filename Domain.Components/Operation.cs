@@ -3,37 +3,61 @@
 namespace Domain.Components
 {
     public class Operation<TAggregate> : IOperation<TAggregate>
-        where TAggregate : IAggregate<TAggregate>
+        where TAggregate : class, IAggregate<TAggregate>
     {
-        public Operation(TAggregate aggregate, ICommandResult<TAggregate> command)
+        private readonly TAggregate _aggregate;
+        private readonly ICommand<TAggregate, ICommandResult<TAggregate>> _command;
+
+        public Operation(TAggregate aggregate, ICommand<TAggregate, ICommandResult<TAggregate>> command)
         {
-            Aggregate = aggregate;
-            CommandResult = command;
+            _aggregate = aggregate;
+            _command = command;
         }
 
-        public TAggregate Aggregate { get; }
-        public ICommandResult<TAggregate> CommandResult { get; }
+        public TAggregate Aggregate { get; internal set; }
+        public ICommandResult<TAggregate> Result { get; private set; }
+
+        ICommand<TAggregate> IOperation<TAggregate>.Command => _command;
+
+        async Task IOperation.Evaluate()
+        {
+            var result = await _aggregate.Evaluate(_command);
+
+            if (result.IsSuccess)
+            {
+                Aggregate = _aggregate;
+                Result = result.Value;
+            }
+        }
     }
 
-    public class Operation<TAggregate, TCommand> : IOperation<TAggregate, TCommand>
-        where TAggregate : IAggregate<TAggregate>
-        where TCommand : ICommandResult<TAggregate>
+    public class Operation<TAggregate, TResult> : IOperation<TAggregate, TResult>
+        where TAggregate : class, IAggregate<TAggregate>
+        where TResult : ICommandResult<TAggregate>
     {
-        private Func<TAggregate, TCommand> _commandEvaluation;
+        private readonly TAggregate _aggregate;
+        private readonly ICommand<TAggregate, TResult> _command;
 
-        public Operation(TAggregate aggregate, Func<TAggregate, TCommand> command)
+        public Operation(TAggregate aggregate, ICommand<TAggregate, TResult> command)
         {
-            Aggregate = aggregate;
-            _commandEvaluation = command;
+            _aggregate = aggregate;
+            _command = command;
         }
 
-        public async Task Evaluate()
-        {
-            CommandResult = _commandEvaluation(Aggregate);
-        }
+        public TAggregate Aggregate { get; internal set; }
+        public TResult Result { get; private set; }
 
-        public TAggregate Aggregate { get; init; }
-        
-        public TCommand CommandResult { get; private set; }
+        ICommand<TAggregate, TResult> IOperation<TAggregate, TResult>.Command => _command;
+
+        async Task IOperation.Evaluate()
+        {
+            var result = await _aggregate.Evaluate(_command);
+
+            if (result.IsSuccess)
+            {
+                Aggregate = _aggregate;
+                Result = result.Value;
+            }
+        }
     }
 }

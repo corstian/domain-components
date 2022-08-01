@@ -56,19 +56,6 @@ namespace Domain.Example.Orleans.Grains
             _logger.LogInformation("Events applied: {events}", events);
         }
 
-
-        public async Task<IResult<IEnumerable<IEvent<T>>>> Evaluate(ICommand<T> command)
-        {
-            var result = await State.Evaluate(command);
-
-            if (result.IsSuccess)
-                _logger.LogInformation("Command evaluation succesful: {command}", command);
-            else
-                _logger.LogWarning("Command evaluation failed\r\nCommand: {command}\r\nReasons: {reasons}", command, result.Reasons);
-
-            return result;
-        }
-
         public async Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot<T>, new()
         {
             await ConfirmEvents();
@@ -85,5 +72,8 @@ namespace Domain.Example.Orleans.Grains
         {
             throw new NotImplementedException();
         }
+
+        public Task<string> GetIdentity()
+            => Task.FromResult(Id.ToString());
     }
 }

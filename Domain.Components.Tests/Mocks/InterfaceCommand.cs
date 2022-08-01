@@ -15,7 +15,7 @@ namespace Domain.Components.Tests.Mocks
         {
             public InterfaceEvent Event { get; init; }
 
-            IEnumerable<IEvent<InterfaceAggregate>> ICommandResult<InterfaceAggregate>.Value => new[] { Event };
+            IEnumerable<IEvent<InterfaceAggregate>> ICommandResult<InterfaceAggregate>.Events => new[] { Event };
         }
     }
 }

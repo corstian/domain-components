@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Domain.Example.Tests.Mocks
 {
     public class MockRepository<T> : IRepository<T>
-        where T : Aggregate, new()
+        where T : Aggregate, IAggregate, new()
     {
         public MockRepository() { }
 

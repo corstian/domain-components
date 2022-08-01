@@ -2,19 +2,30 @@
 {
     public interface ICommand
     {
-
+        IResult<ICommandResult> Evaluate(IAggregate aggregate);
     }
 
     public interface ICommand<TAggregate> : ICommand
-        where TAggregate : IAggregate
+        where TAggregate : class, IAggregate
     {
-        public IResult<IEnumerable<IEvent<TAggregate>>> Evaluate(TAggregate handler);
+        IResult<ICommandResult<TAggregate>> Evaluate(TAggregate aggregate);
+
+        IResult<ICommandResult> ICommand.Evaluate(IAggregate aggregate) => Evaluate(aggregate as TAggregate);
     }
 
-    public interface ICommand<TAggregate, TResult> : ICommand
-        where TAggregate : IAggregate
+    public interface ICommand<TAggregate, TResult> : ICommand<TAggregate>
+        where TAggregate : class, IAggregate
         where TResult : ICommandResult<TAggregate>
     {
-        public IResult<TResult> Evaluate(TAggregate aggregate);
+        IResult<TResult> Evaluate(TAggregate aggregate);
+
+        IResult<ICommandResult<TAggregate>> ICommand<TAggregate>.Evaluate(TAggregate aggregate)
+        {
+            var result = Evaluate(aggregate);
+
+            return new DomainResult<ICommandResult<TAggregate>>()
+                .WithValue(result.IsSuccess ? result.Value : null)
+                .WithReasons(result.Reasons);
+        }
     }
 }

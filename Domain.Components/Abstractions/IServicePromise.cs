@@ -3,6 +3,6 @@
     public interface IPromise<T>
         where T : IServiceResult
     {
-        internal Task<T> Materialize();
+        internal T Materialize();
     }
 }

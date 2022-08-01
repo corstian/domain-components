@@ -44,8 +44,8 @@ namespace Domain.Example.Services
 
         public class Result : IServiceResult<Result>
         {
-            public IOperation<User, GroupAdded> AddGroupEvent { get; init; }
-            public IOperation<Group, UserAdded> AddUserEvent { get; init; }
+            public Operation<User, GroupAdded> AddGroupEvent { get; init; }
+            public Operation<Group, UserAdded> AddUserEvent { get; init; }
 
             IEnumerable<IServiceResult> IServiceResult.Operations => new IServiceResult[] { AddGroupEvent, AddUserEvent };
         }

@@ -17,9 +17,5 @@ namespace Domain.Example.Orleans.Grains
         public Task<IResult<TResult>> Evaluate<TResult>(IService<TResult> service) 
             where TResult : IServiceResult<TResult>
             => _serviceEvaluator.Evaluate(service);
-
-        public Task<IResult<IPromise<TResult>>> Stage<TResult>(IService<TResult> service)
-            where TResult : IServiceResult<TResult>
-            => _serviceEvaluator.Stage(service);
     }
 }

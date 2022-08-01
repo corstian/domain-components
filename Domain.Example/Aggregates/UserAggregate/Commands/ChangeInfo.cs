@@ -29,7 +29,7 @@ namespace Domain.Example.Aggregates.UserAggregate.Commands
             public Renamed Renamed { get; init; }
             public EmailChanged EmailChanged { get; init; }
 
-            IEnumerable<IEvent<User>> ICommandResult<User>.Value => new IEvent<User>[] { Renamed, EmailChanged };
+            IEnumerable<IEvent<User>> ICommandResult<User>.Events => new IEvent<User>[] { Renamed, EmailChanged };
         }
     }
 }

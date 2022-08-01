@@ -48,45 +48,5 @@ namespace Domain.Components.Tests
 
             Assert.True(result.Value.Event.AggregateId == default);
         }
-
-        [Fact]
-        public async Task Event_FromAggregate_HasAuthorizationContext()
-        {
-            var aggregate = new TestAggregate
-            {
-                Id = Guid.NewGuid()
-            };
-
-            var specification = new AuthSpecMock(new UserMock
-            {
-                Name = "John Doe"
-            });
-
-            var result = await aggregate.EvaluateAndApply(new AuthorizedTestCommand(specification));
-
-            var e = result.Value.First() as Event;
-
-            Assert.NotNull(e);
-            Assert.True(e.AuthorizationContext is UserMock);
-            Assert.True(((UserMock)e.AuthorizationContext).Name == "John Doe");
-        }
-
-        [Fact]
-        public async Task Event_FromAggregate_FailsAuthorization()
-        {
-            var aggregate = new TestAggregate
-            {
-                Id = Guid.NewGuid()
-            };
-
-            var specification = new AuthSpecMock(new UserMock
-            {
-                Name = "Jane Doe"
-            });
-
-            var result = await aggregate.EvaluateAndApply(new AuthorizedTestCommand(specification));
-
-            Assert.True(result.IsFailed);
-        }
     }
 }

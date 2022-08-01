@@ -1,12 +1,10 @@
 ﻿using Domain.Components.Abstractions;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Domain.Components.Tests.Mocks
 {
     internal class AggregateProxy<T> : IAggregate<T>
-        where T : IAggregate<T>, new()
+        where T : class, IAggregate<T>, new()
     {
         public AggregateProxy() { }
 
@@ -23,9 +21,6 @@ namespace Domain.Components.Tests.Mocks
         Task IAggregate<T>.Apply(params IEvent<T>[] events)
             => aggregate.Apply(events);
 
-        Task<IResult<IEnumerable<IEvent<T>>>> IAggregate<T>.Evaluate(ICommand<T> command)
-            => aggregate.Evaluate(command);
-
         Task<TModel> IAggregate<T>.GetSnapshot<TModel>()
             => aggregate.GetSnapshot<TModel>();
 
@@ -35,5 +30,8 @@ namespace Domain.Components.Tests.Mocks
 
         public Task Apply(ICommandResult<T> commandResult)
             => aggregate.Apply(commandResult);
+
+        public Task<string> GetIdentity()
+            => aggregate.GetIdentity();
     }
 }

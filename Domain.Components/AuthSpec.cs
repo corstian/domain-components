@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 namespace Domain.Components
 {
     public class AuthSpec<TAggregate> : ASpec<TAggregate>
-        where TAggregate : IAggregate<TAggregate>
+        where TAggregate : class, IAggregate<TAggregate>
     {
         private readonly Expression<Func<TAggregate, IAuthorizationContext, bool>> _expression;
 
@@ -36,7 +36,7 @@ namespace Domain.Components
     }
 
     public class AuthSpec<TAggregate, TContext> : ASpec<TAggregate>
-        where TAggregate : IAggregate<TAggregate>
+        where TAggregate : class, IAggregate<TAggregate>
         where TContext : IAuthorizationContext
     {
         private readonly Expression<Func<TAggregate, TContext, bool>> _expression;

@@ -34,10 +34,10 @@ namespace Domain.Example.Tests.Services
 
             Assert.NotNull(result);
             Assert.True(result.IsSuccess);
-            Assert.Equal(userId, result.Value.AddUserEvent.CommandResult.UserId);
-            Assert.Equal(groupId, result.Value.AddUserEvent.CommandResult.AggregateId);
-            Assert.Equal(groupId, result.Value.AddGroupEvent.CommandResult.GroupId);
-            Assert.Equal(userId, result.Value.AddGroupEvent.CommandResult.AggregateId);
+            Assert.Equal(userId, result.Value.AddUserEvent.Result.UserId);
+            Assert.Equal(groupId, result.Value.AddUserEvent.Result.AggregateId);
+            Assert.Equal(groupId, result.Value.AddGroupEvent.Result.GroupId);
+            Assert.Equal(userId, result.Value.AddGroupEvent.Result.AggregateId);
         }
     }
 }

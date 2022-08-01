@@ -14,14 +14,14 @@ namespace Domain.Example.Orleans.Grains
             => RaiseEvents(events);
 
         public Task Apply(ICommandResult<T> commandResult)
-            => Apply(commandResult.Value.ToArray());
-
-        public async Task<IResult<IEnumerable<IEvent<T>>>> Evaluate(ICommand<T> command)
-            => await State.Evaluate(command);
+            => Apply(commandResult.Events.ToArray());
 
         public async Task<IResult<TResult>> Evaluate<TResult>(ICommand<T, TResult> command) 
             where TResult : ICommandResult<T>
             => await State.Evaluate(command);
+
+        public Task<string> GetIdentity()
+            => State.GetIdentity();
 
         public async Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot<T>, new()
             => await State.GetSnapshot<TModel>();

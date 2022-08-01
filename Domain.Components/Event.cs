@@ -2,7 +2,7 @@
 
 namespace Domain.Components
 {
-    public abstract class Event : IEvent
+    public abstract class Event
     {
         public Guid AggregateId { get; internal set; }
         public DateTime Timestamp { get; internal set; }

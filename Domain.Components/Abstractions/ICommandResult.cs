@@ -2,26 +2,14 @@
 {
     public interface ICommandResult
     {
-        public IEnumerable<IEvent> Value { get; }
+        public IEnumerable<IEvent> Events { get; }
     }
 
-    public interface ICommandResult<THandler> : ICommandResult
-        where THandler : IAggregate
+    public interface ICommandResult<TAggregate> : ICommandResult
+        where TAggregate : class, IAggregate
     {
-        public new IEnumerable<IEvent<THandler>> Value { get; }
+        public new IEnumerable<IEvent<TAggregate>> Events { get; }
 
-        IEnumerable<IEvent> ICommandResult.Value => Value;
-    }
-
-    public class CommandResult<THandler> : ICommandResult<THandler>
-        where THandler : IAggregate
-    {
-        public CommandResult() { }
-        public CommandResult(IEnumerable<IEvent<THandler>> value)
-        {
-            Value = value;
-        }
-
-        public IEnumerable<IEvent<THandler>> Value { get; init; }
+        IEnumerable<IEvent> ICommandResult.Events => Events;
     }
 }

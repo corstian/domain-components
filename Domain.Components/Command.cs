@@ -2,13 +2,13 @@
 
 namespace Domain.Components
 {
-    public abstract class Command : ICommand
+    public abstract class Command
     {
-
+        
     }
 
     public abstract class AuthorizedCommand<T> : ICommand<T>
-        where T : IAggregate<T>
+        where T : class, IAggregate<T>
     {
         internal readonly AuthSpec<T>? AuthSpec;
 
@@ -17,17 +17,17 @@ namespace Domain.Components
             AuthSpec = authSpec;
         }
 
-        public abstract IResult<IEnumerable<IEvent<T>>> Evaluate(T handler);
+        public abstract IResult<ICommandResult<T>> Evaluate(T handler);
 
-        IResult<IEnumerable<IEvent<T>>> ICommand<T>.Evaluate(T handler)
+        IResult<ICommandResult<T>> ICommand<T>.Evaluate(T aggregate)
         {
-            if (AuthSpec?.IsSatisfiedBy(handler) ?? false)
+            if (AuthSpec?.IsSatisfiedBy(aggregate) ?? false)
             {
-                var result = Evaluate(handler);
+                var result = Evaluate(aggregate);
 
                 if (result.IsFailed) return result;
-                
-                foreach (var @event in result.Value)
+
+                foreach (var @event in result.Value.Events)
                 {
                     if (@event is Event e)
                         e.AuthorizationContext = AuthSpec.AuthorizationContext;
@@ -36,7 +36,7 @@ namespace Domain.Components
                 return result;
             }
 
-            return DomainResult.Fail<IEnumerable<IEvent<T>>>("Unauthorized");
+            return DomainResult.Fail<ICommandResult<T>>("Unauthorized");
         }
     }
 }

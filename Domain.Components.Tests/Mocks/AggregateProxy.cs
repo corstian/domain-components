@@ -31,7 +31,7 @@ namespace Domain.Components.Tests.Mocks
         public Task Apply(ICommandResult<T> commandResult)
             => aggregate.Apply(commandResult);
 
-        public Task<string> GetIdentity()
+        public ValueTask<string> GetIdentity()
             => aggregate.GetIdentity();
     }
 }

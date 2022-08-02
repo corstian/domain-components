@@ -6,7 +6,7 @@ namespace Domain.Components.Extensions
     {
         public static Operation<TAggregate, TResult> LazilyEvaluate<TAggregate, TResult>(this TAggregate aggregate, ICommand<TAggregate, TResult> operation)
             where TAggregate : class, IAggregate<TAggregate>
-            where TResult : ICommandResult<TAggregate>, new()
+            where TResult : class, ICommandResult<TAggregate>, new()
         {
             return new Operation<TAggregate, TResult>(aggregate, operation);
         }

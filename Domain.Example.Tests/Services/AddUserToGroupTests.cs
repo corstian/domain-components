@@ -16,6 +16,7 @@ namespace Domain.Example.Tests.Services
         IServiceProvider serviceProvider = new ServiceCollection()
             .AddSingleton<IRepository<Group>>((serviceProvider) => new MockRepository<Group>())
             .AddSingleton<IRepository<User>>((serviceProvider) => new MockRepository<User>())
+            .AddSingleton<IServiceEvaluator>((serviceProvider) => new BatchedServiceEvaluator(serviceProvider))
             .BuildServiceProvider();
 
         [Fact]
@@ -30,7 +31,9 @@ namespace Domain.Example.Tests.Services
                 UserId = userId
             };
 
-            var result = await new ServiceEvaluator(serviceProvider).Evaluate(service);
+            var serviceEvaluator = serviceProvider.GetRequiredService<IServiceEvaluator>();
+
+            var result = await serviceEvaluator.Evaluate(service);
 
             Assert.NotNull(result);
             Assert.True(result.IsSuccess);

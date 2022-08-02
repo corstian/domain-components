@@ -55,7 +55,7 @@ namespace Domain.Components
             return Task.FromResult(model);
         }
 
-        public Task<string> GetIdentity()
-            => Task.FromResult(Id.ToString());
+        public ValueTask<string> GetIdentity()
+            => ValueTask.FromResult(Id.ToString());
     }
 }

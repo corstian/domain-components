@@ -68,12 +68,7 @@ namespace Domain.Example.Orleans.Grains
             throw new NotImplementedException();
         }
 
-        public Task Apply(ICommandResult<T> commandResult)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> GetIdentity()
-            => Task.FromResult(Id.ToString());
+        public ValueTask<string> GetIdentity()
+            => ValueTask.FromResult(Id.ToString());
     }
 }

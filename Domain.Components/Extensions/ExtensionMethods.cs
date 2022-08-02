@@ -29,6 +29,7 @@ namespace Domain.Components.Extensions
                 }
         }
 
+        // ToDo: Ensure the group operation is not asynchronous
         internal static IEnumerable<IGrouping<string, IOperation>>
             Group(this IEnumerable<IOperation> operations)
             => operations

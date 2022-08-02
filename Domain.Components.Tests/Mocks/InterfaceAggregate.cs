@@ -32,8 +32,8 @@ namespace Domain.Components.Tests.Mocks
             where TResult : ICommandResult<InterfaceAggregate>
             => Task.FromResult(command.Evaluate(this));
 
-        public Task<string> GetIdentity()
-            => Task.FromResult(Id.ToString());
+        public ValueTask<string> GetIdentity()
+            => ValueTask.FromResult(Id.ToString());
 
         public Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot<InterfaceAggregate>, new()
         {

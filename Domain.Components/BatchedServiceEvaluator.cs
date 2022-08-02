@@ -20,38 +20,54 @@ namespace Domain.Components
                 return new DomainResult<TResult>()
                     .WithReasons(promise.Reasons);
 
-            var value = promise.Value;
-
             var materialized = promise.Value.Materialize();
 
-            var groups = materialized.Operations.OperationsFromServiceResults().Group();
+            var groups = materialized.Operations
+                .OperationsFromServiceResults()
+                .Select(async q => new
+                {
+                    Operation = q,
+                    AggregateIdentity = await q.Aggregate.GetIdentity()
+                })
+                .Select(q => q.Result)
+                .GroupBy(q => q.AggregateIdentity, (key, group) => group.Select(w => w.Operation));
+                
 
-            var results = new List<IResult<ICommandResult>>();
-
-            foreach (var group in groups)
-                results.AddRange(
-                    await group
-                        .First()
-                        .Aggregate
-                        .Evaluate(group
-                            .Select(q => q.Command)
-                            .ToArray()));
-
-            // ToDo: Inspect the contents of the results. If no blockers, apply all operations
+            var result = new DomainResult<TResult>();
 
             foreach (var group in groups)
             {
-                await group
+                var batchEvaluationResult = await group
                     .First()
                     .Aggregate
-                    .Apply(group
-                        .SelectMany(q => q.Result.Events)
+                    .Evaluate(group
+                        .Select(q => q.Command)
                         .ToArray());
+
+                foreach (var evaluationResult in batchEvaluationResult)
+                {
+                    // Signalling completion back to the operation
+                    foreach (var operation in group)
+                    {
+                        operation.SignalEvaluation(evaluationResult);
+                    }
+                }
+
+                result.Reasons.AddRange(batchEvaluationResult.SelectMany(q => q.Reasons));
             }
 
-            return new DomainResult<TResult>()
-                    .WithReasons(promise.Reasons)
-                    .WithValue(value.Materialize());
+            if (result.IsSuccess)
+                foreach (var group in groups)
+                    await group
+                        .First()
+                        .Aggregate
+                        .Apply(group
+                            .SelectMany(q => q.Result.Events)
+                            .ToArray());
+
+            return result.IsSuccess
+                ? result.WithValue(materialized)
+                : result;
         }
     }
 }

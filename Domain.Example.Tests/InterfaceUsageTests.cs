@@ -25,8 +25,8 @@ namespace Domain.Example.Tests
                 where TResult : ICommandResult<User>
                 => User.Evaluate(command);
 
-            public Task<string> GetIdentity()
-                => Task.FromResult(User.Id.ToString());
+            public ValueTask<string> GetIdentity()
+                => ValueTask.FromResult(User.Id.ToString());
 
             Task IAggregate<User>.Apply(IEvent<User> @event)
                 => User.Apply(@event);

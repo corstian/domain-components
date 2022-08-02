@@ -20,23 +20,25 @@ namespace Domain.Components
                 return new DomainResult<TResult>()
                     .WithReasons(promise.Reasons);
 
-            var value = promise.Value;
-
             var materialized = promise.Value.Materialize();
 
             var operations = materialized.Operations.OperationsFromServiceResults();
 
-            var results = new List<IResult<ICommandResult>>();
+            var result = new DomainResult<TResult>();
 
+            // Once evaluation has started we'll collect all results, even if one operation had already failed.
+            // This allows clients to review all errors and increases the changes of the next operation succeeding
+            // without them being surprised by additional errors being thrown that had not been evaluated before.
             foreach (var operation in operations)
-                await operation.Evaluate();
+                result.Reasons.AddRange((await operation.Evaluate()).Reasons);
 
-            foreach (var operation in operations)
-                await operation.Aggregate.Apply(operation.Result.Events.ToArray());
+            if (result.IsSuccess)
+                foreach (var operation in operations)
+                    await operation.Aggregate.Apply(operation.Result.Events.ToArray());
 
-            return new DomainResult<TResult>()
-                    .WithReasons(promise.Reasons)
-                    .WithValue(materialized);
+            return result.IsSuccess
+                ? result.WithValue(materialized)
+                : result;
         }
     }
 }

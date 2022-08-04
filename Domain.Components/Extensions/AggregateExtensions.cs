@@ -13,7 +13,7 @@ namespace Domain.Components.Extensions
 
         public static async Task<IResult<R>> EvaluateAndApply<T, R>(this IAggregate<T> aggregate, ICommand<T, R> command)
             where T : class, IAggregate<T>
-            where R : ICommandResult<T>
+            where R : class, ICommandResult<T>
         {
             var result = await aggregate.Evaluate(command);
 
@@ -29,7 +29,7 @@ namespace Domain.Components.Extensions
 
         public static async Task<IResult<R>> EvaluateTypedCommand<T, R>(this IAggregate<T> aggregate, ICommand<T, R> command)
             where T : class, IAggregate<T>
-            where R : ICommandResult<T>
+            where R : class, ICommandResult<T>
         {
             var result = await aggregate.Evaluate(command);
 
@@ -42,7 +42,7 @@ namespace Domain.Components.Extensions
 
         public static async Task<IResult<R>> EvaluateTypedCommand<T, R>(this T aggregate, ICommand<T, R> command)
             where T : class, IAggregate<T>
-            where R : ICommandResult<T>
+            where R : class, ICommandResult<T>
         {
             var result = await aggregate.Evaluate(command);
 

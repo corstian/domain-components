@@ -1,4 +1,6 @@
 ﻿using Domain.Components.Abstractions;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Domain.Components.Tests.Mocks
@@ -24,8 +26,7 @@ namespace Domain.Components.Tests.Mocks
         Task<TModel> IAggregate<T>.GetSnapshot<TModel>()
             => aggregate.GetSnapshot<TModel>();
 
-        public Task<IResult<TResult>> Evaluate<TResult>(ICommand<T, TResult> command)
-            where TResult : ICommandResult<T>
+        public Task<IResult<ICommandResult<T>>> Evaluate(ICommand<T> command)
             => aggregate.Evaluate(command);
 
         public Task Apply(ICommandResult<T> commandResult)
@@ -33,5 +34,26 @@ namespace Domain.Components.Tests.Mocks
 
         public ValueTask<string> GetIdentity()
             => aggregate.GetIdentity();
+
+        public async Task<IResult<TResult>> Evaluate<TResult>(ICommand<T, TResult> command)
+            where TResult : ICommandResult<T>
+        {
+            var result = await Evaluate(command as ICommand<T>);
+
+            throw new NotImplementedException();
+            //return new DomainResult<TResult>()
+            //    .WithValue(result.IsSuccess
+            //        ? result.Value as TResult
+            //        : null)
+            //    .WithReasons(result.Reasons);
+        }
+
+        public async Task<IEnumerable<IResult<ICommandResult<T>>>> Evaluate(params ICommand<T>[] commands)
+        {
+            var results = new List<IResult<ICommandResult<T>>>();
+            foreach (var command in commands)
+                results.Add(await Evaluate(command));
+            return results;
+        }
     }
 }

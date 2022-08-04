@@ -28,8 +28,7 @@ namespace Domain.Components.Tests.Mocks
         public Task Apply(ICommandResult<InterfaceAggregate> commandResult)
             => Apply(commandResult.Events.ToArray());
 
-        public Task<IResult<TResult>> Evaluate<TResult>(ICommand<InterfaceAggregate, TResult> command) 
-            where TResult : ICommandResult<InterfaceAggregate>
+        public Task<IResult<ICommandResult<InterfaceAggregate>>> Evaluate(ICommand<InterfaceAggregate> command) 
             => Task.FromResult(command.Evaluate(this));
 
         public ValueTask<string> GetIdentity()
@@ -40,6 +39,26 @@ namespace Domain.Components.Tests.Mocks
             var model = Activator.CreateInstance<TModel>();
             model.Populate(this);
             return Task.FromResult(model);
+        }
+
+        public async Task<IResult<TResult>> Evaluate<TResult>(ICommand<InterfaceAggregate, TResult> command)
+            where TResult : ICommandResult<InterfaceAggregate>
+        {
+            var result = await Evaluate(command as ICommand<InterfaceAggregate>);
+            throw new NotImplementedException();
+            //return new DomainResult<TResult>()
+            //    .WithValue(result.IsSuccess
+            //        ? result.Value as TResult
+            //        : null)
+            //    .WithReasons(result.Reasons);
+        }
+
+        public async Task<IEnumerable<IResult<ICommandResult<InterfaceAggregate>>>> Evaluate(params ICommand<InterfaceAggregate>[] commands)
+        {
+            var results = new List<IResult<ICommandResult<InterfaceAggregate>>>();
+            foreach (var command in commands)
+                results.Add(await Evaluate(command));
+            return results;
         }
     }
 }

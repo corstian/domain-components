@@ -10,14 +10,13 @@ namespace Domain.Components
     public abstract class Aggregate<TAggregate> : Aggregate, IAggregate<TAggregate>
         where TAggregate : Aggregate<TAggregate>
     {
-        public Task<IResult<TResult>> Evaluate<TResult>(ICommand<TAggregate, TResult> @command)
-            where TResult : ICommandResult<TAggregate>
+        public Task<IResult<ICommandResult<TAggregate>>> Evaluate(ICommand<TAggregate> command)
         {
             var result = command.Evaluate((TAggregate)this);
 
             if (result.IsFailed) return Task.FromResult(result);
 
-            ICommandResult<TAggregate> commandResult= result.Value;
+            ICommandResult<TAggregate> commandResult = result.Value;
 
             foreach (var @event in commandResult.Events)
             {
@@ -29,6 +28,26 @@ namespace Domain.Components
             }
 
             return Task.FromResult(result);
+        }
+
+        public async Task<IResult<TResult>> Evaluate<TResult>(ICommand<TAggregate, TResult> command)
+            where TResult : ICommandResult<TAggregate>
+        {
+            var result = await Evaluate(command as ICommand<TAggregate>);
+            throw new NotImplementedException();
+            //return new DomainResult<TResult>()
+            //    .WithValue(result.IsSuccess
+            //        ? result.Value as TResult
+            //        : null)
+            //    .WithReasons(result.Reasons);
+        }
+
+        public async Task<IEnumerable<IResult<ICommandResult<TAggregate>>>> Evaluate(params ICommand<TAggregate>[] commands)
+        {
+            var results = new List<IResult<ICommandResult<TAggregate>>>();
+            foreach (var command in commands)
+                results.Add(await Evaluate(command));
+            return results;
         }
 
         public Task Apply(IEvent<TAggregate> @event)

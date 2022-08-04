@@ -17,7 +17,7 @@ namespace Domain.Components.Tests
 
             var command = new TestCommand();
 
-            var result = await aggregate.Evaluate<TestEvent>(command);
+            var result = await (aggregate as IAggregate<TestAggregate>).Evaluate(command);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(aggregate.Id, result.Value.AggregateId);
@@ -34,7 +34,7 @@ namespace Domain.Components.Tests
 
             var command = new InterfaceCommand();
 
-            var result = await aggregate.Evaluate(command);
+            var result = await (aggregate as IAggregate<InterfaceAggregate>).Evaluate(command);
 
             Assert.True(result.IsSuccess);
             Assert.Equal(Guid.Empty, result.Value.Event.AggregateId);

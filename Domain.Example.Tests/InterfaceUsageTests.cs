@@ -1,4 +1,5 @@
-﻿using Domain.Components.Abstractions;
+﻿using Domain.Components;
+using Domain.Components.Abstractions;
 using Domain.Components.Extensions;
 using Domain.Example.Aggregates.UserAggregate;
 using Domain.Example.Aggregates.UserAggregate.Commands;
@@ -21,8 +22,7 @@ namespace Domain.Example.Tests
             public Task Apply(ICommandResult<User> commandResult)
                 => User.Apply(commandResult);
 
-            public Task<IResult<TResult>> Evaluate<TResult>(ICommand<User, TResult> command)
-                where TResult : ICommandResult<User>
+            public Task<IResult<ICommandResult<User>>> Evaluate(ICommand<User> command)
                 => User.Evaluate(command);
 
             public ValueTask<string> GetIdentity()
@@ -36,6 +36,26 @@ namespace Domain.Example.Tests
 
             Task<TModel> IAggregate<User>.GetSnapshot<TModel>()
                 => User.GetSnapshot<TModel>();
+
+            public async Task<IResult<TResult>> Evaluate<TResult>(ICommand<User, TResult> command)
+            where TResult : ICommandResult<User>
+            {
+                var result = await Evaluate(command as ICommand<User>);
+                throw new NotImplementedException();
+                //return new DomainResult<TResult>()
+                //    .WithValue(result.IsSuccess
+                //        ? result.Value as TResult
+                //        : null)
+                //    .WithReasons(result.Reasons);
+            }
+
+            public async Task<IEnumerable<IResult<ICommandResult<User>>>> Evaluate(params ICommand<User>[] commands)
+            {
+                var results = new List<IResult<ICommandResult<User>>>();
+                foreach (var command in commands)
+                    results.Add(await Evaluate(command));
+                return results;
+            }
         }
 
         [Fact]

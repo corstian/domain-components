@@ -72,7 +72,7 @@ namespace Domain.Example.Tests
         [Fact]
         public async Task CanValidatePassword()
         {
-            var user = new User();
+            IAggregate<User> user = new User();
 
             var passwordChanged = (await user
                 .Evaluate(new ChangePassword
@@ -102,7 +102,7 @@ namespace Domain.Example.Tests
 
             await user.Apply((IEvent<User>)passwordIncorrectlyValidated);
 
-            Assert.Equal(2, user.LoginAttempts.Count);
+            Assert.Equal(2, (user as User).LoginAttempts.Count);
         }
 
         [Fact]

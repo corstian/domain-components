@@ -7,6 +7,7 @@ using Domain.Example.Aggregates.GroupAggregate.Events;
 using Domain.Example.Aggregates.UserAggregate;
 using Domain.Example.Aggregates.UserAggregate.Commands;
 using Domain.Example.Aggregates.UserAggregate.Events;
+using Domain.Example.Aggregates.UserAggregate.Snapshots;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Domain.Example.Services
@@ -18,23 +19,24 @@ namespace Domain.Example.Services
 
         public async Task<IResult<IPromise<Result>>> Stage(IServiceProvider serviceProvider)
         {
-            var userRepo = serviceProvider.GetService<IRepository<User>>();
-            var groupRepo = serviceProvider.GetService<IRepository<Group>>();
+            var aggregateProvider = serviceProvider.GetRequiredService<IAggregateProvider>();
 
-            var user = await userRepo.ById(UserId);
-            var group = await groupRepo.ById(GroupId);
+            var user = aggregateProvider.Get<User>(UserId);
+            var group = aggregateProvider.Get<Group>(GroupId);
+
+            var userInfo = await user.GetSnapshot<PublicUserInfo>();
 
             var result = new Result
             {
                 AddUserEvent = group.LazilyEvaluate(new AddUser
                 {
-                    UserId = user.Id,
-                    Name = user.Name
+                    UserId = UserId,
+                    Name = userInfo.Name
                 }),
                 AddGroupEvent = user.LazilyEvaluate(new AddGroup
                 {
-                    GroupId = group.Id,
-                    Name = group.Name
+                    GroupId = GroupId,
+                    Name = "Unknown"
                 })
             };
 

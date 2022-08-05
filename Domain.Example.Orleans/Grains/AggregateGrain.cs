@@ -40,7 +40,7 @@ namespace Domain.Example.Orleans.Grains
 
             await ConfirmEvents();
             await _stream.OnNextAsync(@event);
-            _logger.LogInformation("Event applied: {event}", @event);
+            _logger.LogInformation("Event applied: {@event}", @event);
         }
 
         public async Task Apply(params IEvent<T>[] events)
@@ -50,45 +50,33 @@ namespace Domain.Example.Orleans.Grains
             await ConfirmEvents();
             // Not supported...
             //await _stream.OnNextBatchAsync(events);
-            
+
             foreach (var @event in events)
                 await _stream.OnNextAsync(@event);
-            
-            _logger.LogInformation("Events applied: {events}", events);
+
+            _logger.LogInformation("Events applied: {@events}", events);
         }
 
-        public async Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot<T>, new()
+        public async Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot, new()
         {
             await ConfirmEvents();
             return await State.GetSnapshot<TModel>();
         }
 
-        public async Task<IResult<ICommandResult<T>>> Evaluate(ICommand<T> command) 
+        public async Task<IResult<ICommandResult<T>>> Evaluate(ICommand<T> command)
         {
             var result = await State.Evaluate(command);
 
             if (result.IsSuccess)
-                _logger.LogInformation("Command evaluation succesful: {command}", command);
+                _logger.LogInformation("Command evaluation succesful: {@command}", command);
             else
-                _logger.LogWarning("Command evaluation failed\r\nCommand: {command}\r\nReasons: {reasons}", command, result.Reasons);
+                _logger.LogWarning("Command evaluation failed\r\nCommand: {@command}\r\nReasons: {@reasons}", command, result.Reasons);
 
             return result;
         }
 
         public ValueTask<string> GetIdentity()
             => ValueTask.FromResult(Id.ToString());
-
-        public async Task<IResult<TResult>> Evaluate<TResult>(ICommand<T, TResult> command)
-            where TResult : ICommandResult<T>
-        {
-            var result = await Evaluate(command as ICommand<T>);
-            throw new NotImplementedException();
-            //return new DomainResult<TResult>()
-            //    .WithValue(result.IsSuccess
-            //        ? result.Value as TResult
-            //        : null)
-            //    .WithReasons(result.Reasons);
-        }
 
         public async Task<IEnumerable<IResult<ICommandResult<T>>>> Evaluate(params ICommand<T>[] commands)
         {

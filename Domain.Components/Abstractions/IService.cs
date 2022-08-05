@@ -6,7 +6,7 @@
     }
     
     public interface IService<TResult> : IService
-        where TResult : IServiceResult<TResult>
+        where TResult : IServiceResult
     {
         public Task<IResult<IPromise<TResult>>> Stage(IServiceProvider serviceProvider);
     }

@@ -1,4 +1,5 @@
 ﻿using Domain.Components.Abstractions;
+using Domain.Components.Extensions;
 using Domain.Example.Aggregates.UserAggregate;
 using Domain.Example.Aggregates.UserAggregate.Commands;
 using Domain.Example.Aggregates.UserAggregate.Snapshots;
@@ -82,21 +83,20 @@ namespace Domain.Example.Tests
 
             await user.Apply((IEvent<User>)passwordChanged);
 
-            var passwordCorrectlyValidated = (await user
-                .Evaluate(new ValidatePassword
-                {
-                    Password = "1234"
-                })).Value;
+            var passwordCorrectlyValidated = (await IAggregateExtensions.Evaluate(user, new ValidatePassword
+            {
+                Password = "1234"
+            })).Value;
 
             Assert.True(passwordCorrectlyValidated.Succeeded);
 
             await user.Apply((IEvent<User>)passwordCorrectlyValidated);
 
-            var passwordIncorrectlyValidated = (await user
-                .Evaluate(new ValidatePassword
-                {
-                    Password = "123"
-                })).Value;
+
+            var passwordIncorrectlyValidated = (await IAggregateExtensions.Evaluate(user, new ValidatePassword
+            {
+                Password = "123"
+            })).Value;
 
             Assert.False(passwordIncorrectlyValidated.Succeeded);
 

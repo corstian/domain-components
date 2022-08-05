@@ -11,12 +11,19 @@ namespace Domain.Components.Extensions
             return new Operation<TAggregate, TResult>(aggregate, operation);
         }
 
+        public static Operation<TAggregate, TResult> LazilyEvaluate<TAggregate, TResult>(this IAggregate<TAggregate> aggregate, ICommand<TAggregate, TResult> operation)
+            where TAggregate : class, IAggregate<TAggregate>
+            where TResult : class, ICommandResult<TAggregate>, new()
+        {
+            return new Operation<TAggregate, TResult>(aggregate, operation);
+        }
+
         public static async Task<IResult<R>> EvaluateAndApply<T, R>(this IAggregate<T> aggregate, ICommand<T, R> command)
             where T : class, IAggregate<T>
             where R : class, ICommandResult<T>
         {
-            var result = await aggregate.Evaluate(command);
-
+            var result = await IAggregateExtensions.Evaluate(aggregate, command);
+            
             if (result.IsSuccess)
             {
                 ICommandResult<T> commandResult = result.Value;
@@ -31,7 +38,7 @@ namespace Domain.Components.Extensions
             where T : class, IAggregate<T>
             where R : class, ICommandResult<T>
         {
-            var result = await aggregate.Evaluate(command);
+            var result = await IAggregateExtensions.Evaluate(aggregate, command);
 
             return new DomainResult<R>()
                 .WithValue(result.IsFailed
@@ -44,7 +51,7 @@ namespace Domain.Components.Extensions
             where T : class, IAggregate<T>
             where R : class, ICommandResult<T>
         {
-            var result = await aggregate.Evaluate(command);
+            var result = await IAggregateExtensions.Evaluate(aggregate, command);
 
             return new DomainResult<R>()
                 .WithValue(result.IsFailed

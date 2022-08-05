@@ -37,18 +37,6 @@ namespace Domain.Example.Tests
             Task<TModel> IAggregate<User>.GetSnapshot<TModel>()
                 => User.GetSnapshot<TModel>();
 
-            public async Task<IResult<TResult>> Evaluate<TResult>(ICommand<User, TResult> command)
-            where TResult : ICommandResult<User>
-            {
-                var result = await Evaluate(command as ICommand<User>);
-                throw new NotImplementedException();
-                //return new DomainResult<TResult>()
-                //    .WithValue(result.IsSuccess
-                //        ? result.Value as TResult
-                //        : null)
-                //    .WithReasons(result.Reasons);
-            }
-
             public async Task<IEnumerable<IResult<ICommandResult<User>>>> Evaluate(params ICommand<User>[] commands)
             {
                 var results = new List<IResult<ICommandResult<User>>>();

@@ -30,18 +30,6 @@ namespace Domain.Components
             return Task.FromResult(result);
         }
 
-        public async Task<IResult<TResult>> Evaluate<TResult>(ICommand<TAggregate, TResult> command)
-            where TResult : ICommandResult<TAggregate>
-        {
-            var result = await Evaluate(command as ICommand<TAggregate>);
-            throw new NotImplementedException();
-            //return new DomainResult<TResult>()
-            //    .WithValue(result.IsSuccess
-            //        ? result.Value as TResult
-            //        : null)
-            //    .WithReasons(result.Reasons);
-        }
-
         public async Task<IEnumerable<IResult<ICommandResult<TAggregate>>>> Evaluate(params ICommand<TAggregate>[] commands)
         {
             var results = new List<IResult<ICommandResult<TAggregate>>>();
@@ -67,7 +55,7 @@ namespace Domain.Components
             => Apply(commandResult.Events.ToArray());
 
         public Task<TModel> GetSnapshot<TModel>()
-            where TModel : ISnapshot<TAggregate>, new()
+            where TModel : ISnapshot, new()
         {
             var model = Activator.CreateInstance<TModel>();
             model.Populate((TAggregate)this);

@@ -12,7 +12,7 @@ namespace Domain.Components
             _serviceProvider = serviceProvider;
         }
 
-        public async Task<IResult<TResult>> Evaluate<TResult>(IService<TResult> service) where TResult : IServiceResult<TResult>
+        public async Task<IResult<TResult>> Evaluate<TResult>(IService<TResult> service) where TResult : IServiceResult
         {
             var promise = await service.Stage(_serviceProvider);
 

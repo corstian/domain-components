@@ -15,9 +15,9 @@
     }
 
     internal interface IOperation<TAggregate> : IOperation
-        where TAggregate : class, IAggregate
+        where TAggregate : class, IAggregate<TAggregate>
     {
-        public new TAggregate Aggregate { get; }
+        public new IAggregate<TAggregate> Aggregate { get; }
         IAggregate IOperation.Aggregate => Aggregate;
 
         public new ICommandResult<TAggregate> Result { get; }
@@ -46,7 +46,7 @@
     }
 
     internal interface IOperation<TAggregate, TResult> : IOperation<TAggregate>
-        where TAggregate : class, IAggregate
+        where TAggregate : class, IAggregate<TAggregate>
         where TResult : class, ICommandResult<TAggregate>
     {
         public new TResult Result { get; }

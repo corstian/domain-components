@@ -34,23 +34,11 @@ namespace Domain.Components.Tests.Mocks
         public ValueTask<string> GetIdentity()
             => ValueTask.FromResult(Id.ToString());
 
-        public Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot<InterfaceAggregate>, new()
+        public Task<TModel> GetSnapshot<TModel>() where TModel : ISnapshot, new()
         {
             var model = Activator.CreateInstance<TModel>();
             model.Populate(this);
             return Task.FromResult(model);
-        }
-
-        public async Task<IResult<TResult>> Evaluate<TResult>(ICommand<InterfaceAggregate, TResult> command)
-            where TResult : ICommandResult<InterfaceAggregate>
-        {
-            var result = await Evaluate(command as ICommand<InterfaceAggregate>);
-            throw new NotImplementedException();
-            //return new DomainResult<TResult>()
-            //    .WithValue(result.IsSuccess
-            //        ? result.Value as TResult
-            //        : null)
-            //    .WithReasons(result.Reasons);
         }
 
         public async Task<IEnumerable<IResult<ICommandResult<InterfaceAggregate>>>> Evaluate(params ICommand<InterfaceAggregate>[] commands)

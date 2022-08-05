@@ -2,7 +2,7 @@
 using Orleans;
 
 namespace Domain.Example.Orleans.Interfaces
-{
+{ 
     public interface IAggregateGrain<T> : IAggregate<T>, IGrainWithGuidKey
         where T : class, IAggregate<T>
     {

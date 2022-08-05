@@ -1,0 +1,643 @@
+{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.Renamed, Domain.Example",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Timestamp": "2022-08-04T20:32:49.4691126Z"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.EmailChanged, Domain.Example",
+      "Email": "john.doe@example.com",
+      "Timestamp": "2022-08-04T20:32:49.4691595Z"
+    }
+  ],
+  "GlobalVersion": 2,
+  "WriteVector": ",dev"
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.Renamed, Domain.Example",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.EmailChanged, Domain.Example",
+      "Email": "john.doe@example.com"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown",
+      "Timestamp": "2022-08-05T10:12:03.3229493Z"
+    }
+  ],
+  "GlobalVersion": 3,
+  "WriteVector": ""
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Timestamp": "2022-08-05T10:12:03.6206355Z"
+    }
+  ],
+  "GlobalVersion": 1,
+  "WriteVector": ",dev"
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.Renamed, Domain.Example",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.EmailChanged, Domain.Example",
+      "Email": "john.doe@example.com"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown",
+      "Timestamp": "2022-08-05T10:14:57.1080818Z"
+    }
+  ],
+  "GlobalVersion": 4,
+  "WriteVector": ",dev"
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Timestamp": "2022-08-05T10:14:57.2625149Z"
+    }
+  ],
+  "GlobalVersion": 2,
+  "WriteVector": ""
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.Renamed, Domain.Example",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.EmailChanged, Domain.Example",
+      "Email": "john.doe@example.com"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "6",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown",
+      "Timestamp": "2022-08-05T10:23:12.4141536Z"
+    }
+  ],
+  "GlobalVersion": 5,
+  "WriteVector": ""
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Timestamp": "2022-08-05T10:23:12.7283113Z"
+    }
+  ],
+  "GlobalVersion": 3,
+  "WriteVector": ",dev"
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.Renamed, Domain.Example",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.EmailChanged, Domain.Example",
+      "Email": "john.doe@example.com"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "6",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "7",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown",
+      "Timestamp": "2022-08-05T10:26:21.195604Z"
+    }
+  ],
+  "GlobalVersion": 6,
+  "WriteVector": ",dev"
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Timestamp": "2022-08-05T10:26:21.4848791Z"
+    }
+  ],
+  "GlobalVersion": 4,
+  "WriteVector": ""
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.Renamed, Domain.Example",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.EmailChanged, Domain.Example",
+      "Email": "john.doe@example.com"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "6",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "7",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "8",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown",
+      "Timestamp": "2022-08-05T10:28:45.6330038Z"
+    }
+  ],
+  "GlobalVersion": 7,
+  "WriteVector": ""
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "6",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Timestamp": "2022-08-05T10:28:45.8145088Z"
+    }
+  ],
+  "GlobalVersion": 5,
+  "WriteVector": ",dev"
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.Renamed, Domain.Example",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.EmailChanged, Domain.Example",
+      "Email": "john.doe@example.com"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "6",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "7",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "8",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "9",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown",
+      "Timestamp": "2022-08-05T10:29:11.4904728Z"
+    }
+  ],
+  "GlobalVersion": 8,
+  "WriteVector": ",dev"
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "6",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "7",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Timestamp": "2022-08-05T10:29:11.6412184Z"
+    }
+  ],
+  "GlobalVersion": 6,
+  "WriteVector": ""
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.Renamed, Domain.Example",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.EmailChanged, Domain.Example",
+      "Email": "john.doe@example.com"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "6",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "7",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "8",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "9",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "10",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown",
+      "Timestamp": "2022-08-05T10:31:45.5993947Z"
+    }
+  ],
+  "GlobalVersion": 9,
+  "WriteVector": ""
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "6",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "7",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "8",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Timestamp": "2022-08-05T10:31:45.8629949Z"
+    }
+  ],
+  "GlobalVersion": 7,
+  "WriteVector": ",dev"
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.Renamed, Domain.Example",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.EmailChanged, Domain.Example",
+      "Email": "john.doe@example.com"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "6",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "7",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "8",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "9",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "10",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown"
+    },
+    {
+      "$id": "11",
+      "$type": "Domain.Example.Aggregates.UserAggregate.Events.GroupAdded, Domain.Example",
+      "GroupId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "Unknown",
+      "Timestamp": "2022-08-05T10:35:38.8292018Z"
+    }
+  ],
+  "GlobalVersion": 10,
+  "WriteVector": ",dev"
+}{
+  "$id": "1",
+  "Log": [
+    {
+      "$id": "2",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "3",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "4",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "5",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "6",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "7",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "8",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605"
+    },
+    {
+      "$id": "9",
+      "$type": "Domain.Example.Aggregates.GroupAggregate.Events.UserAdded, Domain.Example",
+      "UserId": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Name": "86308691-e97b-45f7-b1b3-8f9765bf3605",
+      "Timestamp": "2022-08-05T10:35:39.0649399Z"
+    }
+  ],
+  "GlobalVersion": 8,
+  "WriteVector": ""
+}

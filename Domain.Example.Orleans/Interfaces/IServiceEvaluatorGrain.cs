@@ -3,7 +3,9 @@ using Orleans;
 
 namespace Domain.Example.Orleans.Interfaces
 {
-    public interface IServiceEvaluatorGrain : IServiceEvaluator, IGrain
+    public interface IServiceEvaluatorGrain : IGrainWithIntegerKey
     {
+        public Task<IResult<TResult>> Evaluate<TResult>(IService<TResult> service)
+            where TResult : IServiceResult;
     }
 }

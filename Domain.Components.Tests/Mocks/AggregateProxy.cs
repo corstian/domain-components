@@ -35,19 +35,6 @@ namespace Domain.Components.Tests.Mocks
         public ValueTask<string> GetIdentity()
             => aggregate.GetIdentity();
 
-        public async Task<IResult<TResult>> Evaluate<TResult>(ICommand<T, TResult> command)
-            where TResult : ICommandResult<T>
-        {
-            var result = await Evaluate(command as ICommand<T>);
-
-            throw new NotImplementedException();
-            //return new DomainResult<TResult>()
-            //    .WithValue(result.IsSuccess
-            //        ? result.Value as TResult
-            //        : null)
-            //    .WithReasons(result.Reasons);
-        }
-
         public async Task<IEnumerable<IResult<ICommandResult<T>>>> Evaluate(params ICommand<T>[] commands)
         {
             var results = new List<IResult<ICommandResult<T>>>();

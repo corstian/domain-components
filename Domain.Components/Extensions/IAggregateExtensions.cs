@@ -112,5 +112,20 @@ namespace Domain.Components.Extensions
             foreach (var @event in events)
                 await aggregate.Apply(@event);
         }
+
+        public static async Task<IResult<TResult>> Evaluate<TAggregate, TResult>(
+            this IAggregate<TAggregate> aggregate, 
+            ICommand<TAggregate, TResult> command)
+            where TAggregate : class, IAggregate<TAggregate>
+            where TResult : class, ICommandResult<TAggregate>
+        {
+            var result = await aggregate.Evaluate(command);
+
+            return new DomainResult<TResult>()
+                .WithValue(result.IsSuccess
+                    ? result.Value as TResult
+                    : null)
+                .WithReasons(result.Reasons);
+        }
     }
 }

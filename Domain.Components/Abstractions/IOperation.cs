@@ -1,6 +1,6 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    internal interface IOperation : IServiceResult
+    public interface IOperation : IServiceResult
     {
         // Public to provide results
         IAggregate Aggregate { get; }

@@ -10,11 +10,11 @@ namespace Domain.Components
     public abstract class Aggregate<TAggregate> : Aggregate, IAggregate<TAggregate>
         where TAggregate : Aggregate<TAggregate>
     {
-        public Task<IResult<ICommandResult<TAggregate>>> Evaluate(ICommand<TAggregate> command)
+        public async Task<IResult<ICommandResult<TAggregate>>> Evaluate(ICommand<TAggregate> command)
         {
             var result = command.Evaluate((TAggregate)this);
 
-            if (result.IsFailed) return Task.FromResult(result);
+            if (result.IsFailed) return result;
 
             ICommandResult<TAggregate> commandResult = result.Value;
 
@@ -27,7 +27,7 @@ namespace Domain.Components
                 }
             }
 
-            return Task.FromResult(result);
+            return result;
         }
 
         public async Task<IEnumerable<IResult<ICommandResult<TAggregate>>>> Evaluate(params ICommand<TAggregate>[] commands)
@@ -61,8 +61,5 @@ namespace Domain.Components
             model.Populate((TAggregate)this);
             return Task.FromResult(model);
         }
-
-        public ValueTask<string> GetIdentity()
-            => ValueTask.FromResult(Id.ToString());
     }
 }

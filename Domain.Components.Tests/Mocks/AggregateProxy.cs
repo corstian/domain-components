@@ -32,9 +32,6 @@ namespace Domain.Components.Tests.Mocks
         public Task Apply(ICommandResult<T> commandResult)
             => aggregate.Apply(commandResult);
 
-        public ValueTask<string> GetIdentity()
-            => aggregate.GetIdentity();
-
         public async Task<IEnumerable<IResult<ICommandResult<T>>>> Evaluate(params ICommand<T>[] commands)
         {
             var results = new List<IResult<ICommandResult<T>>>();

@@ -1,7 +1,8 @@
-﻿using Domain.Components.Abstractions;
+﻿using Domain.Components;
+using Domain.Components.Abstractions;
 using Domain.Components.Extensions;
 
-namespace Domain.Components
+namespace Domain.Example.Orleans
 {
     public class BatchedServiceEvaluator : IServiceEvaluator
     {
@@ -14,13 +15,15 @@ namespace Domain.Components
 
         public async Task<IResult<TResult>> Evaluate<TResult>(IService<TResult> service) where TResult : IServiceResult
         {
+            throw new NotImplementedException();
+
             var promise = await service.Stage(_serviceProvider);
 
             if (promise.IsFailed)
                 return new DomainResult<TResult>()
                     .WithReasons(promise.Reasons);
 
-            var materialized = promise.Value.Materialize();
+            var materialized = ServicePromise.Materialize(promise.Value);
 
             var groups = materialized.Operations
                 .OperationsFromServiceResults()
@@ -31,7 +34,7 @@ namespace Domain.Components
                 })
                 .Select(q => q.Result)
                 .GroupBy(q => q.AggregateIdentity, (key, group) => group.Select(w => w.Operation));
-                
+
 
             var result = new DomainResult<TResult>();
 

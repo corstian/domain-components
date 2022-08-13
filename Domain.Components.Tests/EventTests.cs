@@ -1,8 +1,6 @@
-﻿using Domain.Components.Abstractions;
-using Domain.Components.Extensions;
+﻿using Domain.Components.Extensions;
 using Domain.Components.Tests.Mocks;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 

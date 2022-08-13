@@ -1,9 +1,6 @@
 ﻿namespace Domain.Components.Abstractions
 {
-    public interface IAggregate
-    {
-        ValueTask<string> GetIdentity();
-    }
+    public interface IAggregate { }
 
     public interface IAggregate<TAggregate> : IAggregate
         where TAggregate : class, IAggregate<TAggregate>

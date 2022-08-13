@@ -13,7 +13,7 @@ namespace Domain.Components.Extensions
             return resultProperty.GetValue(task);
         }
 
-        internal static IEnumerable<IOperation> OperationsFromServiceResults(this IEnumerable<IServiceResult> results)
+        public static IEnumerable<IOperation> OperationsFromServiceResults(this IEnumerable<IServiceResult> results)
         {
             foreach (var result in results)
                 switch (result)
@@ -28,12 +28,5 @@ namespace Domain.Components.Extensions
                         break;
                 }
         }
-
-        // ToDo: Ensure the group operation is not asynchronous
-        internal static IEnumerable<IGrouping<string, IOperation>>
-            Group(this IEnumerable<IOperation> operations)
-            => operations
-                .ToList()
-                .GroupBy(q => q.Aggregate.GetIdentity().Result);
     }
 }
